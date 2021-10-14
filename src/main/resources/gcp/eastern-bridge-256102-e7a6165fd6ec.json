@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "eastern-bridge-256102",
+  "private_key_id": "a13d1e21b423ee914616e73cb494603b6c69a23a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAJgcVRQ1bZanl\n93AhJlXfZciie/9pEuGl8Pb8Z2JEcCZPVUtQzAeWiWP0P7E8eLXqU4kIT1RmtMnP\nRZFufm3Ahmc56ANhkKqrX/ChHusbHUgloGcf5DfnPsHPvdMaFyU0AyjMYn8cDbjB\n/296aQptfliSwjlpyWl8KhTjSjysSiRcNVNrAHhCI6K3bI45Ll/Zc9NlM8JHADfD\noIkAwhkDvlGt2x4acs7gSusLKjYwbP02ENGBO6DXFho1QWFTu5vgNS4Q+bjGmaTZ\nU7jYZVv/FgnnYpI3xI2W7nXljVuRpZV468GaEzIahGiiRezDckxqD705d/9DyvCg\nXrYtyu8tAgMBAAECggEADh79Uu/XMnSp5BpSJZgxTrtRNQ0TJoAFEJ1BLtLTjZ9c\nVro4UGtzfKRY3IC4dW7oQkdPVnVWCOeXvowooEvZpFYm90IjdXkclyme1TMg03D3\nILoaug+bQtBW4qiFqhuHWBI0s7M4D4dmoO3fyHQ4baGPwCwBQif+K5TVd3q43hnC\nxeBVfL6m3RQE7LwMUxiGR20rLfRauGYUg4643XwwbAs/bKeqCDhd5IKklIIFytWC\nVsiQQLJ6MsVU8dTgn2d8oyK52/rY2fh0WgvBVi1Iy/5XCUXd8YeknGnk0JXbSuqV\nYVdzgwz29Xf7R7mpjkG6d2IJb2zjdoEzXpnFXziG1QKBgQDupehohsbSKSxy+sdG\n1PA6BvA1luFDPRP3j92qX5A7qFEnLgmqQvcP9DXl/Pacpi2i5VHcp/MOYnc97dpO\nqoUo4OlY90JkdueUb0SJpeT3EDSKegA4V42R89ZlDdCObftYPZ+eb0x72GBO0SVE\njTMP/ZPlHg3jh0tiebuK0+5i9wKBgQDOHpj+rYGVvaxvrLgS8K36c9fv64KQOFpw\nxHKIp0Tc3cqi5RGkUqtq5Qma2UzwAk2JCeGTEd6pmV+2dgtlbBBWMOLJI5myayi8\nh+PPMJcporlLkjBFG4mFcNIEM9CmwfEg+ek/ApFPmRDxoapcNUr6z1sluHZ7KNdD\nduzySI6R+wKBgHb57akW8E5cSpW0It9UT8OOK/l7lChybd7xMYC8DetAGd1fnV/t\n7MBebvSPLd+hFYVtsGdCr/FO88XDLCAl8ScVIiDBfK8bfI7K/i9lroXh5V/YPP3Z\n4HGQUCWnQn+Po0w1xLs3H7lqgXEp4duQTZG+SRpj5ma1z8ZzjCVFTUa3AoGAbvPN\ni5o+XSqiveKNm7RvEph1LrLpr1SGapl0xda0nOfPAmyoWHofyATObMp4PeIfdpsZ\nEB/YahcjjIZyj//hs2PRUFCXlZFVdlb37DnNxR3Q/LsOvMSb/HbEtnpl4L4ZXJTq\nV368VcqhclCB8ezGFci02dM4BAfyCGDmH22rQS0CgYEAtKM2B7k7OmLkaXSLvCYa\nuXMV5uOdAF6BK+0HWcq8H4uKDhpKJyPAtLGwHAnd5lHioNOGeb96io5bNvR/7rWb\npZ3gTfuDTKqTiOz2IKhU4fqgn1gzOtTgTI7oNMQR/uNVsVTWYzSGEN9dtYgOzq5R\naD99lu0IzIDRBb2uuw1ftFY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "careercompany@eastern-bridge-256102.iam.gserviceaccount.com",
+  "client_id": "101547966340528415654",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/careercompany%40eastern-bridge-256102.iam.gserviceaccount.com"
+}

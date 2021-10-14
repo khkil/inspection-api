@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.result.statistics.StatisticsMapper">
+
+
+   <!-- <resultMap type="user" id="userMap">
+        <result column="user_idx" property="userIdx"/>
+        <result column="user_name" property="userName"/>
+    </resultMap>
+
+    <resultMap type="group" id="groupMap">
+        <result column="idx" property="idx"/>
+    </resultMap>
+
+    <resultMap type="question" id="questionMap">
+        <result column="inspection_idx" property="inspectionIdx"/>
+    </resultMap>
+
+    <resultMap type="result" id="resultMap">
+        <result column="result_idx" property="resultIdx"/>
+    </resultMap>
+
+
+    <resultMap id="statisticsMap" type="statistics" autoMapping="true">
+        <collection property="user" resultMap="userMap"/>
+        <collection property="group" resultMap="groupMap"/>
+        <collection property="question" resultMap="questionMap"/>
+        <collection property="result" resultMap="resultMap"/>
+    </resultMap>-->
+
+
+    <select id="getGroundStatistics" resultType="statistics">
+        SELECT
+            u.user_idx,
+            u.user_name,
+            u.user_grade,
+            u.user_etc,
+            g.idx AS group_idx,
+            g.name AS group_name,
+            r.result_idx,
+            r.result_name,
+            SUM(ua.answer_idx) AS result_score
+        FROM
+            user_answer ua
+            LEFT OUTER JOIN `user` u
+                ON ua.user_idx = u.user_idx
+            LEFT OUTER JOIN `group` g
+                ON g.idx = u.group_idx
+            LEFT OUTER JOIN question q
+                ON ua.question_idx = q.question_idx
+            LEFT OUTER JOIN result r
+                ON q.result_idx = r.result_idx
+        WHERE q.inspection_idx = #{inspectionIdx}
+        GROUP BY ua.user_idx, r.result_idx
+        ORDER BY g.idx, u.user_grade, u.user_etc, r.result_idx, u.user_idx;
+    </select>
+</mapper>

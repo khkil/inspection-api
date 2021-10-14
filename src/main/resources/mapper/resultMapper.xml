@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.result.ResultMapper">
+    <!-- getResults -->
+    <resultMap type="com.example.backend.api.result.Result" id="ResultMap">
+        <result property="goodResultIdx" column="good_result_idx"/>
+        <result property="badResultIdx" column="bad_result_idx"/>
+
+        <collection property="goodResult" column="good_result_idx" ofType="Post" select="getResult"/>
+        <collection property="badResult" column="bad_result_idx" ofType="Post" select="getResult"/>
+    </resultMap>
+    <select id="getResult" resultType="com.example.backend.api.result.Result" >
+		SELECT result_idx, result_name, result_title, main_sentence, sub_sentence, good_result_idx, bad_result_idx, good_keyword, bad_keyword FROM result WHERE result_idx = #{result_idx};
+	</select>
+    <select id="getResults" resultMap="ResultMap">
+        SELECT * FROM result
+        WHERE inspection_idx = #{inspection_idx}
+        <choose>
+            <when test="results != null and results.size > 0">
+                AND result_idx IN
+                <foreach collection="results" item="result" index="i" open="(" close=")" separator=",">
+                    #{result}
+                </foreach>
+            </when>
+            <when test="result_idx != null">
+                AND result_idx = #{result_idx}
+            </when>
+            <otherwise>
+                AND result_idx = -1
+            </otherwise>
+        </choose>
+    </select>
+    <!--  -->
+
+    <!-- getResultsWithQuestions -->
+    <resultMap id="groupDetailMap" type="result" autoMapping="true">
+        <collection property="questionList" column="{resultIdx = result_idx, inspectionIdx = inspection_idx}"  select="getQuestions" autoMapping="true"/>
+    </resultMap>
+    <select id="getQuestions" resultType="question" >
+		SELECT * FROM question
+        WHERE inspection_idx = #{inspectionIdx}
+        AND result_idx = #{resultIdx}
+	</select>
+    <select id="getResultsWithQuestions" resultMap="groupDetailMap">
+        SELECT inspection_idx, result_idx, result_name FROM result WHERE inspection_idx = #{inspectionIdx}
+    </select>
+    <!--  -->
+
+
+</mapper>

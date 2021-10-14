@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.member.MemberMapper">
+    <update id="updateMember" parameterType="com.example.backend.api.member.Member">
+
+        UPDATE member
+        <set>
+            <if test="member.name != null"> name = #{member.name},</if>
+            <if test="member.password != null"> password = #{member.password},</if>
+            <if test="member.email != null"> email = #{member.email},</if>
+            <if test="member.phone != null"> phone = #{member.phone},</if>
+            u_date = NOW()
+        </set>
+
+        WHERE idx = #{idx};
+
+    </update>
+
+    <select id="loadUserByUserName" parameterType="com.example.backend.api.member.Member" resultType="com.example.backend.api.member.Member">
+        SELECT * FROM member
+        WHERE id = #{id}
+    </select>
+
+    <select id="findIdByInfo" resultType="com.example.backend.api.member.Member" parameterType="map">
+        SELECT id FROM member WHERE name = #{name} AND email = #{email}
+    </select>
+
+    <select id="findIdByPhone" resultType="com.example.backend.api.member.Member" parameterType="map">
+        SELECT id FROM member WHERE id = #{id} AND email = #{email}
+    </select>
+    <select id="getMemberList" resultType="com.example.backend.api.member.Member">
+
+        SELECT * FROM member
+    </select>
+
+    <select id="getMemberDetail" resultType="com.example.backend.api.member.Member">
+        SELECT idx, name, id, password, email, phone FROM member
+        WHERE idx = #{idx}
+    </select>
+
+    <insert id="insertMember" parameterType="com.example.backend.api.member.Member" useGeneratedKeys="true" keyProperty="idx">
+        INSERT INTO member(id, password, role, email) VALUES(#{id}, #{password}, #{role}, #{email});
+
+    </insert>
+</mapper>

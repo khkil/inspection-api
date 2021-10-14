@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.inspection.InspectionMapper">
+
+    <select id="getInspectionList" resultType="com.example.backend.api.inspection.Inspection" parameterType="inspection">
+        SELECT * FROM inspection
+        <where>
+            <if test="payYn != null and payYn != ''">AND pay_yn = #{payYn} </if>
+        </where>
+    </select>
+
+    <select id="getInspectionDetail" resultType="com.example.backend.api.inspection.Inspection">
+        SELECT * FROM inspection WHERE inspection_idx = #{idx};
+    </select>
+
+</mapper>

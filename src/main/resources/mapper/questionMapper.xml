@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.question.QuestionMapper">
+    <select id="getQuestionList" resultMap="questionMap">
+        SELECT * FROM question WHERE inspection_idx = #{idx} AND del_yn = 'N'
+        ORDER BY inspection_idx, question_page, question_number;
+    </select>
+
+    <resultMap type="com.example.backend.api.question.Question" id="questionMap">
+        <result property="questionIdx" column="question_idx"/>
+        <result property="inspectionIdx" column="inspection_idx"/>
+        <result property="resultIdx" column="result_idx"/>
+        <result property="questionPage" column="question_page"/>
+        <collection property="answers" column="question_idx" ofType="Post" select="getAnswerList"/>
+    </resultMap>
+    <select id="getAnswerList" resultType="com.example.backend.api.answer.Answer" >
+		SELECT * FROM answer WHERE question_idx = #{question_idx};
+	</select>
+    <select id="getPageInfo" resultMap="questionMap">
+        SELECT * from question WHERE question_page = #{page}  AND inspection_idx = #{inspection_idx} AND del_yn = 'N';
+    </select>
+    <select id="getQuestionInfo">
+
+
+    </select>
+    <select id="getQuestionDetail" resultMap="questionMap">
+        SELECT * FROM question WHERE question_idx = #{questionIdx}
+    </select>
+
+    <update id="deleteQuestion" parameterType="int">
+        UPDATE question SET del_yn = 'Y' WHERE question_idx = #{questionIdx}
+    </update>
+    <update id="updateQuestion">
+        UPDATE question SET
+            question_text = IFNULL(#{question.questionText}, question_text)
+            ,del_yn = IFNULL(#{question.delYn}, del_yn)
+        WHERE question_idx = #{questionIdx};
+    </update>
+
+    <update id="updateAnswers" >
+
+        <foreach collection="answers" item="answer" index="index">
+
+            UPDATE answer SET
+                answer_text = IFNULL(#{answer.answerText}, answer_text)
+                ,answer_score = IFNULL(#{answer.answerScore}, answer_score)
+                ,file_path = IFNULL(#{answer.filePath}, file_path)
+            WHERE
+                answer_idx = #{answer.answerIdx};
+
+        </foreach>
+
+    </update>
+
+</mapper>

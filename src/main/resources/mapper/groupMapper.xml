@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.group.GroupMapper">
+    <insert id="insertGroup" parameterType="com.example.backend.api.group.Group" useGeneratedKeys="true" keyProperty="idx">
+        INSERT INTO `group`(`name`, `tel`, `address`, `contact_name`, `contact_email`, `contact_tel`, `flag`) VALUES  (#{name}, #{tel}, #{address}, #{contactName}, #{contactEmail}, #{contactTel}, #{flag} )
+    </insert>
+
+    <select id="getGroupList"  resultMap="groupDetailMap">
+        SELECT * FROM `group`;
+    </select>
+
+
+    <resultMap id="groupDetailMap" type="com.example.backend.api.group.Group" autoMapping="true">
+        <id property="idx" column="idx"></id>
+        <collection property="grades" column="idx"  select="getGroupGrades"/>
+    </resultMap>
+    <select id="getGroupDetail" parameterType="int" resultMap="groupDetailMap">
+        SELECT * FROM `group` WHERE idx = #{idx}
+    </select>
+
+    <select id="getGroupGrades" resultType="int">
+        SELECT user_grade FROM `user` WHERE group_idx = #{idx} GROUP BY user_grade;
+    </select>
+</mapper>

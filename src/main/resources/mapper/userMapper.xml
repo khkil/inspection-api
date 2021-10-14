@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.user.UserMapper">
+
+    <resultMap id="groupMap" type="com.example.backend.api.group.Group">
+        <result column="idx" property="idx"></result>
+        <result column="name" property="name"></result>
+    </resultMap>
+    <resultMap id="userMap" type="com.example.backend.api.user.User">
+        <result column="inspection_idx" property="inspectionIdx"></result>
+        <result column="user_idx" property="userIdx"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="user_grade" property="userGrade"></result>
+        <result column="user_etc" property="userEtc"></result>
+        <result column="group_idx" property="groupIdx"></result>
+        <result column="cdate" property="cdate"></result>
+
+        <collection property="group" resultMap="groupMap"></collection>
+    </resultMap>
+
+    <resultMap id="questionMap" type="question">
+        <result column="question_idx" property="questionIdx"/>
+        <result column="result_idx" property="resultIdx"/>
+    </resultMap>
+    <resultMap id="userDetailAnswerMap" type="userAnswer">
+        <result column="question_idx" property="questionIdx"/>
+        <result column="answer_idx" property="answerIdx"/>
+        <collection property="question" resultMap="questionMap"/>
+    </resultMap>
+
+    <delete id="deleteUser" parameterType="int" >
+        UPDATE user SET del_yn = "Y" WHERE user_idx = #{userIdx};
+    </delete>
+
+    <update id="modifyUser" parameterType="map">
+        UPDATE user
+        <set>
+            del_yn = del_yn
+            <if test="user.userName != null and user.userName != '' ">
+                ,user_name = #{user.userName}
+            </if>
+            <if test="user.userGrade != null and user.userGrade != '' ">
+                ,user_grade = #{user.userGrade}
+            </if>
+            <if test="user.userEtc != null and user.userEtc != '' ">
+                ,user_etc = #{user.userEtc}
+            </if>
+            <if test="user.cdate != null and user.cdate != '' ">
+                ,cdate = #{user.cdate}
+            </if>
+            <if test="user.groupIdx != null and user.groupIdx != '' ">
+                ,group_idx = #{user.groupIdx}
+            </if>
+            <if test="user.delYn != null and user.delYn != '' ">
+                ,del_yn = #{user.delYn}
+            </if>
+        </set>
+        WHERE user_idx = #{userIdx};
+
+        <if test="userAnswerList != null and userAnswerList.size > 0 ">
+            <foreach collection="userAnswerList" item="userAnswer" index="index" >
+                INSERT INTO
+                    user_answer
+                VALUES (#{userIdx}, #{userAnswer.questionIdx}, #{userAnswer.answerIdx} )
+                    ON DUPLICATE KEY UPDATE answer_idx = #{userAnswer.answerIdx} ;
+            </foreach>
+        </if>
+
+
+    </update>
+
+
+    <select id="getUsers"  resultMap="userMap">
+        SELECT  * FROM
+        `user` u
+            LEFT OUTER JOIN
+        `group` g
+            ON u.group_idx = g.idx
+            WHERE u.inspection_idx = #{inspection_idx}
+        <if test="param.text != null and param.text != '' ">
+            AND (
+                u.user_name LIKE CONCAT('%',#{param.text},'%')
+                OR g.name LIKE CONCAT('%',#{param.text},'%')
+            )
+        </if>
+        <if test="param.group_idx != null and param.group_idx != '' ">
+            AND g.idx = #{param.group_idx}
+        </if>
+        <if test="param.grade != null and param.grade != '' ">
+            AND u.user_grade = #{param.grade}
+        </if>
+        <if test="param.del_yn != null and param.del_yn != '' ">
+            AND u.del_yn = #{param.del_yn}
+        </if>
+        <choose>
+            <when test = "param.del_yn != null and param.del_yn != '' ">
+            AND u.del_yn = #{param.del_yn}
+            </when>
+            <otherwise>
+            AND u.del_yn = 'N'
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getUserDetail" resultMap="userMap">
+        SELECT  * FROM
+        `user` u
+            LEFT OUTER JOIN
+        `group` g
+            ON u.group_idx = g.idx
+        WHERE user_idx = #{userIdx}
+    </select>
+
+    <select id="getUserAnswers" resultType="java.util.Map">
+        SELECT * FROM question q
+            LEFT OUTER JOIN user_answer ua
+                ON ua.question_idx = q.question_idx
+            AND ua.user_idx = #{userIdx}
+            WHERE inspection_idx = (SELECT inspection_idx FROM `user` WHERE user_idx = #{userIdx})
+        ORDER BY q.question_idx;
+    </select>
+    <select id="getUserDetailAnswerList" resultMap="userDetailAnswerMap">
+    SELECT * FROM user_answer ua
+    LEFT OUTER JOIN question q
+        ON ua.question_idx = q.question_idx
+    WHERE user_idx = #{userIdx}
+    ORDER BY q.result_idx, q.question_idx
+    </select>
+
+    <insert id="insertUserInfo" parameterType="com.example.backend.api.result.UserResult" useGeneratedKeys="true">
+        INSERT INTO
+            user(inspection_idx, group_idx, user_name, user_age, user_gender,user_grade, user_etc, cdate)
+            VALUES (
+                #{inspection_idx},
+                #{user_info.group_idx},
+                #{user_info.user_name},
+                #{user_info.user_age},
+                #{user_info.user_gender},
+                #{user_info.user_grade},
+                #{user_info.user_etc},
+                <choose>
+                    <when test="user_info.cdate != null and user_info.cdate != '' ">
+                        #{user_info.cdate}
+                    </when>
+                    <otherwise>
+                        now()
+                    </otherwise>
+
+                </choose>
+            );
+        <selectKey keyProperty="user_idx" resultType="int" order="AFTER">
+            select LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+    <insert id="insertUserAnswers" parameterType="int">
+            INSERT INTO user_answer(user_idx, question_idx, answer_idx) VALUES (#{user_idx}, #{question_idx}, #{answer_idx} )
+    </insert>
+
+</mapper>
