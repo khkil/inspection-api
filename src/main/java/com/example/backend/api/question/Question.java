@@ -17,6 +17,8 @@ public class Question {
     private String questionText;
     private String delYn;
     private QuestionType questionType;
+    private QuestionType answerType;
+    private String filePath;
 
     private List<Answer> answers;
 

@@ -32,10 +32,6 @@ public class AdminQuestionController {
     @PutMapping("/{questionIdx}")
     public ResponseEntity updateQuestion(@PathVariable int questionIdx, @RequestBody Question question){
         questionService.updateQuestion(questionIdx, question);
-        List<Answer> answers = question.getAnswers();
-        if(answers != null && answers.size() > 0){
-            questionService.updateAnswers(question.getAnswers());
-        }
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 }

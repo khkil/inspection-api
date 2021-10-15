@@ -36,7 +36,4 @@ public class QuestionService {
         questionMapper.updateQuestion(questionIdx, question);
     }
 
-    public void updateAnswers(List<Answer> answers){
-        questionMapper.updateAnswers(answers);
-    }
 }

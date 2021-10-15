@@ -8,13 +8,11 @@
         ORDER BY inspection_idx, question_page, question_number;
     </select>
 
-    <resultMap type="com.example.backend.api.question.Question" id="questionMap">
+    <resultMap type="com.example.backend.api.question.Question" id="questionMap" autoMapping="true">
         <result property="questionIdx" column="question_idx"/>
-        <result property="inspectionIdx" column="inspection_idx"/>
-        <result property="resultIdx" column="result_idx"/>
-        <result property="questionPage" column="question_page"/>
-        <collection property="answers" column="question_idx" ofType="Post" select="getAnswerList"/>
+        <collection property="answers" column="question_idx" select="getAnswerList"/>
     </resultMap>
+
     <select id="getAnswerList" resultType="com.example.backend.api.answer.Answer" >
 		SELECT * FROM answer WHERE question_idx = #{question_idx};
 	</select>
@@ -34,24 +32,20 @@
     </update>
     <update id="updateQuestion">
         UPDATE question SET
-            question_text = IFNULL(#{question.questionText}, question_text)
-            ,del_yn = IFNULL(#{question.delYn}, del_yn)
+            question_text = IFNULL(#{question.questionText}, question_text),
+            question_type = IFNULL(#{question.questionType}, question_type),
+            answer_type = IFNULL(#{question.answerType}, answer_type),
+            file_path = #{question.filePath},
+            del_yn = IFNULL(#{question.delYn}, del_yn)
         WHERE question_idx = #{questionIdx};
+
+
+        <if test="question.answers != null and question.answers.size > 0">
+            DELETE FROM answer WHERE question_idx = #{questionIdx};
+            <foreach collection="question.answers" item="answer" index="index">
+                INSERT INTO answer(`question_idx`, `answer_text`, `answer_score`, `file_path`)
+                VALUES (#{questionIdx}, IFNULL(#{answer.answerText}, ''), IFNULL(#{answer.answerScore}, ''), #{answer.filePath} );
+            </foreach>
+        </if>
     </update>
-
-    <update id="updateAnswers" >
-
-        <foreach collection="answers" item="answer" index="index">
-
-            UPDATE answer SET
-                answer_text = IFNULL(#{answer.answerText}, answer_text)
-                ,answer_score = IFNULL(#{answer.answerScore}, answer_score)
-                ,file_path = IFNULL(#{answer.filePath}, file_path)
-            WHERE
-                answer_idx = #{answer.answerIdx};
-
-        </foreach>
-
-    </update>
-
 </mapper>
