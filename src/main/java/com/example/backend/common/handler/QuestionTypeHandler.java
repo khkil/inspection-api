@@ -19,32 +19,32 @@ public class QuestionTypeHandler<E extends Enum<E>> implements TypeHandler<Quest
 
     public void setParameter(PreparedStatement preparedStatement, int i, QuestionType questionType, JdbcType jdbcType) throws
             SQLException {
-        preparedStatement.setInt(i, questionType.getQuestionType());
+        preparedStatement.setString(i, questionType.getQuestionType());
     }
 
     @Override
     public QuestionType getResult(ResultSet resultSet, String s) throws SQLException {
-        int questionType = resultSet.getInt(s);
+        String questionType = resultSet.getString(s);
         return getQuestionTypes(questionType);
     }
 
     @Override
     public QuestionType getResult(ResultSet resultSet, int i) throws SQLException {
-        int questionType = resultSet.getInt(i);
+        String questionType = resultSet.getString(i);
         return getQuestionTypes(questionType);
     }
 
     @Override
     public QuestionType getResult(CallableStatement callableStatement, int i) throws SQLException {
-        int questionType = callableStatement.getInt(i);
+        String questionType = callableStatement.getString(i);
         return getQuestionTypes(questionType);
     }
 
-    private QuestionType getQuestionTypes(int i) {
+    private QuestionType getQuestionTypes(String text) {
         try {
             QuestionType[] enumConstants = (QuestionType[])type.getEnumConstants();
             for (QuestionType questionType : enumConstants) {
-                if (questionType.getQuestionType() == i) {
+                if (questionType.getQuestionType().equals(text)) {
                     return questionType;
                 }
             }

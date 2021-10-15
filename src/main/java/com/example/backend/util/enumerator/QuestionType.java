@@ -6,12 +6,12 @@ import org.apache.ibatis.type.MappedTypes;
 
 @Getter
 public enum QuestionType {
-    TEXT(0),
-    IMAGE(1);
+    TEXT("TEXT"),
+    IMAGE("IMAGE");
 
-    private int questionType;
+    private String questionType;
 
-    QuestionType(int questionType) {
+    QuestionType(String questionType) {
         this.questionType = questionType;
     }
 
