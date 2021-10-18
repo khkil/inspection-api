@@ -35,15 +35,16 @@
     <!--  -->
 
     <!-- getResultsWithQuestions -->
-    <resultMap id="groupDetailMap" type="result" autoMapping="true">
+    <resultMap id="resultWithQuestionMap" type="result" autoMapping="true">
         <collection property="questionList" column="{resultIdx = result_idx, inspectionIdx = inspection_idx}"  select="getQuestions" autoMapping="true"/>
     </resultMap>
     <select id="getQuestions" resultType="question" >
 		SELECT * FROM question
         WHERE inspection_idx = #{inspectionIdx}
         AND result_idx = #{resultIdx}
+        ORDER BY question_order, question_idx ;
 	</select>
-    <select id="getResultsWithQuestions" resultMap="groupDetailMap">
+    <select id="getResultsWithQuestions" resultMap="resultWithQuestionMap">
         SELECT inspection_idx, result_idx, result_name FROM result WHERE inspection_idx = #{inspectionIdx}
     </select>
     <!--  -->

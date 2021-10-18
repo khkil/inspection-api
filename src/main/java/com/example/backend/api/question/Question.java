@@ -15,6 +15,7 @@ public class Question {
     private int questionPage;
     private int questionNumber;
     private String questionText;
+    private int questionOrder;
     private String delYn;
     private QuestionType questionType;
     private QuestionType answerType;

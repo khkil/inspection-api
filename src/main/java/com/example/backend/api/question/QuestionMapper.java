@@ -14,5 +14,6 @@ public interface QuestionMapper {
     Question getQuestionDetail(int questionIdx);
     void deleteQuestion(int questionIdx);
     void updateQuestion(@Param("questionIdx") int questionIdx, @Param("question") Question question);
+    void updateQuestions(List<Question> questions);
 
 }

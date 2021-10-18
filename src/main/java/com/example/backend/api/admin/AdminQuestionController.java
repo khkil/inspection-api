@@ -34,4 +34,11 @@ public class AdminQuestionController {
         questionService.updateQuestion(questionIdx, question);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
+
+    @PutMapping("")
+    public ResponseEntity updateQuestions(@RequestBody List<Question> questions){
+        questionService.updateQuestions(questions);
+        return ResponseEntity.ok(CommonResponse.successResult());
+
+    }
 }

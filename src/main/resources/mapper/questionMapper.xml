@@ -48,4 +48,15 @@
             </foreach>
         </if>
     </update>
+    <update id="updateQuestions" parameterType="list">
+        <foreach collection="questions" item="question" index="index">
+
+            UPDATE question SET
+                question_text = IFNULL(#{question.questionText}, question_text),
+                question_order = IFNULL(#{question.questionOrder}, question_order)
+
+            WHERE question_idx = #{question.questionIdx};
+        </foreach>
+
+    </update>
 </mapper>
