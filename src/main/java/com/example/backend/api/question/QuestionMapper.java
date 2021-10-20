@@ -3,10 +3,12 @@ package com.example.backend.api.question;
 import com.example.backend.api.answer.Answer;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public interface QuestionMapper {
 
     List<Question> getQuestionList(int idx);

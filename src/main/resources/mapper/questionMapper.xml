@@ -50,11 +50,22 @@
     </update>
     <update id="updateQuestions" parameterType="list">
         <foreach collection="questions" item="question" index="index">
-            UPDATE question SET
-                question_text = IFNULL(#{question.questionText}, question_text),
-                question_order = IFNULL(#{question.questionOrder}, question_order),
-                question_number = IFNULL(#{question.questionNumber}, question_number)
-            WHERE question_idx = #{question.questionIdx};
+            <choose>
+
+                <when test="question.questionIdx != null and question.questionIdx != '' ">
+                    UPDATE question SET
+                        question_text = IFNULL(#{question.questionText}, question_text),
+                        question_order = IFNULL(#{question.questionOrder}, question_order),
+                        question_number = IFNULL(#{question.questionNumber}, question_number)
+                    WHERE question_idx = #{question.questionIdx};
+
+                </when>
+                <when test="question.questionIdx == null or question.questionIdx == ''">
+                    INSERT INTO question(`inspection_idx`, `result_idx`, `question_number`, `question_text`, `question_order`) values(#{question.inspectionIdx}, #{question.resultIdx}, #{question.questionNumber}, #{question.questionText}, #{question.questionOrder});
+
+                </when>
+            </choose>
+
         </foreach>
 
     </update>
