@@ -11,4 +11,6 @@ public interface GroupMapper {
     Group getGroupDetail(int idx);
     void insertGroup(Group group);
 
+    List<Group> getAdminGroupList();
+
 }

@@ -1,5 +1,6 @@
 package com.example.backend.api.group;
 
+import com.example.backend.api.inspection.Inspection;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -18,4 +19,5 @@ public class Group {
     private String flag;
 
     private List<Integer> grades;
+    private List<Inspection> inspections;
 }

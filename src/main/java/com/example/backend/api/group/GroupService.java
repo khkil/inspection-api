@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class GroupServcice {
+public class GroupService {
 
     @Autowired
     GroupMapper groupMapper;
@@ -24,6 +24,10 @@ public class GroupServcice {
 
     public void insertGroup(Group group) {
         groupMapper.insertGroup(group);
+    }
+
+    public List<Group> getAdminGroupList(){
+        return groupMapper.getAdminGroupList();
     }
 
 }
