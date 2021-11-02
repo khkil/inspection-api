@@ -15,6 +15,7 @@ import java.util.Map;
 public interface UserMapper {
 
     List<User> getUsers(int inspection_idx, @Param("param") Map<String, Object> param);
+    int getUserCounts(int inspectionIdx);
     User getUserDetail(int userIdx);
     List<Map<String, Object>> getUserAnswers(int userIdx);
     List<UserAnswer> getUserDetailAnswerList(int userIdx);
@@ -22,4 +23,6 @@ public interface UserMapper {
     void insertUserAnswers(int user_idx, int question_idx, int answer_idx);
     void deleteUser(int userIdx);
     void modifyUser(@Param("userIdx") int userIdx, @Param("user") User user, @Param("userAnswerList") List<UserAnswer> userAnswerList);
+
+
 }

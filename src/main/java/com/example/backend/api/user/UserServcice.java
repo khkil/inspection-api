@@ -19,6 +19,10 @@ public class UserServcice {
        return userMapper.getUsers(inspection_idx, param);
     }
 
+    public int getUserCounts(int inspectionIdx){
+        return userMapper.getUserCounts(inspectionIdx);
+    }
+
     public User getUserDetail(int userIdx){
         return userMapper.getUserDetail(userIdx);
     }

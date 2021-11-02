@@ -79,6 +79,11 @@ public class AuthController {
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
+    @GetMapping("/validate")
+    public void validate(HttpServletRequest request){
+        JwtTokenProvider.validateToken(request);
+    }
+
     @PostMapping("/check-id")
     public ResponseEntity checkId(@RequestBody Member member){
 

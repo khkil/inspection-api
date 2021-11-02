@@ -128,6 +128,10 @@
     WHERE user_idx = #{userIdx}
     ORDER BY q.result_idx, q.question_idx
     </select>
+    <select id="getUserCounts" resultType="java.lang.Integer">
+
+        SELECT COUNT(*) FROM `user` WHERE inspection_idx = #{inspectionIdx}
+    </select>
 
     <insert id="insertUserInfo" parameterType="com.example.backend.api.result.UserResult" useGeneratedKeys="true">
         INSERT INTO

@@ -39,6 +39,12 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/inspections/{inspection_idx}/counts")
+    public ResponseEntity getUsersCount(@PathVariable int inspection_idx){
+        int userCounts = userServcice.getUserCounts(inspection_idx);
+        return ResponseEntity.ok(CommonResponse.successResult(userCounts));
+    }
+
     @GetMapping("/inspections/{inspection_idx}/pages/{page}")
     public ResponseEntity getUsersToPages(@PathVariable int inspection_idx, @PathVariable int page, @RequestParam Map<String,Object> param){
         int perPage = 10;
