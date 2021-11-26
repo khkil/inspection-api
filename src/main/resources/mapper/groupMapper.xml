@@ -4,7 +4,8 @@
 
 <mapper namespace="com.example.backend.api.group.GroupMapper">
     <insert id="insertGroup" parameterType="com.example.backend.api.group.Group" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO `group`(`name`, `tel`, `address`, `contact_name`, `contact_email`, `contact_tel`, `flag`) VALUES  (#{name}, #{tel}, #{address}, #{contactName}, #{contactEmail}, #{contactTel}, #{flag} )
+        INSERT INTO `group`(`name`, `tel`, `address`, `address_sub`, `contact_name`, `contact_email`, `contact_tel`)
+        VALUES  (#{name}, #{tel}, #{address}, #{addressSub}, #{contactName}, #{contactEmail}, #{contactTel} )
     </insert>
 
     <select id="getGroupList"  resultMap="groupListMap">

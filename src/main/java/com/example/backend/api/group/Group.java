@@ -13,10 +13,10 @@ public class Group {
     private String name;
     private String tel;
     private String address;
+    private String addressSub;
     private String contactName;
     private String contactEmail;
     private String contactTel;
-    private String flag;
 
     private List<Integer> grades;
     private List<Inspection> inspections;
