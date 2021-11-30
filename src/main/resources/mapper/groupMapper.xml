@@ -7,6 +7,22 @@
         INSERT INTO `group`(`name`, `tel`, `address`, `address_sub`, `contact_name`, `contact_email`, `contact_tel`)
         VALUES  (#{name}, #{tel}, #{address}, #{addressSub}, #{contactName}, #{contactEmail}, #{contactTel} )
     </insert>
+    <update id="updateGroup">
+        UPDATE `group`
+        <set>
+            <if test="group.name != null"> name = #{group.name},</if>
+            <if test="group.tel != null"> tel = #{group.tel},</if>
+            <if test="group.address != null"> address = #{group.address},</if>
+            <if test="group.addressSub != null"> address_sub = #{group.addressSub},</if>
+            <if test="group.contactName != null"> contact_name = #{group.contactName},</if>
+            <if test="group.contactEmail != null"> contact_email = #{group.contactEmail},</if>
+            <if test="group.contactTel != null"> contact_tel = #{group.contactTel},</if>
+        </set>
+        WHERE idx = #{groupIdx};
+    </update>
+    <delete id="deleteGroup" parameterType="int">
+        DELETE FROM `group` WHERE idx = #{groupIdx};
+    </delete>
 
     <select id="getGroupList"  resultMap="groupListMap">
         SELECT * FROM `group`;

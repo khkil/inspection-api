@@ -26,6 +26,16 @@ public class GroupService {
         groupMapper.insertGroup(group);
     }
 
+    public void updateGroup(int groupIdx, Group group){
+        groupMapper.updateGroup(groupIdx, group);
+
+    }
+
+    public void deleteGroup(int groupIdx){
+        groupMapper.deleteGroup(groupIdx);
+
+    }
+
     public List<Group> getAdminGroupList(){
         return groupMapper.getAdminGroupList();
     }
