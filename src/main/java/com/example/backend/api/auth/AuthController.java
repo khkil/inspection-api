@@ -48,14 +48,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
         }
 
-        String token =  jwtTokenProvider.createToken(user.getId(), roles);
-        String userPk = jwtTokenProvider.getUserPk(token);
+        String accessToken =  jwtTokenProvider.generateAccessToken(user.getId(), roles);
+        String refreshToken =  jwtTokenProvider.generateRefreshToken(user.getId(), roles);
+        String userPk = jwtTokenProvider.getUserPk(accessToken);
 
         Member member = (Member) memberService.loadUserByUsername(userPk);
         if(!params.getPassword().equals(member.getPassword())){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
         }
-        return ResponseEntity.ok(new Auth(token, member));
+        Auth auth = new Auth(accessToken, refreshToken, member);
+        return ResponseEntity.ok(CommonResponse.successResult(auth));
     }
 
     @PostMapping("/sign-up")
@@ -63,10 +65,11 @@ public class AuthController {
 
         memberService.insertMember(member);
         List<String> roles = Arrays.asList(member.getRole());
-        String token =  jwtTokenProvider.createToken(member.getId(), roles);
-        Jws<Claims> claims = jwtTokenProvider.getClaims(token);
+        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
+        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
+        Jws<Claims> claims = jwtTokenProvider.getClaims(accessToken);
 
-        return ResponseEntity.ok(new Auth(token, member));
+        return ResponseEntity.ok(new Auth(accessToken, refreshToken,  member));
     }
 
 

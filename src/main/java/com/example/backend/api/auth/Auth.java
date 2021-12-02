@@ -8,7 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Auth {
 
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private Member member;
 
 }

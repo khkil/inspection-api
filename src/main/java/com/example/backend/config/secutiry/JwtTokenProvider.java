@@ -18,15 +18,20 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    private long tokenValidMilliseconds = (1000L * 60 * 60) * 24; // 1 * 24시간만 토큰 유효
+    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
     public static final String AUTHORIZATION = "Authorization";
     private static Clock clock = DefaultClock.INSTANCE;
 
     private final UserDetailsService userDetailsService;
 
-    public String createToken(String userPk, List<String> roles) {
-        return createToken(userPk, roles, tokenValidMilliseconds);
+    public String generateAccessToken(String userPk, List<String> roles) {
+        return createToken(userPk, roles, accessTokenValidMilliseconds);
+    };
+
+    public String generateRefreshToken(String userPk, List<String> roles) {
+        return createToken(userPk, roles, refreshTokenValidMilliseconds);
     };
 
     public String createToken(String userPk, List<String> roles, long expiredTime) {
