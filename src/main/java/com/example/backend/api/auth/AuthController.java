@@ -1,5 +1,6 @@
 package com.example.backend.api.auth;
 
+import com.example.backend.api.auth.model.TokenInfo;
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.Member;
@@ -32,8 +33,6 @@ public class AuthController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Member params){
         String userName = params.getUsername();
@@ -56,8 +55,10 @@ public class AuthController {
         if(!params.getPassword().equals(member.getPassword())){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
         }
-        Auth auth = new Auth(accessToken, refreshToken, member);
-        return ResponseEntity.ok(CommonResponse.successResult(auth));
+        Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
+        TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, member);
+        jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
+        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
     }
 
     @PostMapping("/sign-up")
@@ -68,11 +69,10 @@ public class AuthController {
         String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
         String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
         Jws<Claims> claims = jwtTokenProvider.getClaims(accessToken);
-
-        return ResponseEntity.ok(new Auth(accessToken, refreshToken,  member));
+        Date expiredDate = claims.getBody().getExpiration();
+        jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
+        return ResponseEntity.ok(new TokenInfo(accessToken, refreshToken, expiredDate, member));
     }
-
-
 
     @GetMapping("/info")
     public ResponseEntity getUserInfo(HttpServletRequest request){
@@ -124,8 +124,6 @@ public class AuthController {
         if(!number.equals(authNo))
             throw new ApiException("인증번호가 다릅니다");
 
-
-
         //session.invalidate();
         return ResponseEntity.ok().body(CommonResponse.successResult());
 
@@ -146,6 +144,19 @@ public class AuthController {
         if(member == null) throw new ApiException("유효하지 않은 정보입니다.");
 
         return ResponseEntity.ok().body(CommonResponse.successResult());
+    }
+
+    @GetMapping("/reissue-token")
+    public ResponseEntity reissueAccessToken(@RequestBody Member member){
+
+        String refreshToken = jwtTokenProvider.getRefreshToken2Redis(member.getId());
+        String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
+
+        Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
+        TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, null);
+
+        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
+
     }
 
 }

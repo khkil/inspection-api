@@ -1,4 +1,4 @@
-package com.example.backend.auth.model;
+package com.example.backend.api.auth.model;
 
 import com.example.backend.common.handler.RoleEnum;
 import com.example.backend.common.handler.RoleEnumTypeHandler;

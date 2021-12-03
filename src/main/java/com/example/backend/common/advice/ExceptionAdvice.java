@@ -27,4 +27,10 @@ public class ExceptionAdvice {
         e.printStackTrace();
         return CommonResponse.failResult(e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected CommonResponse forbiddenException(HttpServletRequest request, Exception e) {
+        e.printStackTrace();
+        return CommonResponse.failResult(e.getMessage());
+    }
 }
