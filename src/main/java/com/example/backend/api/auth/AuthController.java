@@ -82,7 +82,7 @@ public class AuthController {
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
-    @GetMapping("/validate")
+    @GetMapping("/validate-token")
     public void validate(HttpServletRequest request){
         JwtTokenProvider.validateToken(request);
     }
@@ -146,17 +146,15 @@ public class AuthController {
         return ResponseEntity.ok().body(CommonResponse.successResult());
     }
 
-    @GetMapping("/reissue-token")
-    public ResponseEntity reissueAccessToken(@RequestBody Member member){
+    @PostMapping("/reissue-token")
+    public ResponseEntity reissueAccessToken(HttpServletRequest request){
 
-        String refreshToken = jwtTokenProvider.getRefreshToken2Redis(member.getId());
+        String refreshToken = request.getHeader("refreshToken");
         String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
 
         Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
         TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, null);
 
         return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
-
     }
-
 }

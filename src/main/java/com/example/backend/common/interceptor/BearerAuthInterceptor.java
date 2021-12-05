@@ -15,8 +15,7 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
     private JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         System.out.println(">>> interceptor.preHandle 호출");
         String token = jwtTokenProvider.resolveToken(request);
         if (token.isEmpty()) {

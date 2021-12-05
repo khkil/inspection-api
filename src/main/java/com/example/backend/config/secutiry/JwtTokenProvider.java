@@ -22,7 +22,7 @@ import java.util.List;
 public class JwtTokenProvider {
 
     //private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    private long accessTokenValidMilliseconds = (1000L); // 1초
+    private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
     private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
     public static final String AUTHORIZATION = "Authorization";
@@ -55,11 +55,17 @@ public class JwtTokenProvider {
     }
 
     public String reissueAccessToken(String refreshToken){
-        String accessToken = null;
-        String userPk = getUserPk(refreshToken);
+
+        String userId = getUserPk(refreshToken);
         Jws<Claims> claims = getClaims(refreshToken);
+        String redisRefreshToken = redisService.getValues(userId);
+        System.out.println(redisRefreshToken);
+        System.out.println(refreshToken);
+        if(!refreshToken.equals(redisRefreshToken)){
+            throw new IllegalArgumentException("Refresh Token 정보가 불일치");
+        }
         List<String> roles = (List)claims.getBody().get("roles");
-        return generateAccessToken(userPk, roles);
+        return generateAccessToken(userId, roles);
     }
 
     public String getUserPk(String token) {
