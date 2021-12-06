@@ -21,8 +21,8 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    //private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
+    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    //private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
     private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
     public static final String AUTHORIZATION = "Authorization";
@@ -73,10 +73,6 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){
-        if(token.isEmpty() || !validateToken(token)){
-            throw new IllegalArgumentException("유효하지 않은 토근");
-        }
-
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

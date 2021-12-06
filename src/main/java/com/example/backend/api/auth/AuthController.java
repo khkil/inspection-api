@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.*;
 
 @RestController
@@ -82,9 +83,16 @@ public class AuthController {
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
-    @GetMapping("/validate-token")
-    public void validate(HttpServletRequest request){
-        JwtTokenProvider.validateToken(request);
+    @PostMapping("/validate-token")
+    public ResponseEntity validateToken(HttpServletRequest request){
+        String accessToken = request.getHeader(jwtTokenProvider.AUTHORIZATION);
+        if(accessToken.isEmpty() || !jwtTokenProvider.validateToken(accessToken)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("유효하지 않은 토큰입니다.");
+        }
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+        Member member = (Member)authentication.getPrincipal();
+        TokenInfo tokenInfo = new TokenInfo(accessToken, member);
+        return ResponseEntity.ok().body(tokenInfo);
     }
 
     @PostMapping("/check-id")
