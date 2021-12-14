@@ -15,6 +15,10 @@ public class TokenInfo {
         this.member = member;
     }
 
+    public TokenInfo(String accessToken){
+        this.accessToken = accessToken;
+    }
+
     private String accessToken;
     private String refreshToken;
     private Date expiredDate;

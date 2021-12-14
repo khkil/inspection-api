@@ -2,7 +2,6 @@ package com.example.backend.config.secutiry;
 
 
 import com.example.backend.api.auth.redis.RedisService;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +75,7 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
-    public static String resolveToken(HttpServletRequest request) {
+    public static String resolveAccessToken(HttpServletRequest request) {
         return request.getHeader(AUTHORIZATION);
     }
 
@@ -95,7 +94,7 @@ public class JwtTokenProvider {
     }
 
     public static boolean validateToken(HttpServletRequest request){
-        String jwtToken = resolveToken(request);
+        String jwtToken = resolveAccessToken(request);
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
@@ -118,6 +117,12 @@ public class JwtTokenProvider {
 
     public void saveRefreshToken2Redis(String userId, String refreshToken){
         redisService.setValues(userId, refreshToken);
+    }
+
+    public void removeRefreshToken2Redis(HttpServletRequest request){
+        String accessToken = resolveAccessToken(request);
+        String userPk = getUserPk(accessToken);
+        redisService.deleleteValues(userPk);
     }
 
     public String getRefreshToken2Redis(String userId){

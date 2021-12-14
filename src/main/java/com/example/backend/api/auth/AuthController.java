@@ -62,6 +62,12 @@ public class AuthController {
         return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request){
+
+        return null;
+    }
+
     @PostMapping("/sign-up")
     public ResponseEntity signUp(@RequestBody Member member){
 
@@ -89,9 +95,7 @@ public class AuthController {
         if(accessToken.isEmpty() || !jwtTokenProvider.validateToken(accessToken)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("유효하지 않은 토큰입니다.");
         }
-        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-        Member member = (Member)authentication.getPrincipal();
-        TokenInfo tokenInfo = new TokenInfo(accessToken, member);
+        TokenInfo tokenInfo = new TokenInfo(accessToken);
         return ResponseEntity.ok().body(tokenInfo);
     }
 
