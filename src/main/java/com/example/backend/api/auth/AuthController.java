@@ -1,6 +1,5 @@
 package com.example.backend.api.auth;
 
-import com.example.backend.api.auth.model.TokenInfo;
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.Member;
@@ -12,12 +11,14 @@ import com.example.backend.util.enumerator.SearchTypes;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.*;
@@ -26,7 +27,6 @@ import java.util.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final String LOGIN_ERROR_MESSAGE = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다";
     @Autowired
     MemberService memberService;
     @Autowired
@@ -35,31 +35,25 @@ public class AuthController {
     JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody Member params){
-        String userName = params.getUsername();
-        Member user = (Member) memberService.loadUserByUsername(userName);
+    public ResponseEntity login(@RequestBody Member user, HttpServletResponse response){
 
-        if(user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
-        }
-        List<String> roles = Arrays.asList(user.getRole());
+        String userName = user.getUsername();
+        Member member = (Member) memberService.loadUserByUsername(userName);
+        boolean checkPassword = memberService.checkPassword(user, member);
 
-        if(!roles.contains(params.getRole())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
+        List<String> roles = Arrays.asList(member.getRole());
+        if(!checkPassword || !roles.contains(user.getRole())){
+            throw new IllegalArgumentException("아이디 혹은 비밀번호가 잘못되었습니다.");
         }
 
         String accessToken =  jwtTokenProvider.generateAccessToken(user.getId(), roles);
         String refreshToken =  jwtTokenProvider.generateRefreshToken(user.getId(), roles);
-        String userPk = jwtTokenProvider.getUserPk(accessToken);
 
-        Member member = (Member) memberService.loadUserByUsername(userPk);
-        if(!params.getPassword().equals(member.getPassword())){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.failResult(LOGIN_ERROR_MESSAGE));
-        }
-        Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
-        TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, member);
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
         jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
-        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
+
+        return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
     @PostMapping("/logout")
@@ -75,28 +69,35 @@ public class AuthController {
         List<String> roles = Arrays.asList(member.getRole());
         String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
         String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
-        Jws<Claims> claims = jwtTokenProvider.getClaims(accessToken);
-        Date expiredDate = claims.getBody().getExpiration();
         jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
-        return ResponseEntity.ok(new TokenInfo(accessToken, refreshToken, expiredDate, member));
+        return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
     @GetMapping("/info")
     public ResponseEntity getUserInfo(HttpServletRequest request){
 
-        String token = request.getHeader(jwtTokenProvider.AUTHORIZATION);
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
     @PostMapping("/validate-token")
     public ResponseEntity validateToken(HttpServletRequest request){
-        String accessToken = request.getHeader(jwtTokenProvider.AUTHORIZATION);
+        /*String accessToken = request.getHeader(jwtTokenProvider.AUTHORIZATION);
         if(accessToken.isEmpty() || !jwtTokenProvider.validateToken(accessToken)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("유효하지 않은 토큰입니다.");
         }
+<<<<<<< Updated upstream
         TokenInfo tokenInfo = new TokenInfo(accessToken);
         return ResponseEntity.ok().body(tokenInfo);
+=======
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+        Member member = (Member)authentication.getPrincipal();
+        TokenInfo tokenInfo = new TokenInfo(accessToken, member);
+        return ResponseEntity.ok().body(tokenInfo);*/
+
+        return null;
+>>>>>>> Stashed changes
     }
 
     @PostMapping("/check-id")
@@ -143,7 +144,7 @@ public class AuthController {
 
     @GetMapping("/find-id/{searchType}")
     public ResponseEntity getUserId(@RequestParam Map<String, String> param, @PathVariable String searchType){
-        Member member = new Member();
+        /*Member member = new Member();
         if(searchType.equals(SearchTypes.INFO.getSearchType())){
             member = memberService.findIdByInfo(param.get("name"), param.get("email"));
 
@@ -154,19 +155,20 @@ public class AuthController {
         }
 
         if(member == null) throw new ApiException("유효하지 않은 정보입니다.");
-
+*/
         return ResponseEntity.ok().body(CommonResponse.successResult());
     }
 
     @PostMapping("/reissue-token")
     public ResponseEntity reissueAccessToken(HttpServletRequest request){
 
-        String refreshToken = request.getHeader("refreshToken");
+      /*  String refreshToken = request.getHeader("refreshToken");
         String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
 
         Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
         TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, null);
 
-        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));
+        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));*/
+        return null;
     }
 }

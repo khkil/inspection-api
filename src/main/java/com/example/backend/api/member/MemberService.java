@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -16,6 +17,8 @@ public class MemberService implements UserDetailsService {
 
     @Autowired
     MemberMapper memberMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -45,14 +48,28 @@ public class MemberService implements UserDetailsService {
     }
 
     public void insertMember(Member member){
-        memberMapper.insertMember(member);
+        memberMapper.insertMember(
+                Member.builder()
+                    .id(member.getId())
+                    .password(passwordEncoder.encode(member.getPassword()))
+                    .name(member.getName())
+                    .role(member.getRole())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .build()
+        );
     }
 
     public void updateMember(String idx, Member member){
         memberMapper.updateMember(idx, member);
     }
+
     public Member duplicateMember(Member member){
         Member duplicateMember = memberMapper.loadUserByUserName(member.getId());
         return duplicateMember;
+    }
+
+    public boolean checkPassword(Member user, Member member){
+        return passwordEncoder.matches(user.getPassword(), member.getPassword());
     }
 }

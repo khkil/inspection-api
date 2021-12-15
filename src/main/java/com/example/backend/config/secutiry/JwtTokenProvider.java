@@ -2,10 +2,17 @@ package com.example.backend.config.secutiry;
 
 
 import com.example.backend.api.auth.redis.RedisService;
+<<<<<<< Updated upstream
+=======
+import com.google.api.Http;
+import edu.emory.mathcs.backport.java.util.Arrays;
+>>>>>>> Stashed changes
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,19 +20,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
-    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    //private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
+    //private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
     private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
-    public static final String AUTHORIZATION = "Authorization";
-    private static Clock clock = DefaultClock.INSTANCE;
 
     private final UserDetailsService userDetailsService;
     @Autowired
@@ -76,7 +83,15 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     public static String resolveAccessToken(HttpServletRequest request) {
+<<<<<<< Updated upstream
         return request.getHeader(AUTHORIZATION);
+=======
+        return request.getHeader(HttpHeaders.AUTHORIZATION);
+    }
+
+    public static String resolveRefreshToken(HttpServletRequest request) {
+        return request.getHeader("refresh-token");
+>>>>>>> Stashed changes
     }
 
     public Jws<Claims> getClaims(String token){
@@ -86,6 +101,7 @@ public class JwtTokenProvider {
         return claims;
     }
 
+
     public Date getExpiredDate(String token){
 
         Jws<Claims> claims = getClaims(token);
@@ -93,27 +109,30 @@ public class JwtTokenProvider {
         return expiredDate;
     }
 
+<<<<<<< Updated upstream
     public static boolean validateToken(HttpServletRequest request){
         String jwtToken = resolveAccessToken(request);
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
+=======
     public boolean validateToken(String jwtToken) {
+>>>>>>> Stashed changes
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return false;
         }
     }
+
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
+    }
+
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+        response.setHeader("refresh-token",  refreshToken);
+    }
+
+
 
     public void saveRefreshToken2Redis(String userId, String refreshToken){
         redisService.setValues(userId, refreshToken);
