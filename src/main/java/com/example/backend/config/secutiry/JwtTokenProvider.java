@@ -2,13 +2,8 @@ package com.example.backend.config.secutiry;
 
 
 import com.example.backend.api.auth.redis.RedisService;
-<<<<<<< Updated upstream
-=======
-import com.google.api.Http;
-import edu.emory.mathcs.backport.java.util.Arrays;
->>>>>>> Stashed changes
+
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.DefaultClock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,15 +78,12 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     public static String resolveAccessToken(HttpServletRequest request) {
-<<<<<<< Updated upstream
-        return request.getHeader(AUTHORIZATION);
-=======
+
         return request.getHeader(HttpHeaders.AUTHORIZATION);
     }
 
     public static String resolveRefreshToken(HttpServletRequest request) {
         return request.getHeader("refresh-token");
->>>>>>> Stashed changes
     }
 
     public Jws<Claims> getClaims(String token){
@@ -109,12 +101,7 @@ public class JwtTokenProvider {
         return expiredDate;
     }
 
-<<<<<<< Updated upstream
-    public static boolean validateToken(HttpServletRequest request){
-        String jwtToken = resolveAccessToken(request);
-=======
     public boolean validateToken(String jwtToken) {
->>>>>>> Stashed changes
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());

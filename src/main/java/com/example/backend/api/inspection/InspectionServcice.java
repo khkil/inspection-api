@@ -17,8 +17,8 @@ public class InspectionServcice {
         return inspectionMapper.getInspectionList(inspection);
     }
 
-    public Inspection getInspectionDetail(int idx){
-        return inspectionMapper.getInspectionDetail(idx);
+    public Inspection getInspectionDetail(int inspectionIdx){
+        return inspectionMapper.getInspectionDetail(inspectionIdx);
     }
 
 }

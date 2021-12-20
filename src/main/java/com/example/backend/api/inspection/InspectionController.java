@@ -1,5 +1,6 @@
 package com.example.backend.api.inspection;
 
+import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,25 +15,23 @@ public class InspectionController {
     @Autowired
     InspectionServcice inspectionServcice;
 
-    @GetMapping
-    public ResponseEntity<List> getInspectionList(Inspection inspection){
+    @GetMapping("")
+    public ResponseEntity getInspectionList(Inspection inspection) {
 
-        return new ResponseEntity<>(inspectionServcice.getInspectionList(inspection), HttpStatus.OK);
+        List<Inspection> inspectionList = inspectionServcice.getInspectionList(inspection);
+        return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
 
-    @GetMapping("/{idx}")
-    public ResponseEntity<Inspection> getInspectionDetail(@PathVariable int idx){
+    @GetMapping("/{inspectionIdx}")
+    public ResponseEntity<Inspection> getInspectionDetail(@PathVariable int inspectionIdx) {
 
-        Inspection inspectionDetail = inspectionServcice.getInspectionDetail(idx);
-        if(inspectionDetail == null){
-            //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<Inspection>(inspectionServcice.getInspectionDetail(idx), HttpStatus.OK);
+        Inspection inspectionDetail = inspectionServcice.getInspectionDetail(inspectionIdx);
+        return ResponseEntity.ok(inspectionDetail);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateInspection(@RequestBody Inspection inspection){
+    public ResponseEntity<?> updateInspection(@RequestBody Inspection inspection) {
         return null;
     }
 

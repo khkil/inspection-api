@@ -4,15 +4,30 @@
 
 <mapper namespace="com.example.backend.api.inspection.InspectionMapper">
 
-    <select id="getInspectionList" resultType="com.example.backend.api.inspection.Inspection" parameterType="inspection">
+    <select id="getInspectionList" resultType="inspection" parameterType="inspection">
         SELECT * FROM inspection
         <where>
             <if test="payYn != null and payYn != ''">AND pay_yn = #{payYn} </if>
         </where>
     </select>
 
-    <select id="getInspectionDetail" resultType="com.example.backend.api.inspection.Inspection">
-        SELECT * FROM inspection WHERE inspection_idx = #{idx};
+    <resultMap id="inspectionDetailMap" type="inspection" autoMapping="true">
+        <result column="question_cnt" property="questionCnt"/>
+    </resultMap>
+    <select id="getInspectionDetail" resultMap="inspectionDetailMap">
+        SELECT
+          *
+        FROM
+          inspection i
+          LEFT OUTER JOIN
+            (SELECT
+              inspection_idx,
+              COUNT(*) AS question_cnt
+            FROM
+              question
+            GROUP BY inspection_idx) q
+            ON i.inspection_idx = q.inspection_idx
+        WHERE i.inspection_idx = #{inspectionIdx}
     </select>
 
 </mapper>

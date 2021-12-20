@@ -28,13 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-<<<<<<< Updated upstream
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveAccessToken((HttpServletRequest)request);
-        if(token != null && jwtTokenProvider.validateToken(token)){
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-=======
+
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String accessToken = jwtTokenProvider.resolveAccessToken(request);
@@ -59,7 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
->>>>>>> Stashed changes
         }
         filterChain.doFilter(request, response);
     }

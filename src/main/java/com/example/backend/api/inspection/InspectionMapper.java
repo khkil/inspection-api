@@ -8,6 +8,6 @@ import java.util.List;
 public interface InspectionMapper {
 
     List<Inspection> getInspectionList(Inspection inspection);
-    Inspection getInspectionDetail(int idx);
+    Inspection getInspectionDetail(int inspectionIdx);
 
 }
