@@ -24,10 +24,10 @@ public class InspectionController {
 
 
     @GetMapping("/{inspectionIdx}")
-    public ResponseEntity<Inspection> getInspectionDetail(@PathVariable int inspectionIdx) {
+    public ResponseEntity getInspectionDetail(@PathVariable int inspectionIdx) {
 
         Inspection inspectionDetail = inspectionServcice.getInspectionDetail(inspectionIdx);
-        return ResponseEntity.ok(inspectionDetail);
+        return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
     }
 
     @PutMapping
