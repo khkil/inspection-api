@@ -10,12 +10,14 @@ import com.example.backend.common.CommonResponse;
 import com.example.backend.util.enumerator.SearchTypes;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.apache.struts.chain.commands.UnauthorizedActionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,19 +84,12 @@ public class AuthController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity validateToken(HttpServletRequest request){
-        /*String accessToken = request.getHeader(jwtTokenProvider.AUTHORIZATION);
-        if(accessToken.isEmpty() || !jwtTokenProvider.validateToken(accessToken)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("유효하지 않은 토큰입니다.");
-        }
-        TokenInfo tokenInfo = new TokenInfo(accessToken);
-        return ResponseEntity.ok().body(tokenInfo);
+    public ResponseEntity validateToken(HttpServletRequest request) throws UnauthorizedActionException {
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if(!jwtTokenProvider.validateToken(accessToken)) throw new UnauthorizedActionException("유효하지 않은 토큰입니다.");
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
         Member member = (Member)authentication.getPrincipal();
-        TokenInfo tokenInfo = new TokenInfo(accessToken, member);
-        return ResponseEntity.ok().body(tokenInfo);*/
-
-        return null;
+        return ResponseEntity.ok().body(CommonResponse.successResult(member));
     }
 
     @PostMapping("/check-id")

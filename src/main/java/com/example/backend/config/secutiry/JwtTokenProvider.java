@@ -24,10 +24,11 @@ import java.util.List;
 @Slf4j
 public class JwtTokenProvider {
 
-    //private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
+    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    //private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
     private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
+    private static final String REFRESH_TOKEN = "refresh-token";
 
     private final UserDetailsService userDetailsService;
     @Autowired
@@ -83,7 +84,7 @@ public class JwtTokenProvider {
     }
 
     public static String resolveRefreshToken(HttpServletRequest request) {
-        return request.getHeader("refresh-token");
+        return request.getHeader(REFRESH_TOKEN);
     }
 
     public Jws<Claims> getClaims(String token){
@@ -116,7 +117,7 @@ public class JwtTokenProvider {
     }
 
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("refresh-token",  refreshToken);
+        response.setHeader(REFRESH_TOKEN,  refreshToken);
     }
 
 
