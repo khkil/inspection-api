@@ -61,7 +61,8 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
 
-        return null;
+        jwtTokenProvider.removeRefreshToken2Redis(request);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("/sign-up")

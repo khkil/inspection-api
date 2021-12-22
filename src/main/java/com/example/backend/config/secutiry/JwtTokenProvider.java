@@ -127,8 +127,8 @@ public class JwtTokenProvider {
     }
 
     public void removeRefreshToken2Redis(HttpServletRequest request){
-        String accessToken = resolveAccessToken(request);
-        String userPk = getUserPk(accessToken);
+        String refreshToken = resolveRefreshToken(request);
+        String userPk = getUserPk(refreshToken);
         redisService.deleleteValues(userPk);
     }
 
