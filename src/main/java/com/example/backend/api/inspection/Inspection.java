@@ -8,6 +8,6 @@ public class Inspection {
     private int inspectionIdx;
     private String inspectionName;
     private String payYn;
-    private int questionCnt;
+    private int totalPage;
 
 }

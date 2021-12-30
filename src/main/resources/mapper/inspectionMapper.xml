@@ -12,7 +12,7 @@
     </select>
 
     <resultMap id="inspectionDetailMap" type="inspection" autoMapping="true">
-        <result column="question_cnt" property="questionCnt"/>
+        <result column="total_page" property="totalPage"/>
     </resultMap>
     <select id="getInspectionDetail" resultMap="inspectionDetailMap">
         SELECT
@@ -22,7 +22,7 @@
           LEFT OUTER JOIN
             (SELECT
               inspection_idx,
-              COUNT(*) AS question_cnt
+              MAX(question_page) AS total_page
             FROM
               question
             GROUP BY inspection_idx) q
