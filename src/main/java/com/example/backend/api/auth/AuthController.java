@@ -5,6 +5,7 @@ import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.Member;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.common.exception.ApiException;
+import com.example.backend.common.exception.UserAuthorityException;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.enumerator.SearchTypes;
@@ -87,7 +88,6 @@ public class AuthController {
     @PostMapping("/validate-token")
     public ResponseEntity validateToken(HttpServletRequest request) throws UnauthorizedActionException {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(!jwtTokenProvider.validateToken(accessToken)) throw new UnauthorizedActionException("유효하지 않은 토큰입니다.");
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
         Member member = (Member)authentication.getPrincipal();
         return ResponseEntity.ok().body(CommonResponse.successResult(member));
@@ -153,15 +153,12 @@ public class AuthController {
     }
 
     @PostMapping("/reissue-token")
-    public ResponseEntity reissueAccessToken(HttpServletRequest request){
+    public ResponseEntity reissueAccessToken(HttpServletRequest request, HttpServletResponse response){
 
-      /*  String refreshToken = request.getHeader("refreshToken");
+        String refreshToken = request.getHeader("refresh-token");
         String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
 
-        Date expiredDate = jwtTokenProvider.getExpiredDate(accessToken);
-        TokenInfo tokenInfo = new TokenInfo(accessToken, refreshToken, expiredDate, null);
-
-        return ResponseEntity.ok(CommonResponse.successResult(tokenInfo));*/
-        return null;
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 }
