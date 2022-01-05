@@ -1,11 +1,9 @@
 package com.example.backend.common;
 
 import lombok.Data;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Data
 public class CommonResponse {
@@ -15,22 +13,31 @@ public class CommonResponse {
     private String msg;
     private Object data;
 
-    private enum CommonResult {
+    public enum CodeEnum {
         SUCCESS(0, "success"),
-        FAIL(-1, "fail");
+        FAIL(-1, "fail"),
+
+        INTERNAL_SERVER_ERROR(500, "interval_server_error"),
+        BAD_REQUEST(400, "bad_request"),
+        FORBIDDEN(403, "forbidden"),
+
+        USER_UNAUTHORIZED(-1001, "user_unauthorized"),
+        ;
+
+
 
         int code;
         String msg;
 
-        CommonResult(int code, String msg) {
+        CodeEnum(int code, String msg) {
             this.code = code;
             this.msg = msg;
         }
 
-        private int getCode() {
+        public int getCode() {
             return code;
         }
-        private String getMsg() {
+        public String getMsg() {
             return msg;
         }
     }
@@ -38,8 +45,8 @@ public class CommonResponse {
     public static CommonResponse successResult() {
         CommonResponse result = new CommonResponse();
         result.setSuccess(true);
-        result.setCode(CommonResult.SUCCESS.getCode());
-        result.setMsg(CommonResult.SUCCESS.getMsg());
+        result.setCode(CodeEnum.SUCCESS.getCode());
+        result.setMsg(CodeEnum.SUCCESS.getMsg());
 
         return result;
     }
@@ -47,8 +54,8 @@ public class CommonResponse {
         CommonResponse result = new CommonResponse();
         result.setSuccess(true);
         result.setData(data);
-        result.setCode(CommonResult.SUCCESS.getCode());
-        result.setMsg(CommonResult.SUCCESS.getMsg());
+        result.setCode(CodeEnum.SUCCESS.getCode());
+        result.setMsg(CodeEnum.SUCCESS.getMsg());
 
 
         return result;
@@ -57,7 +64,15 @@ public class CommonResponse {
     public static CommonResponse failResult(String msg) {
         CommonResponse result = new CommonResponse();
         result.setSuccess(false);
-        result.setCode(CommonResult.FAIL.getCode());
+        result.setCode(CodeEnum.FAIL.getCode());
+        result.setMsg(msg);
+        return result;
+    }
+
+    public static CommonResponse failResult(int code, String msg) {
+        CommonResponse result = new CommonResponse();
+        result.setSuccess(false);
+        result.setCode(code);
         result.setMsg(msg);
         return result;
     }

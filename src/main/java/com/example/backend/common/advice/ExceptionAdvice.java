@@ -2,6 +2,7 @@ package com.example.backend.common.advice;
 
 
 import com.example.backend.common.CommonResponse;
+import com.example.backend.common.exception.UserAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,23 +15,30 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResponse badRequestException(HttpServletRequest request, Exception e) {
         e.printStackTrace();
-        return CommonResponse.failResult(e.getMessage());
+        return CommonResponse.failResult(CommonResponse.CodeEnum.BAD_REQUEST.getCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResponse internalServerErrorException(HttpServletRequest request, Exception e) {
         e.printStackTrace();
-        return CommonResponse.failResult(e.getMessage());
+        return CommonResponse.failResult(CommonResponse.CodeEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     protected CommonResponse forbiddenException(HttpServletRequest request, Exception e) {
         e.printStackTrace();
-        return CommonResponse.failResult(e.getMessage());
+        return CommonResponse.failResult(CommonResponse.CodeEnum.FORBIDDEN.getCode(), e.getMessage());
     }
+
+    @ExceptionHandler(value = UserAuthorityException.class)
+    protected CommonResponse userAuthorityException(Exception e){
+        e.printStackTrace();
+        return CommonResponse.failResult(CommonResponse.CodeEnum.USER_UNAUTHORIZED.getCode(), e.getMessage());
+    }
+
+
 }

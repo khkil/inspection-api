@@ -16,7 +16,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(bearerAuthInterceptor).addPathPatterns("/api/auth/info").addPathPatterns("/api/auth/validate");
+        registry.addInterceptor(bearerAuthInterceptor)
+                .addPathPatterns("/api/auth/info")
+                .addPathPatterns("/api/auth/validate");
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
