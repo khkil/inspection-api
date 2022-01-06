@@ -1,39 +1,71 @@
 package com.example.backend.config.secutiry;
 
+import com.example.backend.api.auth.redis.RedisService;
+import com.example.backend.common.exception.UserAuthorityException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisService redisService;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, RedisService redisService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.redisService = redisService;
     }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String accessToken = jwtTokenProvider.resolveAccessToken(request);
-        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+        String accessToken = null;
+        String refreshToken = null;
+        try{
+            accessToken = jwtTokenProvider.resolveAccessToken(request);
+            refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+            if(accessToken != null){
+                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+                String userPk = jwtTokenProvider.getUserPk(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                request.setAttribute("userPk", userPk);
+            }
+        }catch (ExpiredJwtException e){
+            logger.error("토큰 만료");
+            e.printStackTrace();
+            if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken)){
+                String userPk = jwtTokenProvider.getUserPk(refreshToken);
+                String redisRefreshToken = redisService.getValues(userPk);
+                if(redisRefreshToken != null && redisRefreshToken.equals(refreshToken)){
+                    Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
+                    List<String> userRoles = (List<String>) claims.getBody().get("roles");
+                    String newAccessToken = jwtTokenProvider.generateAccessToken(userPk, userRoles);
+                    Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
+                    jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    request.setAttribute("userPk", userPk);
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if(accessToken != null){
-            if(jwtTokenProvider.validateToken(accessToken)){
+
+            /*if(jwtTokenProvider.validateToken(accessToken)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -46,12 +78,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
                         List<String> userRoles = (List<String>) claims.getBody().get("roles");
                         String newAccessToken = jwtTokenProvider.generateAccessToken(userId, userRoles);
-                        jwtTokenProvider.setHeaderAccessToken(response, newAccessToken);
+                        jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
                         Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-            }
+            }*/
         }
         filterChain.doFilter(request, response);
     }

@@ -5,12 +5,9 @@ import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.Member;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.common.exception.ApiException;
-import com.example.backend.common.exception.UserAuthorityException;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
-import com.example.backend.util.enumerator.SearchTypes;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import com.example.backend.util.CookieUtil;
 import org.apache.struts.chain.commands.UnauthorizedActionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
 import java.util.*;
 
 @RestController
@@ -33,9 +29,11 @@ public class AuthController {
     @Autowired
     MemberService memberService;
     @Autowired
-    CoolsmsService coolsmsService;
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    CookieUtil cookieUtil;
+    @Autowired
+    CoolsmsService coolsmsService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Member user, HttpServletResponse response){
@@ -52,17 +50,18 @@ public class AuthController {
         String accessToken =  jwtTokenProvider.generateAccessToken(user.getId(), roles);
         String refreshToken =  jwtTokenProvider.generateRefreshToken(user.getId(), roles);
 
-        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
-        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+        jwtTokenProvider.setCookieAccessToken(accessToken, response);
+        jwtTokenProvider.setCookieRefreshToken(refreshToken, response);
         jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
 
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request){
+    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
 
         jwtTokenProvider.removeRefreshToken2Redis(request);
+        jwtTokenProvider.deleteCookie(response);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
@@ -79,18 +78,19 @@ public class AuthController {
 
     @GetMapping("/info")
     public ResponseEntity getUserInfo(HttpServletRequest request){
-
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        return ResponseEntity.ok().body(authentication.getPrincipal());
+        return ResponseEntity.ok().body(request.getAttribute("userPk"));
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity validateToken(HttpServletRequest request) throws UnauthorizedActionException {
-        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+    public ResponseEntity validateToken(HttpServletRequest request){
+        String userPk = (String) request.getAttribute("userPk");
+        if(userPk == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰 입니다");
+        }
+        /*String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-        Member member = (Member)authentication.getPrincipal();
-        return ResponseEntity.ok().body(CommonResponse.successResult(member));
+        Member member = (Member)authentication.getPrincipal();*/
+        return ResponseEntity.ok().body(CommonResponse.successResult(userPk));
     }
 
     @PostMapping("/check-id")
@@ -157,8 +157,9 @@ public class AuthController {
 
         String refreshToken = request.getHeader("refresh-token");
         String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
-        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setCookieAccessToken(accessToken,response );
 
         return ResponseEntity.ok(CommonResponse.successResult());
     }
+
 }

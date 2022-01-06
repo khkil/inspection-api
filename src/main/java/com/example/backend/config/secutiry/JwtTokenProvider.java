@@ -3,6 +3,7 @@ package com.example.backend.config.secutiry;
 
 import com.example.backend.api.auth.redis.RedisService;
 
+import com.example.backend.util.CookieUtil;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -25,12 +27,15 @@ import java.util.List;
 public class JwtTokenProvider {
 
     ///private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    private long accessTokenValidMilliseconds = (1000L) * 5; // 1초
-    private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
+    public static long accessTokenValidMilliseconds = (1000L) * 5; // 1초
+    public static long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
     private static final String SECRET_KEY = "humanx_sercret_key";
-    private static final String REFRESH_TOKEN = "refresh-token";
+    private static final String REFRESH_TOKEN = "RefreshToken";
 
     private final UserDetailsService userDetailsService;
+
+    @Autowired
+    CookieUtil cookieUtil;
     @Autowired
     RedisService redisService;
 
@@ -78,13 +83,15 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
-    public static String resolveAccessToken(HttpServletRequest request) {
+    public String resolveAccessToken(HttpServletRequest request) {
 
-        return request.getHeader(HttpHeaders.AUTHORIZATION);
+        Cookie cookie = cookieUtil.getCookie(request, HttpHeaders.AUTHORIZATION);
+        return cookie.getValue();
     }
 
-    public static String resolveRefreshToken(HttpServletRequest request) {
-        return request.getHeader(REFRESH_TOKEN);
+    public String resolveRefreshToken(HttpServletRequest request) {
+        Cookie cookie = cookieUtil.getCookie(request, REFRESH_TOKEN);
+        return cookie.getValue();
     }
 
     public Jws<Claims> getClaims(String token){
@@ -106,31 +113,43 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e){
+            log.error("토큰 만료");
+            return false;
+        }catch (Exception e) {
             log.error(e.getMessage());
             return false;
         }
     }
 
-    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
+    public void setCookieAccessToken(String accessToken, HttpServletResponse response) {
+        Cookie cookie = cookieUtil.createCookie(HttpHeaders.AUTHORIZATION, accessToken, (int)accessTokenValidMilliseconds);
+        response.addCookie(cookie);
     }
 
-    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader(REFRESH_TOKEN,  refreshToken);
+    public void setCookieRefreshToken(String refreshToken, HttpServletResponse response) {
+        Cookie cookie = cookieUtil.createCookie(REFRESH_TOKEN, refreshToken, (int)refreshTokenValidMilliseconds);
+        response.addCookie(cookie);
     }
 
 
+    public void deleteCookie(HttpServletResponse response){
+        Cookie accessTokenCookie = cookieUtil.createCookie(HttpHeaders.AUTHORIZATION, null, 0);
+        Cookie refreshTokenCookie = cookieUtil.createCookie(REFRESH_TOKEN, null, 0);
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+    }
 
     public void saveRefreshToken2Redis(String userId, String refreshToken){
-        redisService.setValues(userId, refreshToken);
+        redisService.setValuesExpire(userId, refreshToken, refreshTokenValidMilliseconds);
     }
 
     public void removeRefreshToken2Redis(HttpServletRequest request){
         String refreshToken = resolveRefreshToken(request);
         if(!refreshToken.isEmpty()){
             String userPk = getUserPk(refreshToken);
-            redisService.deleleteValues(userPk);
+            redisService.deleteValues(userPk);
         }
 
     }
