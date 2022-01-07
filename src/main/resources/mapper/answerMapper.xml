@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.answer.AnswerMapper">
+
+    <insert id="insertMemberAnswer" >
+
+
+
+
+        <foreach collection="answerMap" item="answer" index="key">
+            INSERT INTO member_answer(member_idx, question_idx, answer_idx) VALUES(#{memberIdx}, REPLACE(#{key}, 'question_', ''), #{answer});
+        </foreach>
+    </insert>
+</mapper>

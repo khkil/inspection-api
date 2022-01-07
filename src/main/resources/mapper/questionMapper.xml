@@ -13,7 +13,7 @@
         <collection property="answers" column="question_idx" select="getAnswerList"/>
     </resultMap>
 
-    <select id="getAnswerList" resultType="com.example.backend.api.answer.Answer" >
+    <select id="getAnswerList" resultType="com.example.backend.api.answer.model.Answer" >
 		SELECT * FROM answer WHERE question_idx = #{question_idx};
 	</select>
     <select id="getPageInfo" resultMap="questionMap">

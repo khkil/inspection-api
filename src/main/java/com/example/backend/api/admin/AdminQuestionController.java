@@ -1,6 +1,5 @@
 package com.example.backend.api.admin;
 
-import com.example.backend.api.answer.Answer;
 import com.example.backend.api.question.Question;
 import com.example.backend.api.question.QuestionService;
 import com.example.backend.common.CommonResponse;

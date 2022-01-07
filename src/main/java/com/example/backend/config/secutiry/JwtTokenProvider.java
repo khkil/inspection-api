@@ -26,9 +26,9 @@ import java.util.List;
 @Slf4j
 public class JwtTokenProvider {
 
-    ///private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
-    public static long accessTokenValidMilliseconds = (1000L) * 5; // 1초
-    public static long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24 * 14; // 2주
+    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    //public static long accessTokenValidMilliseconds = (1000L) * 5; // 5초
+    public static long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24; // 24시간
     private static final String SECRET_KEY = "humanx_sercret_key";
     private static final String REFRESH_TOKEN = "RefreshToken";
 

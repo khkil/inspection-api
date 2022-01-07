@@ -1,4 +1,4 @@
-package com.example.backend.api.answer;
+package com.example.backend.api.answer.model;
 
 import com.example.backend.api.util.gcs.model.File;
 import lombok.Data;

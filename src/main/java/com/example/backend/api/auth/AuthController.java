@@ -87,10 +87,8 @@ public class AuthController {
         if(userPk == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰 입니다");
         }
-        /*String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-        Member member = (Member)authentication.getPrincipal();*/
-        return ResponseEntity.ok().body(CommonResponse.successResult(userPk));
+        Member member = (Member) memberService.loadUserByUsername(userPk);
+        return ResponseEntity.ok().body(CommonResponse.successResult(member));
     }
 
     @PostMapping("/check-id")
@@ -150,16 +148,6 @@ public class AuthController {
         if(member == null) throw new ApiException("유효하지 않은 정보입니다.");
 */
         return ResponseEntity.ok().body(CommonResponse.successResult());
-    }
-
-    @PostMapping("/reissue-token")
-    public ResponseEntity reissueAccessToken(HttpServletRequest request, HttpServletResponse response){
-
-        String refreshToken = request.getHeader("refresh-token");
-        String accessToken = jwtTokenProvider.reissueAccessToken(refreshToken);
-        jwtTokenProvider.setCookieAccessToken(accessToken,response );
-
-        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
 }

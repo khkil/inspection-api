@@ -10,6 +10,8 @@
 
         <typeAlias alias="inspection" type="com.example.backend.api.inspection.Inspection"/>
         <typeAlias alias="question" type="com.example.backend.api.question.Question"/>
+        <typeAlias alias="answer" type="com.example.backend.api.answer.model.Answer"/>
+        <typeAlias alias="memberAnswer" type="com.example.backend.api.answer.model.MemberAnswer"/>
         <typeAlias alias="result" type="com.example.backend.api.result.Result"/>
         <typeAlias alias="user" type="com.example.backend.api.user.User"/>
         <typeAlias alias="userAnswer" type="com.example.backend.api.user.UserAnswer"/>
