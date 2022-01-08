@@ -1,6 +1,6 @@
 package com.example.backend.api.auth.model;
 
-import com.example.backend.api.member.Member;
+import com.example.backend.api.member.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

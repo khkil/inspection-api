@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.backend.api.member.MemberMapper">
-    <update id="updateMember" parameterType="com.example.backend.api.member.Member">
+    <update id="updateMember" parameterType="com.example.backend.api.member.model.Member">
 
         UPDATE member
         <set>
@@ -18,30 +18,43 @@
 
     </update>
 
-    <select id="loadUserByUserName" parameterType="com.example.backend.api.member.Member" resultType="com.example.backend.api.member.Member">
+    <select id="loadUserByUserName" parameterType="com.example.backend.api.member.model.Member" resultType="com.example.backend.api.member.model.Member">
         SELECT * FROM member
         WHERE id = #{id}
     </select>
 
-    <select id="findIdByInfo" resultType="com.example.backend.api.member.Member" parameterType="map">
+    <select id="findIdByInfo" resultType="com.example.backend.api.member.model.Member" parameterType="map">
         SELECT id FROM member WHERE name = #{name} AND email = #{email}
     </select>
 
-    <select id="findIdByPhone" resultType="com.example.backend.api.member.Member" parameterType="map">
+    <select id="findIdByPhone" resultType="com.example.backend.api.member.model.Member" parameterType="map">
         SELECT id FROM member WHERE id = #{id} AND email = #{email}
     </select>
-    <select id="getMemberList" resultType="com.example.backend.api.member.Member">
+    <select id="getMemberList" resultType="com.example.backend.api.member.model.Member">
 
         SELECT * FROM member
     </select>
 
-    <select id="getMemberDetail" resultType="com.example.backend.api.member.Member">
+    <select id="getMemberDetail" resultType="com.example.backend.api.member.model.Member">
         SELECT idx, name, id, password, email, phone FROM member
         WHERE idx = #{idx}
     </select>
 
-    <insert id="insertMember" parameterType="com.example.backend.api.member.Member" useGeneratedKeys="true" keyProperty="idx">
+    <insert id="insertMember" parameterType="com.example.backend.api.member.model.Member" useGeneratedKeys="true" keyProperty="idx">
         INSERT INTO member(id, password, role, email) VALUES(#{id}, #{password}, #{role}, #{email});
-
     </insert>
+
+    <select id="getMemberProgressList" parameterType="int" resultType="memberProgress">
+        SELECT
+            i.inspection_name
+            ,COUNT(*) AS user_count
+            ,(SELECT COUNT(*) FROM question WHERE inspection_idx = q.inspection_idx) AS total_count
+        FROM member_answer ma
+        LEFT OUTER JOIN question q
+            ON ma.question_idx = q.question_idx
+        LEFT OUTER JOIN inspection i
+            ON q.inspection_idx = i.inspection_idx
+        WHERE ma.member_idx = #{memberIdx}
+        GROUP BY q.inspection_idx;
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.example.backend.api.member;
+package com.example.backend.api.member.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

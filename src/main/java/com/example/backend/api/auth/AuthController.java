@@ -2,21 +2,17 @@ package com.example.backend.api.auth;
 
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
-import com.example.backend.api.member.Member;
+import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.common.exception.ApiException;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.CookieUtil;
-import org.apache.struts.chain.commands.UnauthorizedActionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

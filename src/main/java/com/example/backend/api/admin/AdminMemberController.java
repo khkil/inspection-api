@@ -1,8 +1,7 @@
 package com.example.backend.api.admin;
 
-import com.example.backend.api.member.Member;
+import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.MemberService;
-import com.example.backend.api.user.User;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.PageUtil;
 import com.github.pagehelper.PageHelper;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/members")

@@ -1,5 +1,7 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.member.model.Member;
+import com.example.backend.api.member.model.MemberProgress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -71,5 +73,9 @@ public class MemberService implements UserDetailsService {
 
     public boolean checkPassword(Member user, Member member){
         return passwordEncoder.matches(user.getPassword(), member.getPassword());
+    }
+
+    public List<MemberProgress> getMemberProgressList(int memberIdx){
+        return memberMapper.getMemberProgressList(memberIdx);
     }
 }
