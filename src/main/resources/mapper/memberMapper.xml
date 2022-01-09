@@ -46,7 +46,8 @@
 
     <select id="getMemberProgressList" parameterType="int" resultType="memberProgress">
         SELECT
-            i.inspection_name
+            i.inspection_idx
+            ,i.inspection_name
             ,COUNT(*) AS user_count
             ,(SELECT COUNT(*) FROM question WHERE inspection_idx = q.inspection_idx) AS total_count
         FROM member_answer ma
