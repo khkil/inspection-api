@@ -78,7 +78,8 @@
                 LEFT OUTER JOIN question q
                     ON ma.question_idx = q.question_idx
                 WHERE q.inspection_idx = inspection_idx
-                AND member_idx = #{memberIdx} ) m
+                AND member_idx = #{memberIdx}
+                GROUP BY inspection_idx) m
             ON i.inspection_idx = m.inspection_idx
     </select>
 
