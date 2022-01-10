@@ -78,4 +78,12 @@ public class MemberService implements UserDetailsService {
     public List<MemberProgress> getMemberProgressList(int memberIdx){
         return memberMapper.getMemberProgressList(memberIdx);
     }
+
+    public MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx){
+        return memberMapper.getMemberProgressDetail(memberIdx, inspectionIdx);
+    }
+
+    public void deleteMemberProgress(int memberIdx, int inspectionIdx){
+        memberMapper.deleteMemberProgress(memberIdx, inspectionIdx);
+    }
 }

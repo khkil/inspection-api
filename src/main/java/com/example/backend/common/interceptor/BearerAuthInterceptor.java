@@ -26,8 +26,6 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new UserAuthorityException("유효하지 않은 인증정보 입니다.");
         }
-        String userPk = jwtTokenProvider.getUserPk(token);
-        request.setAttribute("userPk", userPk);
         return true;
     }
 }

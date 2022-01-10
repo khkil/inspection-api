@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 String userPk = jwtTokenProvider.getUserPk(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                request.setAttribute("userPk", userPk);
             }
         }catch (ExpiredJwtException e){
             logger.error("토큰 만료");
@@ -56,7 +55,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
                     jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    request.setAttribute("userPk", userPk);
                 }
 
             }

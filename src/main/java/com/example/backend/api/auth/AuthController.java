@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -73,17 +74,14 @@ public class AuthController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity getUserInfo(HttpServletRequest request){
-        return ResponseEntity.ok().body(request.getAttribute("userPk"));
+    public ResponseEntity getUserInfo(HttpServletRequest request, Principal principal){
+        return ResponseEntity.ok().body(principal);
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity validateToken(HttpServletRequest request){
-        String userPk = (String) request.getAttribute("userPk");
-        if(userPk == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰 입니다");
-        }
-        Member member = (Member) memberService.loadUserByUsername(userPk);
+    public ResponseEntity validateToken(HttpServletRequest request, Principal principal){
+
+        Member member = (Member) memberService.loadUserByUsername(principal.getName());
         return ResponseEntity.ok().body(CommonResponse.successResult(member));
     }
 

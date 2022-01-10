@@ -20,5 +20,7 @@ public interface MemberMapper {
     void updateMember(String idx, Member member);
 
     List<MemberProgress> getMemberProgressList(int memberIdx);
+    MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx);
+    void deleteMemberProgress(int memberIdx, int inspectionIdx);
 
 }
