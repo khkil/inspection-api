@@ -5,10 +5,6 @@
 <mapper namespace="com.example.backend.api.answer.AnswerMapper">
 
     <insert id="insertMemberAnswer" >
-
-
-
-
         <foreach collection="answerMap" item="answer" index="key">
             INSERT INTO member_answer(member_idx, question_idx, answer_idx) VALUES(#{memberIdx}, REPLACE(#{key}, 'question_', ''), #{answer});
         </foreach>

@@ -9,4 +9,5 @@ public class MemberProgress {
     private String inspectionName;
     private int userCount;
     private int totalCount;
+    private int currentPage;
 }
