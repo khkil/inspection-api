@@ -1,5 +1,6 @@
 package com.example.backend.api.auth;
 
+import com.example.backend.api.auth.model.AuthKakao;
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.model.Member;
@@ -28,9 +29,12 @@ public class AuthController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
     @Autowired
+    Oauth2KakaoService oauth2KakaoService;
+    @Autowired
     CookieUtil cookieUtil;
     @Autowired
     CoolsmsService coolsmsService;
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Member user, HttpServletResponse response){
@@ -52,6 +56,13 @@ public class AuthController {
         jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
 
         return ResponseEntity.ok(CommonResponse.successResult(member));
+    }
+
+    @GetMapping("/login/kakao")
+    public ResponseEntity kakaoLogin(@RequestParam("code") String code){
+        AuthKakao authKakao = oauth2KakaoService.callTokenApi(code);
+        return ResponseEntity.ok(authKakao);
+
     }
 
     @PostMapping("/logout")
