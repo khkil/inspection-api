@@ -58,10 +58,13 @@ public class AuthController {
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
-    @GetMapping("/login/kakao")
-    public ResponseEntity kakaoLogin(@RequestParam("code") String code){
+    @PostMapping("/login/kakao")
+    public ResponseEntity kakaoLogin(@RequestBody Map<String, String> params){
+        String code = params.get("code");
         AuthKakao authKakao = oauth2KakaoService.callTokenApi(code);
-        return ResponseEntity.ok(authKakao);
+        String accessToken = authKakao.getAccess_token();
+        Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(accessToken);
+        return ResponseEntity.ok(userInfo);
 
     }
 

@@ -86,11 +86,13 @@ public class JwtTokenProvider {
     public String resolveAccessToken(HttpServletRequest request) {
 
         Cookie cookie = cookieUtil.getCookie(request, HttpHeaders.AUTHORIZATION);
+        if(cookie == null) return null;
         return cookie.getValue();
     }
 
     public String resolveRefreshToken(HttpServletRequest request) {
         Cookie cookie = cookieUtil.getCookie(request, REFRESH_TOKEN);
+        if(cookie == null) return null;
         return cookie.getValue();
     }
 
