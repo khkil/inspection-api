@@ -21,7 +21,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResponse badRequestException(HttpServletRequest request, Exception e) {
         e.printStackTrace();
-        return CommonResponse.failResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        return CommonResponse.failResult(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
