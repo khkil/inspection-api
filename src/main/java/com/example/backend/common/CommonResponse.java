@@ -49,6 +49,15 @@ public class CommonResponse {
         return result;
     }
 
+    public static CommonResponse failResult(int code, String msg, Object data) {
+        CommonResponse result = new CommonResponse();
+        result.setSuccess(false);
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
     public static Map<String, Object> getDataMap(String key, Object data){
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put(key, data);

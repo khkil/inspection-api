@@ -9,6 +9,7 @@ import com.example.backend.common.exception.ApiException;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.CookieUtil;
+import com.example.backend.util.enumerator.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +49,8 @@ public class AuthController {
             throw new IllegalArgumentException("아이디 혹은 비밀번호가 잘못되었습니다.");
         }
 
-        String accessToken =  jwtTokenProvider.generateAccessToken(user.getId(), roles);
-        String refreshToken =  jwtTokenProvider.generateRefreshToken(user.getId(), roles);
+        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
+        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
 
         jwtTokenProvider.setCookieAccessToken(accessToken, response);
         jwtTokenProvider.setCookieRefreshToken(refreshToken, response);
@@ -62,8 +63,20 @@ public class AuthController {
     public ResponseEntity kakaoLogin(@RequestBody Map<String, String> params){
         String code = params.get("code");
         AuthKakao authKakao = oauth2KakaoService.callTokenApi(code);
-        String accessToken = authKakao.getAccess_token();
-        Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(accessToken);
+        String kakaoAccessToken = authKakao.getAccess_token();
+
+        Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(kakaoAccessToken);
+        String userId = "kakao_" + String.valueOf(userInfo.get("id"));
+        LinkedHashMap<String, String> userProperties = (LinkedHashMap<String, String>) userInfo.get("properties");
+        String username = userProperties.get("nickname");
+
+        Member member = (Member)memberService.loadUserByUsername(userId);
+
+        if(member == null){
+            member = new Member(userId, username);
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+        }
+
         return ResponseEntity.ok(userInfo);
 
     }

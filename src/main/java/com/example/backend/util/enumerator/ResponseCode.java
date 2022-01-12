@@ -11,6 +11,7 @@ public enum ResponseCode {
     FORBIDDEN(403, "forbidden"),
 
     USER_UNAUTHORIZED(-1001, "user_unauthorized"),
+    KAKAO_USER_NOT_SIGNED(-2001, "kakao_user_not_signed"),
     ;
 
 

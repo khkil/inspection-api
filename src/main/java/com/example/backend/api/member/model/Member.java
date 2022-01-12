@@ -33,6 +33,11 @@ public class Member implements UserDetails{
     private boolean isEnabled;
 
 
+    public Member(String id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
     // UserDetails의 필수 메서드들
     @Override
     public List<GrantedAuthority> getAuthorities() {
