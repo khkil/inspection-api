@@ -6,12 +6,9 @@ import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.common.exception.ApiException;
-import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
-import com.example.backend.util.CookieUtil;
 import com.example.backend.util.enumerator.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,11 +25,9 @@ public class AuthController {
     @Autowired
     MemberService memberService;
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    AuthService authService;
     @Autowired
     Oauth2KakaoService oauth2KakaoService;
-    @Autowired
-    CookieUtil cookieUtil;
     @Autowired
     CoolsmsService coolsmsService;
 
@@ -48,19 +43,12 @@ public class AuthController {
         if(!checkPassword || !roles.contains(user.getRole())){
             throw new IllegalArgumentException("아이디 혹은 비밀번호가 잘못되었습니다.");
         }
-
-        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
-        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
-
-        jwtTokenProvider.setCookieAccessToken(accessToken, response);
-        jwtTokenProvider.setCookieRefreshToken(refreshToken, response);
-        jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
-
+        authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
     @PostMapping("/login/kakao")
-    public ResponseEntity kakaoLogin(@RequestBody Map<String, String> params){
+    public ResponseEntity kakaoLogin(@RequestBody Map<String, String> params, HttpServletResponse response){
         String code = params.get("code");
         AuthKakao authKakao = oauth2KakaoService.callTokenApi(code);
         String kakaoAccessToken = authKakao.getAccess_token();
@@ -75,8 +63,9 @@ public class AuthController {
         if(member == null){
             member = new Member(userId, username);
             return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+        }else{
+            authService.loginSuccess(member, response);
         }
-
         return ResponseEntity.ok(userInfo);
 
     }
@@ -84,19 +73,15 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
 
-        jwtTokenProvider.removeRefreshToken2Redis(request);
-        jwtTokenProvider.deleteCookie(response);
+        authService.logoutSuccess(request, response);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity signUp(@RequestBody Member member){
+    public ResponseEntity signUp(@RequestBody Member member, HttpServletResponse response){
 
         memberService.insertMember(member);
-        List<String> roles = Arrays.asList(member.getRole());
-        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), roles);
-        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), roles);
-        jwtTokenProvider.saveRefreshToken2Redis(member.getId(), refreshToken);
+        authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
