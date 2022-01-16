@@ -23,6 +23,15 @@ public class Member implements UserDetails{
     private String role;
     private String email;
     private String phone;
+    private String address;
+    private String address_sub;
+    private String school;
+    private String education;
+    private String grade;
+    private String major;
+    private String job;
+    private String company;
+    private String jobDetail;
     private String cDate;
     private String uDate;
     private String authKey;

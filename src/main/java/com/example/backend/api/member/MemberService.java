@@ -58,7 +58,17 @@ public class MemberService implements UserDetailsService {
                     .role(member.getRole())
                     .email(member.getEmail())
                     .phone(member.getPhone())
+                    .address(member.getAddress())
+                    .address_sub(member.getAddress_sub())
+                    .school(member.getSchool())
+                    .education(member.getEducation())
+                    .grade(member.getGrade())
+                    .major(member.getMajor())
+                    .job(member.getJob())
+                    .company(member.getCompany())
+                    .jobDetail(member.getJobDetail())
                     .build()
+
         );
     }
 

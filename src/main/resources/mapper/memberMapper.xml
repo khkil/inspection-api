@@ -48,7 +48,8 @@
     </select>
 
     <insert id="insertMember" parameterType="com.example.backend.api.member.model.Member" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO member(id, password, role, email) VALUES(#{id}, #{password}, #{role}, #{email});
+        INSERT INTO member(id, name, password, role, email, phone, address, address_sub, school, education, grade, major, job, company, job_detail)
+            VALUES(#{id}, #{name}, #{password}, #{role}, #{email}, #{phone}, #{address}, #{address_sub}, #{school}, #{education}, #{grade}, #{major}, #{job}, #{company}, #{jobDetail});
     </insert>
 
     <select id="getMemberProgressList" parameterType="int" resultType="memberProgress">

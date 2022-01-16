@@ -66,7 +66,7 @@ public class AuthController {
         }else{
             authService.loginSuccess(member, response);
         }
-        return ResponseEntity.ok(userInfo);
+        return ResponseEntity.ok(CommonResponse.successResult(member));
 
     }
 
