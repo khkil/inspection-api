@@ -54,7 +54,7 @@ public class AuthController {
         String kakaoAccessToken = authKakao.getAccess_token();
 
         Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(kakaoAccessToken);
-        String userId = "kakao_" + String.valueOf(userInfo.get("id"));
+        String userId = "kakao_" + userInfo.get("id");
         LinkedHashMap<String, String> userProperties = (LinkedHashMap<String, String>) userInfo.get("properties");
         String username = userProperties.get("nickname");
 
@@ -81,6 +81,7 @@ public class AuthController {
     public ResponseEntity signUp(@RequestBody Member member, HttpServletResponse response){
 
         memberService.insertMember(member);
+        System.out.println(member.getIdx());
         authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }

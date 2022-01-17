@@ -50,26 +50,8 @@ public class MemberService implements UserDetailsService {
     }
 
     public void insertMember(Member member){
-        memberMapper.insertMember(
-                Member.builder()
-                    .id(member.getId())
-                    .password(passwordEncoder.encode(member.getPassword()))
-                    .name(member.getName())
-                    .role(member.getRole())
-                    .email(member.getEmail())
-                    .phone(member.getPhone())
-                    .address(member.getAddress())
-                    .address_sub(member.getAddress_sub())
-                    .school(member.getSchool())
-                    .education(member.getEducation())
-                    .grade(member.getGrade())
-                    .major(member.getMajor())
-                    .job(member.getJob())
-                    .company(member.getCompany())
-                    .jobDetail(member.getJobDetail())
-                    .build()
-
-        );
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        memberMapper.insertMember(member);
     }
 
     public void updateMember(String idx, Member member){

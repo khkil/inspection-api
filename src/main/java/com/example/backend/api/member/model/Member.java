@@ -16,7 +16,7 @@ import java.util.List;
 public class Member implements UserDetails{
 
     private List<GrantedAuthority> authorities;
-    private String idx;
+    private int idx;
     private String id;
     private String password;
     private String name;
