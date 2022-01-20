@@ -29,6 +29,8 @@ public class AuthController {
     @Autowired
     Oauth2KakaoService oauth2KakaoService;
     @Autowired
+    Oauth2NaverService oauth2NaverService;
+    @Autowired
     CoolsmsService coolsmsService;
 
 
@@ -47,6 +49,27 @@ public class AuthController {
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 
+    @PostMapping("/login/naver")
+    public ResponseEntity naverLogin(@RequestBody Map<String, String> params, HttpServletResponse response){
+        String code = params.get("code");
+        Map<String, Object> tokenInfo = oauth2NaverService.callTokenApi(code);
+        String naverAccessToken = (String) tokenInfo.get("access_token");
+        Map<String, Object> userInfo = oauth2NaverService.callUserByAccessToken(naverAccessToken);
+        Map<String, String> userDetail = (Map<String, String>) userInfo.get("response");
+        String userId = "naver_" + userDetail.get("id");
+        String username = userDetail.get("name");
+
+        Member member = (Member)memberService.loadUserByUsername(userId);
+
+        if(member == null){
+            member = new Member(userId, username);
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+        }else{
+            authService.loginSuccess(member, response);
+        }
+        return ResponseEntity.ok(CommonResponse.successResult(member));
+    }
+
     @PostMapping("/login/kakao")
     public ResponseEntity kakaoLogin(@RequestBody Map<String, String> params, HttpServletResponse response){
         String code = params.get("code");
@@ -55,8 +78,8 @@ public class AuthController {
 
         Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(kakaoAccessToken);
         String userId = "kakao_" + userInfo.get("id");
-        LinkedHashMap<String, String> userProperties = (LinkedHashMap<String, String>) userInfo.get("properties");
-        String username = userProperties.get("nickname");
+        LinkedHashMap<String, String> userDetail = (LinkedHashMap<String, String>) userInfo.get("properties");
+        String username = userDetail.get("nickname");
 
         Member member = (Member)memberService.loadUserByUsername(userId);
 
