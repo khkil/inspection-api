@@ -93,6 +93,34 @@ public class AuthController {
 
     }
 
+    @PostMapping("/login/google")
+    public ResponseEntity googleLogin(@RequestBody Map<String, String> params, HttpServletResponse response){
+        String code = params.get("code");
+        /*
+        AuthKakao authKakao = oauth2KakaoService.callTokenApi(code);
+        String kakaoAccessToken = authKakao.getAccess_token();
+
+        Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(kakaoAccessToken);
+        String userId = "kakao_" + userInfo.get("id");
+        LinkedHashMap<String, String> userDetail = (LinkedHashMap<String, String>) userInfo.get("properties");
+        String username = userDetail.get("nickname");
+
+        Member member = (Member)memberService.loadUserByUsername(userId);
+
+        if(member == null){
+            member = new Member(userId, username);
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+        }else{
+            authService.loginSuccess(member, response);
+        }
+        return ResponseEntity.ok(CommonResponse.successResult(member));*/
+
+        //https://maivve.tistory.com/336
+
+        return ResponseEntity.ok(CommonResponse.successResult(code));
+
+    }
+
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
 
