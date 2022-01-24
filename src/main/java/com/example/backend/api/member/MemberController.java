@@ -28,7 +28,7 @@ public class MemberController {
     public ResponseEntity updateMember(@RequestBody Member member, @AuthenticationPrincipal Member authenticatedMember){
         int memberIdx = authenticatedMember.getIdx();
         memberService.updateMember(memberIdx, member);
-        return ResponseEntity.ok(CommonResponse.successResult());
+        return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 
     @GetMapping("/{idx}/progress")

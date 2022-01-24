@@ -25,7 +25,7 @@ public class Member implements UserDetails{
     private String email;
     private String phone;
     private String address;
-    private String address_sub;
+    private String addressSub;
     private String school;
     private String education;
     private String grade;

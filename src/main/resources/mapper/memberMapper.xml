@@ -11,11 +11,18 @@
             <if test="member.password != null"> password = #{member.password},</if>
             <if test="member.email != null"> email = #{member.email},</if>
             <if test="member.phone != null"> phone = #{member.phone},</if>
-            u_date = NOW()
+            <if test="member.address != null"> address = #{member.address},</if>
+            <if test="member.address_sub != null"> address_sub = #{member.address_sub},</if>
+            <if test="member.school != null"> school = #{member.school},</if>
+            <if test="member.education != null"> education = #{member.education},</if>
+            <if test="member.grade != null"> grade = #{member.grade},</if>
+            <if test="member.major != null"> major = #{member.major},</if>
+            <if test="member.job != null"> job = #{member.job},</if>
+            <if test="member.company != null"> company = #{member.company},</if>
+            <if test="member.jobDetail != null"> job_detail = #{member.jobDetail},</if>
+        u_date = NOW()
         </set>
-
         WHERE idx = #{idx};
-
     </update>
     <delete id="deleteMemberProgress">
         DELETE ma FROM member_answer ma
