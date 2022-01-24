@@ -1,10 +1,12 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.model.MemberProgress;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +24,16 @@ public class MemberController {
         return "member";
     }
 
-    @PutMapping("/{idx}")
-    public ResponseEntity updateMember(@PathVariable String idx, @RequestBody Member member){
-        memberService.updateMember(idx, member);
+    @PutMapping("")
+    public ResponseEntity updateMember(@RequestBody Member member, @AuthenticationPrincipal Member authenticatedMember){
+        int memberIdx = authenticatedMember.getIdx();
+        memberService.updateMember(memberIdx, member);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @GetMapping("/{idx}/progress")
-    public ResponseEntity getMemberProgressList(@PathVariable int idx){
-        List<MemberProgress> memberProgressList = memberService.getMemberProgressList(idx);
+    public ResponseEntity getMemberProgressList(@PathVariable int idx, @RequestBody(required = false) Inspection inspection){
+        List<MemberProgress> memberProgressList = memberService.getMemberProgressList(idx, inspection);
         return ResponseEntity.ok(CommonResponse.successResult(memberProgressList));
     }
 

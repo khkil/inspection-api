@@ -46,7 +46,7 @@ public class AuthController {
             throw new IllegalArgumentException("아이디 혹은 비밀번호가 잘못되었습니다.");
         }
         authService.loginSuccess(member, response);
-        return ResponseEntity.ok(CommonResponse.successResult(member));
+        return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 
     @PostMapping("/login/naver")
@@ -63,7 +63,7 @@ public class AuthController {
 
         if(member == null){
             member = new Member(userId, username);
-            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }else{
             authService.loginSuccess(member, response);
         }
@@ -85,7 +85,7 @@ public class AuthController {
 
         if(member == null){
             member = new Member(userId, username);
-            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), member));
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }else{
             authService.loginSuccess(member, response);
         }
@@ -146,7 +146,7 @@ public class AuthController {
     public ResponseEntity validateToken(HttpServletRequest request, Principal principal){
 
         Member member = (Member) memberService.loadUserByUsername(principal.getName());
-        return ResponseEntity.ok().body(CommonResponse.successResult(member));
+        return ResponseEntity.ok().body(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 
     @PostMapping("/check-id")

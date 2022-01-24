@@ -1,5 +1,6 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.model.MemberProgress;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class MemberService implements UserDetailsService {
         memberMapper.insertMember(member);
     }
 
-    public void updateMember(String idx, Member member){
+    public void updateMember(int idx, Member member){
         memberMapper.updateMember(idx, member);
     }
 
@@ -67,8 +68,8 @@ public class MemberService implements UserDetailsService {
         return passwordEncoder.matches(user.getPassword(), member.getPassword());
     }
 
-    public List<MemberProgress> getMemberProgressList(int memberIdx){
-        return memberMapper.getMemberProgressList(memberIdx);
+    public List<MemberProgress> getMemberProgressList(int memberIdx, Inspection inspection){
+        return memberMapper.getMemberProgressList(memberIdx, inspection);
     }
 
     public MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx){
@@ -77,5 +78,27 @@ public class MemberService implements UserDetailsService {
 
     public void deleteMemberProgress(int memberIdx, int inspectionIdx){
         memberMapper.deleteMemberProgress(memberIdx, inspectionIdx);
+    }
+
+    public Member memberInfo(Member member){
+        Member memberInfo = member.builder()
+                .idx(member.getIdx())
+                .id(member.getId())
+                .password(member.getPassword())
+                .name(member.getName())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .address(member.getAddress())
+                .address_sub(member.getAddress_sub())
+                .school(member.getSchool())
+                .education(member.getEducation())
+                .grade(member.getGrade())
+                .major(member.getMajor())
+                .job(member.getJob())
+                .company(member.getCompany())
+                .jobDetail(member.getJobDetail())
+                .build();
+
+        return memberInfo;
     }
 }

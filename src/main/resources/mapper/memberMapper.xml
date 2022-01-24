@@ -61,14 +61,14 @@
             m.current_page
         FROM
             inspection i
-            LEFT OUTER JOIN
+        LEFT OUTER JOIN
             (SELECT
                 inspection_idx,
                 COUNT(*) AS total_count
             FROM
                 question
             GROUP BY inspection_idx) q
-            ON i.inspection_idx = q.inspection_idx
+        ON i.inspection_idx = q.inspection_idx
         LEFT OUTER JOIN
             (SELECT
                 q.inspection_idx,
@@ -76,12 +76,13 @@
                 MAX(q.question_page) AS current_page
             FROM
                 member_answer ma
-                LEFT OUTER JOIN question q
-                    ON ma.question_idx = q.question_idx
-                WHERE q.inspection_idx = inspection_idx
-                AND member_idx = #{memberIdx}
-                GROUP BY inspection_idx) m
-            ON i.inspection_idx = m.inspection_idx
+            LEFT OUTER JOIN question q
+                ON ma.question_idx = q.question_idx
+            WHERE q.inspection_idx = inspection_idx
+            AND member_idx = #{memberIdx}
+            GROUP BY inspection_idx) m
+        ON i.inspection_idx = m.inspection_idx
+        WHERE i.pay_yn = 'Y'
     </select>
 
     <select id="getMemberProgressDetail" resultType="memberProgress">
@@ -93,14 +94,14 @@
             m.current_page
         FROM
             inspection i
-            LEFT OUTER JOIN
+        LEFT OUTER JOIN
             (SELECT
                 inspection_idx,
                 COUNT(*) AS total_count
             FROM
                 question
             GROUP BY inspection_idx) q
-            ON i.inspection_idx = q.inspection_idx
+        ON i.inspection_idx = q.inspection_idx
         LEFT OUTER JOIN
             (SELECT
                 q.inspection_idx,
@@ -112,8 +113,8 @@
                     ON ma.question_idx = q.question_idx
                 WHERE q.inspection_idx = inspection_idx
                 AND member_idx = #{memberIdx} ) m
-            ON i.inspection_idx = m.inspection_idx
-            WHERE q.inspection_idx = #{inspectionIdx}
+        ON i.inspection_idx = m.inspection_idx
+        WHERE q.inspection_idx = #{inspectionIdx}
 
     </select>
 </mapper>

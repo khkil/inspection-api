@@ -1,5 +1,6 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.model.MemberProgress;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,9 +18,9 @@ public interface MemberMapper {
     Member findIdByInfo(String name, String email);
     Member findIdByPhone(String phone);
     void insertMember(Member member);
-    void updateMember(String idx, Member member);
+    void updateMember(int idx, Member member);
 
-    List<MemberProgress> getMemberProgressList(int memberIdx);
+    List<MemberProgress> getMemberProgressList(int memberIdx, Inspection inspection);
     MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx);
     void deleteMemberProgress(int memberIdx, int inspectionIdx);
 
