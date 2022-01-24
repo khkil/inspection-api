@@ -1,7 +1,7 @@
 package com.example.backend.api.admin;
 
-import com.example.backend.api.result.Result;
-import com.example.backend.api.result.ResultServcice;
+import com.example.backend.api.inspection.result.Result;
+import com.example.backend.api.inspection.result.ResultServcice;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

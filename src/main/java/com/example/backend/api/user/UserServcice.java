@@ -1,6 +1,6 @@
 package com.example.backend.api.user;
 
-import com.example.backend.api.result.UserResult;
+import com.example.backend.api.inspection.result.UserResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

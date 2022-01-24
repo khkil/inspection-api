@@ -1,4 +1,4 @@
-package com.example.backend.api.question;
+package com.example.backend.api.inspection.question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

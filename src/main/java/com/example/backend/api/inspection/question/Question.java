@@ -1,6 +1,6 @@
-package com.example.backend.api.question;
+package com.example.backend.api.inspection.question;
 
-import com.example.backend.api.answer.model.Answer;
+import com.example.backend.api.inspection.question.answer.model.Answer;
 import com.example.backend.util.enumerator.QuestionType;
 import lombok.Data;
 

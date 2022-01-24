@@ -1,4 +1,4 @@
-package com.example.backend.api.answer.model;
+package com.example.backend.api.inspection.question.answer.model;
 
 import lombok.Data;
 

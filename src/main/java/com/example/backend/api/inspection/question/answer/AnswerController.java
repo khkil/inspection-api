@@ -1,6 +1,6 @@
-package com.example.backend.api.answer;
+package com.example.backend.api.inspection.question.answer;
 
-import com.example.backend.api.answer.model.MemberAnswer;
+import com.example.backend.api.inspection.question.answer.model.MemberAnswer;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.backend.api.user.UserMapper">
 
-    <resultMap id="groupMap" type="com.example.backend.api.group.Group">
+    <resultMap id="groupMap" type="group">
         <result column="idx" property="idx"></result>
         <result column="name" property="name"></result>
     </resultMap>
@@ -133,7 +133,7 @@
         SELECT COUNT(*) FROM `user` WHERE inspection_idx = #{inspectionIdx}
     </select>
 
-    <insert id="insertUserInfo" parameterType="com.example.backend.api.result.UserResult" useGeneratedKeys="true">
+    <insert id="insertUserInfo" parameterType="com.example.backend.api.inspection.result.UserResult" useGeneratedKeys="true">
         INSERT INTO
             user(inspection_idx, group_idx, user_name, user_age, user_gender,user_grade, user_etc, cdate)
             VALUES (

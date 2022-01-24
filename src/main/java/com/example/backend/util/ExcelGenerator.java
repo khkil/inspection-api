@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
-import com.example.backend.api.question.Question;
+import com.example.backend.api.inspection.question.Question;
 import com.example.backend.api.user.User;
 import com.example.backend.api.user.UserAnswer;
 import org.apache.poi.ss.usermodel.*;

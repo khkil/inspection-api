@@ -1,10 +1,8 @@
 package com.example.backend.api.user;
 
-import com.example.backend.api.result.UserResult;
-import com.github.pagehelper.PageHelper;
+import com.example.backend.api.inspection.result.UserResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

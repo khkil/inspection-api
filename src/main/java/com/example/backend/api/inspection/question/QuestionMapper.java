@@ -1,4 +1,4 @@
-package com.example.backend.api.question;
+package com.example.backend.api.inspection.question;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

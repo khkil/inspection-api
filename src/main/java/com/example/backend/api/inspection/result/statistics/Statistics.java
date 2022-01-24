@@ -1,9 +1,5 @@
-package com.example.backend.api.result.statistics;
+package com.example.backend.api.inspection.result.statistics;
 
-import com.example.backend.api.group.Group;
-import com.example.backend.api.question.Question;
-import com.example.backend.api.result.Result;
-import com.example.backend.api.user.User;
 import lombok.Data;
 
 @Data

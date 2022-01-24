@@ -1,10 +1,10 @@
 package com.example.backend.api.user;
 
-import com.example.backend.api.question.QuestionService;
+import com.example.backend.api.inspection.question.QuestionService;
 import com.example.backend.common.exception.ApiException;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.common.CommonResponse;
-import com.example.backend.api.result.UserResult;
+import com.example.backend.api.inspection.result.UserResult;
 import com.example.backend.util.PageUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

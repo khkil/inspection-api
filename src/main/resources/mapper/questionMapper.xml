@@ -2,18 +2,18 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.backend.api.question.QuestionMapper">
+<mapper namespace="com.example.backend.api.inspection.question.QuestionMapper">
     <select id="getQuestionList" resultMap="questionMap">
         SELECT * FROM question WHERE inspection_idx = #{idx} AND del_yn = 'N'
         ORDER BY inspection_idx, question_page, question_number;
     </select>
 
-    <resultMap type="com.example.backend.api.question.Question" id="questionMap" autoMapping="true">
+    <resultMap type="question" id="questionMap" autoMapping="true">
         <result property="questionIdx" column="question_idx"/>
         <collection property="answers" column="question_idx" select="getAnswerList"/>
     </resultMap>
 
-    <select id="getAnswerList" resultType="com.example.backend.api.answer.model.Answer" >
+    <select id="getAnswerList" resultType="com.example.backend.api.inspection.question.answer.model.Answer" >
 		SELECT * FROM answer WHERE question_idx = #{question_idx};
 	</select>
     <select id="getPageInfo" resultMap="questionMap">

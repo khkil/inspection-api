@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.backend.api.group.GroupMapper">
-    <insert id="insertGroup" parameterType="com.example.backend.api.group.Group" useGeneratedKeys="true" keyProperty="idx">
+    <insert id="insertGroup" parameterType="group" useGeneratedKeys="true" keyProperty="idx">
         INSERT INTO `group`(`name`, `tel`, `address`, `address_sub`, `contact_name`, `contact_email`, `contact_tel`)
         VALUES  (#{name}, #{tel}, #{address}, #{addressSub}, #{contactName}, #{contactEmail}, #{contactTel} )
     </insert>
@@ -29,7 +29,7 @@
     </select>
 
 
-    <resultMap id="groupListMap" type="com.example.backend.api.group.Group" autoMapping="true">
+    <resultMap id="groupListMap" type="group" autoMapping="true">
         <id property="idx" column="idx"></id>
         <collection property="grades" column="idx"  select="getGroupGrades"/>
     </resultMap>

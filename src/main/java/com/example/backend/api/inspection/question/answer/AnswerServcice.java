@@ -1,12 +1,9 @@
-package com.example.backend.api.answer;
+package com.example.backend.api.inspection.question.answer;
 
-import com.example.backend.api.answer.model.MemberAnswer;
-import com.example.backend.api.inspection.Inspection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service

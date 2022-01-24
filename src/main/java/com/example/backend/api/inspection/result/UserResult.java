@@ -1,4 +1,4 @@
-package com.example.backend.api.result;
+package com.example.backend.api.inspection.result;
 
 import com.example.backend.api.user.User;
 import com.example.backend.api.user.UserAnswer;

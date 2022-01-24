@@ -1,12 +1,10 @@
 package com.example.backend.api.admin.ground;
 
-import com.example.backend.api.result.statistics.StatisticsService;
+import com.example.backend.api.inspection.result.statistics.StatisticsService;
 import com.example.backend.api.user.User;
 import com.example.backend.api.user.UserAnswer;
 import com.example.backend.api.user.UserServcice;
-import com.example.backend.common.CommonResponse;
 import com.example.backend.util.ExcelGenerator;
-import com.github.pagehelper.PageHelper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -17,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/ground")

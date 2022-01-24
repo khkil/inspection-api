@@ -1,10 +1,7 @@
-package com.example.backend.api.result.statistics;
+package com.example.backend.api.inspection.result.statistics;
 
-import com.example.backend.api.question.Question;
-import com.example.backend.api.result.Result;
 import com.example.backend.util.GroundUtil;
 import com.example.backend.util.JSONUtil;
-import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service

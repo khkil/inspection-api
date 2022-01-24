@@ -9,15 +9,15 @@
     <typeAliases>
 
         <typeAlias alias="inspection" type="com.example.backend.api.inspection.Inspection"/>
-        <typeAlias alias="question" type="com.example.backend.api.question.Question"/>
-        <typeAlias alias="answer" type="com.example.backend.api.answer.model.Answer"/>
-        <typeAlias alias="memberAnswer" type="com.example.backend.api.answer.model.MemberAnswer"/>
-        <typeAlias alias="result" type="com.example.backend.api.result.Result"/>
+        <typeAlias alias="question" type="com.example.backend.api.inspection.question.Question"/>
+        <typeAlias alias="answer" type="com.example.backend.api.inspection.question.answer.model.Answer"/>
+        <typeAlias alias="memberAnswer" type="com.example.backend.api.inspection.question.answer.model.MemberAnswer"/>
+        <typeAlias alias="result" type="com.example.backend.api.inspection.result.Result"/>
         <typeAlias alias="user" type="com.example.backend.api.user.User"/>
         <typeAlias alias="userAnswer" type="com.example.backend.api.user.UserAnswer"/>
         <typeAlias alias="group" type="com.example.backend.api.group.Group"/>
         <typeAlias alias="memberProgress" type="com.example.backend.api.member.model.MemberProgress"/>
-        <typeAlias alias="statistics" type="com.example.backend.api.result.statistics.Statistics"/>
+        <typeAlias alias="statistics" type="com.example.backend.api.inspection.result.statistics.Statistics"/>
 
     </typeAliases>
 

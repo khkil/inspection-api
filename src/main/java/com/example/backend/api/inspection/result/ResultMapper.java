@@ -1,4 +1,4 @@
-package com.example.backend.api.result;
+package com.example.backend.api.inspection.result;
 
 import org.springframework.stereotype.Repository;
 

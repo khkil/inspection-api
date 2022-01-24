@@ -2,16 +2,16 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.backend.api.result.ResultMapper">
+<mapper namespace="com.example.backend.api.inspection.result.ResultMapper">
     <!-- getResults -->
-    <resultMap type="com.example.backend.api.result.Result" id="ResultMap">
+    <resultMap type="result" id="ResultMap">
         <result property="goodResultIdx" column="good_result_idx"/>
         <result property="badResultIdx" column="bad_result_idx"/>
 
         <collection property="goodResult" column="good_result_idx" ofType="Post" select="getResult"/>
         <collection property="badResult" column="bad_result_idx" ofType="Post" select="getResult"/>
     </resultMap>
-    <select id="getResult" resultType="com.example.backend.api.result.Result" >
+    <select id="getResult" resultType="result" >
 		SELECT result_idx, result_name, result_title, main_sentence, sub_sentence, good_result_idx, bad_result_idx, good_keyword, bad_keyword FROM result WHERE result_idx = #{result_idx};
 	</select>
     <select id="getResults" resultMap="ResultMap">
