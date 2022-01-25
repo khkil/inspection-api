@@ -152,7 +152,8 @@ public class AuthController {
     @PostMapping("/check-id")
     public ResponseEntity checkId(@RequestBody Member member){
 
-        Member duplicateMember = memberService.duplicateMember(member);
+        String memberId = member.getId();
+        Member duplicateMember = memberService.duplicateMember(memberId);
         if(duplicateMember != null) throw new ApiException("이미 사용중인 아이디 입니다.");
         return ResponseEntity.ok(CommonResponse.successResult());
 

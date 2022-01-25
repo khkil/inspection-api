@@ -59,8 +59,8 @@ public class MemberService implements UserDetailsService {
         memberMapper.updateMember(idx, member);
     }
 
-    public Member duplicateMember(Member member){
-        Member duplicateMember = memberMapper.loadUserByUserName(member.getId());
+    public Member duplicateMember(String id){
+        Member duplicateMember = memberMapper.loadUserByUserName(id);
         return duplicateMember;
     }
 
