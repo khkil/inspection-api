@@ -67,7 +67,7 @@ public class AuthController {
         }else{
             authService.loginSuccess(member, response);
         }
-        return ResponseEntity.ok(CommonResponse.successResult(member));
+        return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 
     @PostMapping("/login/kakao")
@@ -89,7 +89,7 @@ public class AuthController {
         }else{
             authService.loginSuccess(member, response);
         }
-        return ResponseEntity.ok(CommonResponse.successResult(member));
+        return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
 
     }
 
