@@ -32,22 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         };
 
         http.httpBasic().disable()
-            .csrf().disable() // csrf 보안 토큰 disable처리.
-            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .csrf().disable() // csrf 보안 토큰 disable처리.
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증 이므로 세션 역시 사용x
             .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증 이므로 세션 역시 사용x
+                .authorizeRequests()
+                .antMatchers(freeInspectionApiList).permitAll()
+                .antMatchers("/apu/auth/**","/api/public/**").permitAll()
+                .antMatchers("/api/members/**"
+                        ,"/api/questions/**"
+                        ,"/api/inspections/**"
+                        ,"/api/answers/**"
+                ).hasRole("MEMBER")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
             .and()
-            .authorizeRequests()
-            .antMatchers(freeInspectionApiList).permitAll()
-            .antMatchers("/apu/auth/**","/api/public/**").permitAll()
-            .antMatchers("/api/member/**"
-                    ,"/api/questions/**"
-                    ,"/api/inspections/**"
-                    ,"/api/answers/**"
-            ).hasRole("MEMBER")
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
-            ;
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
     }
 }

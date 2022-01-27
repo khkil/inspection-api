@@ -1,60 +1,67 @@
 package com.example.backend.api.auth;
 
-import com.example.backend.api.auth.model.AuthKakao;
-import com.example.backend.util.HttpUrlConnectionUtil;
+import com.example.backend.common.exception.UserAuthorityException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class Oauth2NaverService {
 
     @Autowired
-    ObjectMapper objectMapper;
+    RestTemplate restTemplate;
     @Autowired
-    HttpUrlConnectionUtil httpUrlConnectionUtil;
+    ObjectMapper objectMapper;
 
 
     @Value("${naver.client_id}")
     private String clientId;
     @Value("${naver.client_secret}")
     private String clientSecret;
-    private String redirectUrl = "http://localhost:3000/auth/login/naver";
+    @Value("${naver.redirect_url}")
+    private String redirectUrl;
 
 
     public Map<String, Object> callTokenApi(String code){
 
-        SecureRandom random = new SecureRandom();
         String requestUrl = "https://nid.naver.com/oauth2.0/token";
+        SecureRandom random = new SecureRandom();
         String state = new BigInteger(130, random).toString();
 
-        Map<String, String> params = new HashMap<>();
-        params.put("grant_type", "authorization_code");
-        params.put("client_id", clientId);
-        params.put("client_secret", clientSecret);
-        params.put("redirect_uri", redirectUrl);
-        params.put("code", code);
-        params.put("state", state);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUrl);
+        params.add("code", code);
+        params.add("state", state);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
         try {
-            String response = httpUrlConnectionUtil.requestToServer(requestUrl, HttpMethod.POST, params, null);
-            Map<String, Object> authorization = objectMapper.readValue(response, Map.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(requestUrl, request, String.class);
+            Map<String, Object> authorization = objectMapper.readValue(response.getBody(), Map.class);
             return authorization;
 
-        }catch (IOException e){
-            e.printStackTrace();
+        } catch (RestClientException | JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw new UserAuthorityException("네이버 로그인 실패");
         }
-        return null;
     }
 
     public Map<String, Object> callUserByAccessToken(String accessToken){
@@ -63,17 +70,17 @@ public class Oauth2NaverService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +accessToken);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, headers);
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         try {
-            String response = httpUrlConnectionUtil.requestToServer(requestUrl, HttpMethod.POST, null, headers);
-            Map<String, Object> accessTokenInfo = objectMapper.readValue(response, Map.class);
-            return accessTokenInfo;
-        }catch (IOException e){
-            e.printStackTrace();
+            ResponseEntity<String> response = restTemplate.postForEntity(requestUrl, request, String.class);
+            Map<String, Object> tokenInfo = objectMapper.readValue(response.getBody(), Map.class);
+            return tokenInfo;
+
+        }catch (RestClientException | JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw new UserAuthorityException("네이버 로그인 유저 불러오기 실패");
         }
-        return null;
     }
-
-
-
 }

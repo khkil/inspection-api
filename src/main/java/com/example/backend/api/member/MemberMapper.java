@@ -2,7 +2,7 @@ package com.example.backend.api.member;
 
 import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
-import com.example.backend.api.member.model.MemberProgress;
+import com.example.backend.api.progress.model.Progress;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +19,4 @@ public interface MemberMapper {
     Member findIdByPhone(String phone);
     void insertMember(Member member);
     void updateMember(int idx, Member member);
-
-    List<MemberProgress> getMemberProgressList(int memberIdx, Inspection inspection);
-    MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx);
-    void deleteMemberProgress(int memberIdx, int inspectionIdx);
-
 }

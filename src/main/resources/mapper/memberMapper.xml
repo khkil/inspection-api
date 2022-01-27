@@ -24,13 +24,6 @@
         </set>
         WHERE idx = #{idx};
     </update>
-    <delete id="deleteMemberProgress">
-        DELETE ma FROM member_answer ma
-        LEFT OUTER JOIN question q
-            ON ma.question_idx = q.question_idx
-        WHERE ma.member_idx = #{memberIdx}
-        AND q.inspection_idx = #{inspectionIdx}
-    </delete>
 
     <select id="loadUserByUserName" parameterType="com.example.backend.api.member.model.Member" resultType="com.example.backend.api.member.model.Member">
         SELECT * FROM member
@@ -59,71 +52,4 @@
             VALUES(#{id}, #{name}, #{password}, #{role}, #{email}, #{phone}, #{address}, #{address_sub}, #{school}, #{education}, #{grade}, #{major}, #{job}, #{company}, #{jobDetail});
     </insert>
 
-    <select id="getMemberProgressList" parameterType="int" resultType="memberProgress">
-        SELECT
-            i.inspection_idx,
-            i.inspection_name,
-            q.total_count,
-            IF(ISNULL(m.cnt), 0, m.cnt) AS user_count,
-            m.current_page
-        FROM
-            inspection i
-        LEFT OUTER JOIN
-            (SELECT
-                inspection_idx,
-                COUNT(*) AS total_count
-            FROM
-                question
-            GROUP BY inspection_idx) q
-        ON i.inspection_idx = q.inspection_idx
-        LEFT OUTER JOIN
-            (SELECT
-                q.inspection_idx,
-                COUNT(*) AS cnt,
-                MAX(q.question_page) AS current_page
-            FROM
-                member_answer ma
-            LEFT OUTER JOIN question q
-                ON ma.question_idx = q.question_idx
-            WHERE q.inspection_idx = inspection_idx
-            AND member_idx = #{memberIdx}
-            GROUP BY inspection_idx) m
-        ON i.inspection_idx = m.inspection_idx
-        WHERE i.pay_yn = 'Y'
-    </select>
-
-    <select id="getMemberProgressDetail" resultType="memberProgress">
-        SELECT
-            i.inspection_idx,
-            i.inspection_name,
-            q.total_count,
-            IF(ISNULL(m.cnt), 0, m.cnt) AS user_count,
-            m.current_page
-        FROM
-            inspection i
-        LEFT OUTER JOIN
-            (SELECT
-            inspection_idx,
-            COUNT(*) AS total_count
-            FROM
-            question
-            GROUP BY inspection_idx) q
-        ON i.inspection_idx = q.inspection_idx
-        LEFT OUTER JOIN
-            (SELECT
-            q.inspection_idx,
-            COUNT(*) AS cnt,
-            MAX(q.question_page) AS current_page
-            FROM
-            member_answer ma
-            LEFT OUTER JOIN question q
-            ON ma.question_idx = q.question_idx
-            WHERE q.inspection_idx = inspection_idx
-            AND member_idx = #{memberIdx}
-            GROUP BY inspection_idx) m
-        ON i.inspection_idx = m.inspection_idx
-        WHERE i.pay_yn = 'Y'
-        AND i.inspection_idx = #{inspectionIdx}
-
-    </select>
 </mapper>

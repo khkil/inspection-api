@@ -1,9 +1,9 @@
-package com.example.backend.api.member.model;
+package com.example.backend.api.progress.model;
 
 import lombok.Data;
 
 @Data
-public class MemberProgress {
+public class Progress {
 
     private int inspectionIdx;
     private String inspectionName;

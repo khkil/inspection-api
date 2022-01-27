@@ -2,7 +2,7 @@ package com.example.backend.api.member;
 
 import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
-import com.example.backend.api.member.model.MemberProgress;
+import com.example.backend.api.progress.model.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -66,18 +66,6 @@ public class MemberService implements UserDetailsService {
 
     public boolean checkPassword(Member user, Member member){
         return passwordEncoder.matches(user.getPassword(), member.getPassword());
-    }
-
-    public List<MemberProgress> getMemberProgressList(int memberIdx, Inspection inspection){
-        return memberMapper.getMemberProgressList(memberIdx, inspection);
-    }
-
-    public MemberProgress getMemberProgressDetail(int memberIdx, int inspectionIdx){
-        return memberMapper.getMemberProgressDetail(memberIdx, inspectionIdx);
-    }
-
-    public void deleteMemberProgress(int memberIdx, int inspectionIdx){
-        memberMapper.deleteMemberProgress(memberIdx, inspectionIdx);
     }
 
     public Member memberInfo(Member member){
