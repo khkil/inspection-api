@@ -149,7 +149,7 @@ public class JwtTokenProvider {
 
     public void removeRefreshToken2Redis(HttpServletRequest request){
         String refreshToken = resolveRefreshToken(request);
-        if(!refreshToken.isEmpty()){
+        if(refreshToken != null){
             String userPk = getUserPk(refreshToken);
             redisService.deleteValues(userPk);
         }
