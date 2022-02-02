@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
 
-    List<Member> getMemberList();
+    List<Member> getMemberList(String searchText);
     Member getMemberDetail(String idx);
     Member loadUserByUserName(String id);
     Member findIdByInfo(String name, String email);

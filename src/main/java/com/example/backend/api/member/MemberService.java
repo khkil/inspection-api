@@ -34,8 +34,8 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
-    public List<Member> getMemberList(){
-        return memberMapper.getMemberList();
+    public List<Member> getMemberList(String searchText){
+        return memberMapper.getMemberList(searchText);
     }
 
     public Member getMemberDetail(String idx){
@@ -84,6 +84,7 @@ public class MemberService implements UserDetailsService {
                 .job(member.getJob())
                 .company(member.getCompany())
                 .jobDetail(member.getJobDetail())
+                .cDate(member.getCDate())
                 .build();
 
         return memberInfo;

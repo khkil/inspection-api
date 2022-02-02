@@ -8,24 +8,19 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/members")
 public class AdminMemberController {
 
-
     @Autowired
-
     MemberService memberService;
 
     @GetMapping
-    public ResponseEntity getMemberList(PageUtil pageUtil){
+    public ResponseEntity getMemberList(PageUtil pageUtil, @RequestParam(required = false) String searchText ){
         PageHelper.startPage(pageUtil.getPageNum(), pageUtil.getPageSize());
-        PageInfo<Member> memberList = new PageInfo<>(memberService.getMemberList());
+        PageInfo<Member> memberList = new PageInfo<>(memberService.getMemberList(searchText));
         return ResponseEntity.ok(CommonResponse.successResult(memberList));
     }
 
