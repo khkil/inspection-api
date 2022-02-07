@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.inspection.rank.RankMapper">
+
+    <select id="getMemberInspectionRank" resultType="rank">
+
+    SELECT
+        q.inspection_idx,
+        r.result_name,
+        SUM(a.answer_score) AS total_score,
+        RANK() OVER (ORDER BY SUM(a.answer_score) DESC) AS ranking
+    FROM
+        member_answer ma
+    LEFT OUTER JOIN answer a
+        ON ma.answer_idx = a.answer_idx
+    LEFT OUTER JOIN question q
+        ON a.question_idx = q.question_idx
+    LEFT OUTER JOIN result r
+        ON q.result_idx = r.result_idx
+    WHERE member_idx = #{memberIdx}
+        AND q.inspection_idx = #{inspectionIdx}
+    GROUP BY r.result_idx;
+
+    </select>
+</mapper>

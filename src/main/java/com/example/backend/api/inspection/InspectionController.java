@@ -2,7 +2,6 @@ package com.example.backend.api.inspection;
 
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +12,12 @@ import java.util.List;
 public class InspectionController {
 
     @Autowired
-    InspectionServcice inspectionServcice;
+    InspectionService inspectionService;
 
     @GetMapping("")
     public ResponseEntity getInspectionList(Inspection inspection) {
 
-        List<Inspection> inspectionList = inspectionServcice.getInspectionList(inspection);
+        List<Inspection> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
@@ -26,8 +25,13 @@ public class InspectionController {
     @GetMapping("/{inspectionIdx}")
     public ResponseEntity getInspectionDetail(@PathVariable int inspectionIdx) {
 
-        Inspection inspectionDetail = inspectionServcice.getInspectionDetail(inspectionIdx);
+        Inspection inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
+    }
+
+    @GetMapping("/{inspectionIdx}/result")
+    public ResponseEntity getInspectionResult(@PathVariable int inspectionIdx) {
+        return null;
     }
 
     @PutMapping

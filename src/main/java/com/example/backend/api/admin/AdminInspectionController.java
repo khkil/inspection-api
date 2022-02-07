@@ -1,7 +1,7 @@
 package com.example.backend.api.admin;
 
 import com.example.backend.api.inspection.Inspection;
-import com.example.backend.api.inspection.InspectionServcice;
+import com.example.backend.api.inspection.InspectionService;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 public class AdminInspectionController {
 
     @Autowired
-    InspectionServcice inspectionService;
+    InspectionService inspectionService;
 
     @GetMapping
     public ResponseEntity getInspectionList(Inspection inspection) throws  Exception{

@@ -1,8 +1,6 @@
 package com.example.backend.api.member;
 
-import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
-import com.example.backend.api.progress.model.Progress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
