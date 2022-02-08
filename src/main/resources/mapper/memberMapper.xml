@@ -5,7 +5,7 @@
 <mapper namespace="com.example.backend.api.member.MemberMapper">
     <update id="updateMember" parameterType="member">
 
-        UPDATE member
+        UPDATE `member`
         <set>
             <if test="member.name != null"> name = #{member.name},</if>
             <if test="member.password != null"> password = #{member.password},</if>
@@ -26,33 +26,34 @@
     </update>
 
     <select id="loadUserByUserName" parameterType="member" resultType="member">
-        SELECT * FROM member
+        SELECT * FROM `member`
         WHERE id = #{id}
     </select>
 
     <select id="findIdByInfo" resultType="member" parameterType="map">
-        SELECT id FROM member WHERE name = #{name} AND email = #{email}
+        SELECT id FROM `member` WHERE name = #{name} AND email = #{email}
     </select>
 
     <select id="findIdByPhone" resultType="member" parameterType="map">
-        SELECT id FROM member WHERE id = #{id} AND email = #{email}
+        SELECT id FROM `member` WHERE id = #{id} AND email = #{email}
     </select>
     <select id="getMemberList" resultType="member" parameterType="string">
 
-        SELECT * FROM member
+        SELECT * FROM `member`
         <where>
             AND role = "ROLE_MEMBER"
             <if test="searchText != null">AND (name like CONCAT('%', #{parameter}, '%') )</if>
         </where>
     </select>
 
+
     <select id="getMemberDetail" resultType="member">
-        SELECT idx, name, id, password, email, phone FROM member
+        SELECT idx, name, id, password, email, phone FROM `member`
         WHERE idx = #{idx}
     </select>
 
     <insert id="insertMember" parameterType="member" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO member(id, name, password, role, email, phone, address, address_sub, school, education, grade, major, job, company, job_detail, cdate)
+        INSERT INTO `member`(id, name, password, role, email, phone, address, address_sub, school, education, grade, major, job, company, job_detail, cdate)
             VALUES(#{id}, #{name}, #{password}, #{role}, #{email}, #{phone}, #{address}, #{addressSub}, #{school}, #{education}, #{grade}, #{major}, #{job}, #{company}, #{jobDetail}, now());
     </insert>
 
