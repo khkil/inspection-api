@@ -61,28 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }catch (Exception e){
             e.printStackTrace();
         }
-        if(accessToken != null){
-
-            /*if(jwtTokenProvider.validateToken(accessToken)){
-                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            }else if(!jwtTokenProvider.validateToken(accessToken) && refreshToken  != null){
-                boolean validateRefreshToken = jwtTokenProvider.validateToken(refreshToken);
-
-                if(validateRefreshToken){
-                    String userId = jwtTokenProvider.getUserPk(refreshToken);
-                    if(jwtTokenProvider.getRefreshToken2Redis(userId) != null){
-                        Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
-                        List<String> userRoles = (List<String>) claims.getBody().get("roles");
-                        String newAccessToken = jwtTokenProvider.generateAccessToken(userId, userRoles);
-                        jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
-                        Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
-            }*/
-        }
         filterChain.doFilter(request, response);
     }
 }

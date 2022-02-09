@@ -44,7 +44,7 @@
             AND member_idx = #{memberIdx}
             GROUP BY inspection_idx) m
         ON i.inspection_idx = m.inspection_idx
-        WHERE i.pay_yn = 'Y'
+        WHERE i.octagnosis_yn = 'Y'
     </select>
 
     <select id="getMemberProgressDetail" resultType="progress">
@@ -77,7 +77,7 @@
             AND member_idx = #{memberIdx}
             GROUP BY inspection_idx) m
         ON i.inspection_idx = m.inspection_idx
-        WHERE i.pay_yn = 'Y'
+        WHERE i.octagnosis_yn = 'Y'
         AND i.inspection_idx = #{inspectionIdx}
 
     </select>
