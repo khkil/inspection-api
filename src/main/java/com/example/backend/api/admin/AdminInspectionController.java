@@ -26,13 +26,13 @@ public class AdminInspectionController {
 
 
     @GetMapping("/{idx}")
-    public ResponseEntity<Inspection> getInspectionDetail(@PathVariable int idx){
+    public ResponseEntity getInspectionDetail(@PathVariable int idx){
 
         Inspection inspectionDetail = inspectionService.getInspectionDetail(idx);
         if(inspectionDetail == null){
             //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Inspection>(inspectionService.getInspectionDetail(idx), HttpStatus.OK);
+        return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
     }
 
     @PutMapping
