@@ -7,7 +7,7 @@
     <select id="getInspectionList" resultType="inspection" parameterType="inspection">
         SELECT * FROM inspection
         <where>
-            AND octagnosis = 'Y'
+            AND octagnosis_yn = 'Y'
             <if test="payYn != null and payYn != ''">AND pay_yn = #{payYn} </if>
         </where>
     </select>
