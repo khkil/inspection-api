@@ -9,7 +9,7 @@
     <typeAliases>
 
         <typeAlias alias="inspection" type="com.example.backend.api.inspection.Inspection"/>
-        <typeAlias alias="question" type="com.example.backend.api.inspection.question.Question"/>
+        <typeAlias alias="question" type="com.example.backend.api.inspection.question.model.Question"/>
         <typeAlias alias="answer" type="com.example.backend.api.inspection.question.answer.model.Answer"/>
         <typeAlias alias="member"  type="com.example.backend.api.member.model.Member"/>
         <typeAlias alias="memberAnswer" type="com.example.backend.api.inspection.question.answer.model.MemberAnswer"/>

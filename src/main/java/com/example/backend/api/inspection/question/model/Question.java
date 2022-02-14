@@ -1,4 +1,4 @@
-package com.example.backend.api.inspection.question;
+package com.example.backend.api.inspection.question.model;
 
 import com.example.backend.api.inspection.question.answer.model.Answer;
 import com.example.backend.util.enumerator.QuestionType;

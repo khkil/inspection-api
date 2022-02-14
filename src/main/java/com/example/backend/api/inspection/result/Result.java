@@ -1,6 +1,6 @@
 package com.example.backend.api.inspection.result;
 
-import com.example.backend.api.inspection.question.Question;
+import com.example.backend.api.inspection.question.model.Question;
 import lombok.Data;
 
 import java.util.List;

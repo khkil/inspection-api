@@ -1,7 +1,8 @@
 package com.example.backend.api.admin;
 
-import com.example.backend.api.inspection.question.Question;
+import com.example.backend.api.inspection.question.model.Question;
 import com.example.backend.api.inspection.question.QuestionService;
+import com.example.backend.api.inspection.result.Result;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,10 @@ public class AdminQuestionController {
         questionService.updateQuestions(questions);
         return ResponseEntity.ok(CommonResponse.successResult());
 
+    }
+    @GetMapping("/inspections/{inspectionIdx}")
+    public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx){
+        List<Result> questionsOfInspection = questionService.getQuestionsOfInspection(inspectionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(questionsOfInspection));
     }
 }

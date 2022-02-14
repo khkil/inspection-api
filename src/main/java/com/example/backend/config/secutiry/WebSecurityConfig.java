@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         ,"/api/questions/**"
                         ,"/api/inspections/**"
                         ,"/api/answers/**"
-                ).hasRole("MEMBER")
+                ).hasAnyRole("MEMBER", "ADMIN")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
             .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)

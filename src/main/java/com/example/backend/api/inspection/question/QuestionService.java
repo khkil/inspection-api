@@ -1,5 +1,7 @@
 package com.example.backend.api.inspection.question;
 
+import com.example.backend.api.inspection.question.model.Question;
+import com.example.backend.api.inspection.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,9 @@ public class QuestionService {
     }
     public List<?> getQuestionInfo(int inspectionIdx){
         return questionMapper.getQuestionList(inspectionIdx);
+    }
+    public List<Result> getQuestionsOfInspection(int inspectionIdx){
+        return questionMapper.getQuestionsOfInspection(inspectionIdx);
     }
 
     public  Question getQuestionDetail(int questionIdx){
