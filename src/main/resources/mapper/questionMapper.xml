@@ -4,6 +4,14 @@
 
 <mapper namespace="com.example.backend.api.inspection.question.QuestionMapper">
 
+    <select id="getAnswerList" resultType="answer" >
+		SELECT * FROM answer WHERE question_idx = #{question_idx};
+	</select>
+
+    <select id="getQuestionListWithAnswer" resultType="question">
+        SELECT question_idx, question_text FROM question WHERE result_idx = #{resultIdx}
+    </select>
+
     <resultMap type="result" id="questionsWithResultMap" >
         <result property="resultIdx" column="result_idx"/>
         <collection property="questionList" column="result_idx" select="getQuestionListWithAnswer"/>
@@ -13,14 +21,6 @@
         <result property="questionIdx" column="question_idx"/>
         <collection property="answers" column="question_idx" select="getAnswerList"/>
     </resultMap>
-
-    <select id="getAnswerList" resultType="answer" >
-		SELECT * FROM answer WHERE question_idx = #{question_idx};
-	</select>
-
-    <select id="getQuestionListWithAnswer" resultType="question">
-        SELECT question_idx, question_text FROM question WHERE result_idx = #{resultIdx}
-    </select>
 
     <select id="getQuestionList" resultMap="questionWithAnswersMap">
         SELECT * FROM question WHERE inspection_idx = #{idx} AND del_yn = 'N'

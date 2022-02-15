@@ -1,4 +1,4 @@
-package com.example.backend.api.inspection.result;
+package com.example.backend.api.inspection.result.model;
 
 import com.example.backend.api.inspection.question.model.Question;
 import lombok.Data;

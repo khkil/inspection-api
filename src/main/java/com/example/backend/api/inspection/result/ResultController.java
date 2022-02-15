@@ -1,5 +1,6 @@
 package com.example.backend.api.inspection.result;
 
+import com.example.backend.api.inspection.result.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

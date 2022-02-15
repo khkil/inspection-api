@@ -4,10 +4,19 @@
 
 <mapper namespace="com.example.backend.api.inspection.rank.RankMapper">
 
-    <select id="getMemberInspectionRank" resultType="rank">
+    <select id="getResultContents" resultType="resultContent">
+        SELECT * FROM result_content WHERE result_idx = #{resultIdx};
+    </select>
+    <resultMap id="memberInspectionRankMap" type="rank" autoMapping="true">
+        <result property="resultIdx" column="result_idx"></result>
+        <collection property="resultContents" column="result_idx" select="getResultContents"/>
+
+    </resultMap>
+    <select id="getMemberInspectionRank" resultMap="memberInspectionRankMap">
 
     SELECT
         q.inspection_idx,
+        r.result_idx,
         r.result_name,
         SUM(a.answer_score) AS total_score,
         RANK() OVER (ORDER BY SUM(a.answer_score) DESC) AS ranking
