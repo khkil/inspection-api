@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface RankMapper {
 
-    List<Rank> getMemberInspectionRank(int memberIdx, int inspectionIdx);
+    List<Rank> getMemberInspectionRank(int memberIdx, int inspectionIdx, int rankCount);
 }

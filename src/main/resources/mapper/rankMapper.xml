@@ -30,7 +30,8 @@
         ON q.result_idx = r.result_idx
     WHERE member_idx = #{memberIdx}
         AND q.inspection_idx = #{inspectionIdx}
-    GROUP BY r.result_idx;
+    GROUP BY r.result_idx
+    LIMIT #{rankCount};
 
     </select>
 </mapper>
