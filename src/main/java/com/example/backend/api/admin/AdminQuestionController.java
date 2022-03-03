@@ -20,7 +20,7 @@ public class AdminQuestionController {
     @GetMapping("/{questionIdx}")
     public ResponseEntity updateQuestions(@PathVariable int questionIdx){
         Question question = questionService.getQuestionDetail(questionIdx);
-        return ResponseEntity.ok(question);
+        return ResponseEntity.ok(CommonResponse.successResult(question));
     }
 
     @DeleteMapping("/{questionIdx}")
