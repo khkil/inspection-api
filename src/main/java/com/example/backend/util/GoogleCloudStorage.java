@@ -31,10 +31,10 @@ public class GoogleCloudStorage {
         }
     }
 
-    public BlobInfo uploadInfo(MultipartFile file) {
+    public BlobInfo uploadInfo(MultipartFile file, String directory) {
         try {
             BlobInfo blobInfo = storage.create(
-                    BlobInfo.newBuilder(BUCKET_NAME, file.getOriginalFilename()).build(), //get original file name
+                    BlobInfo.newBuilder(BUCKET_NAME,directory + file.getOriginalFilename()).build(), //get original file name
                     file.getBytes(), // the file
                     BlobTargetOption.predefinedAcl(PredefinedAcl.PUBLIC_READ) // Set file permission
             );

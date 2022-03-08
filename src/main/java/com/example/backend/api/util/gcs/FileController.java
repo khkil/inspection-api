@@ -27,8 +27,8 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity uploadFromStorage(@RequestPart(value="file", required = false) MultipartFile multipartFile){
-        File file = fileService.uploadFileFromGCS(multipartFile);
+    public ResponseEntity uploadFromStorage(@RequestPart(value="file", required = false) MultipartFile multipartFile, @RequestParam(value="directory") String directory){
+        File file = fileService.uploadFileFromGCS(multipartFile, directory);
         return ResponseEntity.ok(CommonResponse.successResult(file));
     }
 }

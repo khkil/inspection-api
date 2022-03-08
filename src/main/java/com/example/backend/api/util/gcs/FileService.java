@@ -24,9 +24,9 @@ public class FileService {
         return new File(fileName, fileUrl);
     }
 
-    public File uploadFileFromGCS(MultipartFile multipartFile){
+    public File uploadFileFromGCS(MultipartFile multipartFile, String directory){
 
-        BlobInfo blobInfo = googleCloudStorageBean.uploadInfo(multipartFile);
+        BlobInfo blobInfo = googleCloudStorageBean.uploadInfo(multipartFile, directory);
         String fileName = multipartFile.getName();
         String fileUrl = blobInfo.getMediaLink();
 
