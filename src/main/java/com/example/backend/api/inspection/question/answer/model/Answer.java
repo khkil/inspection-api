@@ -12,6 +12,6 @@ public class Answer {
     private int questionIdx;
     private String answerText;
     private int answerScore;
-    private String filePath;
+    private List<Object> filePath;
 
 }

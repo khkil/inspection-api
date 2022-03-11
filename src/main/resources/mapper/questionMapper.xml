@@ -4,13 +4,17 @@
 
 <mapper namespace="com.example.backend.api.inspection.question.QuestionMapper">
 
-    <select id="getAnswerList" resultType="answer" >
+    <select id="getAnswerList" resultMap="answerMap">
 		SELECT * FROM answer WHERE question_idx = #{question_idx};
 	</select>
 
     <select id="getQuestionListWithAnswer" resultType="question">
         SELECT question_idx,  question_number, question_text, del_yn FROM question WHERE result_idx = #{resultIdx}
     </select>
+
+    <resultMap type="answer" id="answerMap" autoMapping="true">
+        <result property="filePath" column="file_path" typeHandler="JSONTypeHandler"/>
+    </resultMap>
 
     <resultMap type="result" id="questionsWithResultMap" >
         <result property="resultIdx" column="result_idx"/>
@@ -19,6 +23,7 @@
 
     <resultMap type="question" id="questionWithAnswersMap" autoMapping="true">
         <result property="questionIdx" column="question_idx"/>
+        <result property="filePath" column="file_path" typeHandler="JSONTypeHandler"/>
         <collection property="answers" column="question_idx" select="getAnswerList"/>
     </resultMap>
 
@@ -46,16 +51,18 @@
             question_text = IFNULL(#{question.questionText}, question_text),
             question_type = IFNULL(#{question.questionType}, question_type),
             answer_type = IFNULL(#{question.answerType}, answer_type),
-            file_path = #{question.filePath},
+            file_path = #{question.filePath, typeHandler=JSONTypeHandler},
             del_yn = IFNULL(#{question.delYn}, del_yn)
         WHERE question_idx = #{questionIdx};
 
 
         <if test="question.answers != null and question.answers.size > 0">
-            DELETE FROM answer WHERE question_idx = #{questionIdx};
             <foreach collection="question.answers" item="answer" index="index">
-                INSERT INTO answer(`question_idx`, `answer_text`, `answer_score`, `file_path`)
-                VALUES (#{questionIdx}, IFNULL(#{answer.answerText}, ''), IFNULL(#{answer.answerScore}, ''), #{answer.filePath} );
+                UPDATE answer SET
+                    answer_text = IFNULL(#{answer.answerText}, ''),
+                    answer_score = IFNULL(#{answer.answerScore}, ''),
+                    file_path = #{answer.filePath, typeHandler=JSONTypeHandler}
+                WHERE answer_idx = #{answer.answerIdx};
             </foreach>
         </if>
     </update>

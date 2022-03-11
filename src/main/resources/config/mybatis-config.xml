@@ -8,6 +8,7 @@
     </settings>
     <typeAliases>
 
+        <!--Model-->
         <typeAlias alias="inspection" type="com.example.backend.api.inspection.Inspection"/>
         <typeAlias alias="question" type="com.example.backend.api.inspection.question.model.Question"/>
         <typeAlias alias="answer" type="com.example.backend.api.inspection.question.answer.model.Answer"/>
@@ -21,6 +22,9 @@
         <typeAlias alias="progress" type="com.example.backend.api.progress.model.Progress"/>
         <typeAlias alias="rank" type="com.example.backend.api.inspection.rank.Rank"/>
         <typeAlias alias="statistics" type="com.example.backend.api.inspection.result.statistics.Statistics"/>
+
+        <!-- typeHandler-->
+        <typeAlias alias="JSONTypeHandler" type="com.example.backend.common.handler.JSONTypeHandler"/>
 
     </typeAliases>
 

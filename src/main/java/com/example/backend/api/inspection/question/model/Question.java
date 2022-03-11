@@ -19,7 +19,7 @@ public class Question {
     private String delYn;
     private QuestionType questionType;
     private QuestionType answerType;
-    private String filePath;
+    private List<Object> filePath;
 
     private List<Answer> answers;
 
