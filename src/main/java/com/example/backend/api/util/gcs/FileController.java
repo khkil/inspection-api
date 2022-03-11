@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +28,10 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity uploadFromStorage(@RequestPart(value="file", required = false) MultipartFile multipartFile, @RequestParam(value="directory") String directory){
-        File file = fileService.uploadFileFromGCS(multipartFile, directory);
-        return ResponseEntity.ok(CommonResponse.successResult(file));
+    public ResponseEntity uploadFromStorage(@RequestPart(value="files", required = false) List<MultipartFile> files, @RequestParam(value="directory") String directory){
+        fileService.uploadFileFromGCS(files, directory);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
+
+
 }

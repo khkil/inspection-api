@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FileService {
@@ -24,13 +26,11 @@ public class FileService {
         return new File(fileName, fileUrl);
     }
 
-    public File uploadFileFromGCS(MultipartFile multipartFile, String directory){
+    public void uploadFileFromGCS(List<MultipartFile> files, String directory){
 
-        BlobInfo blobInfo = googleCloudStorageBean.uploadInfo(multipartFile, directory);
-        String fileName = multipartFile.getName();
-        String fileUrl = blobInfo.getMediaLink();
-
-        return new File(fileName, fileUrl);
+        for(MultipartFile file : files){
+            googleCloudStorageBean.uploadInfo(file, directory);
+        }
     }
 
 
