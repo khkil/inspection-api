@@ -61,7 +61,8 @@
                 UPDATE answer SET
                     answer_text = IFNULL(#{answer.answerText}, ''),
                     answer_score = IFNULL(#{answer.answerScore}, ''),
-                    file_path = #{answer.filePath, typeHandler=JSONTypeHandler}
+                    file_path = #{answer.filePath, typeHandler=JSONTypeHandler},
+                    del_yn = #{answer.delYn}
                 WHERE answer_idx = #{answer.answerIdx};
             </foreach>
         </if>
@@ -69,7 +70,6 @@
     <update id="updateQuestions" parameterType="list">
         <foreach collection="questions" item="question" index="index">
             <choose>
-
                 <when test="question.questionIdx != null and question.questionIdx != '' ">
                     UPDATE question SET
                         question_text = IFNULL(#{question.questionText}, question_text),
@@ -77,11 +77,9 @@
                         question_number = IFNULL(#{question.questionNumber}, question_number),
                         del_yn = IFNULL(#{question.delYn}, del_yn)
                     WHERE question_idx = #{question.questionIdx};
-
                 </when>
                 <when test="question.questionIdx == null or question.questionIdx == ''">
                     INSERT INTO question(`inspection_idx`, `result_idx`, `question_number`, `question_text`, `question_order`) values(#{question.inspectionIdx}, #{question.resultIdx}, #{question.questionNumber}, #{question.questionText}, #{question.questionOrder});
-
                 </when>
             </choose>
 

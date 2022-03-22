@@ -13,5 +13,6 @@ public class Answer {
     private String answerText;
     private int answerScore;
     private List<Object> filePath;
+    private String delYn;
 
 }
