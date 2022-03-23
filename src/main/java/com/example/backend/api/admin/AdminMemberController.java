@@ -25,8 +25,15 @@ public class AdminMemberController {
     }
 
     @GetMapping("/{idx}")
-    public Member getMemberDetail(@PathVariable String idx){
-        return memberService.getMemberDetail(idx);
+    public ResponseEntity getMemberDetail(@PathVariable int idx){
+        Member memberDetail = memberService.getMemberDetail(idx);
+        return ResponseEntity.ok(CommonResponse.successResult(memberDetail));
+    }
+
+    @PutMapping("/{idx}")
+    public ResponseEntity updateMember(@PathVariable int idx, @RequestBody Member member){
+        memberService.updateMember(idx, member);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
 }

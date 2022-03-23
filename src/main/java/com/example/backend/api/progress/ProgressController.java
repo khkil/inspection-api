@@ -19,9 +19,9 @@ public class ProgressController {
 
 
     @GetMapping("")
-    public ResponseEntity getMyProgressList(@RequestBody(required = false) Inspection inspection, @AuthenticationPrincipal Member authenticatedMember){
+    public ResponseEntity getMyProgressList(@AuthenticationPrincipal Member authenticatedMember){
         int memberIdx = authenticatedMember.getIdx();
-        List<Progress> progressList = progressService.getMyProgressList(memberIdx, inspection);
+        List<Progress> progressList = progressService.getMemberProgressList(memberIdx);
         return ResponseEntity.ok(CommonResponse.successResult(progressList));
     }
 

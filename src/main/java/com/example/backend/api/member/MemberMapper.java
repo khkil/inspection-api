@@ -11,7 +11,7 @@ import java.util.List;
 public interface MemberMapper {
 
     List<Member> getMemberList(String searchText);
-    Member getMemberDetail(String idx);
+    Member getMemberDetail(int idx);
     Member loadUserByUserName(String id);
     Member findIdByInfo(String name, String email);
     Member findIdByPhone(String phone);

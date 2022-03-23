@@ -36,8 +36,10 @@ public class MemberService implements UserDetailsService {
         return memberMapper.getMemberList(searchText);
     }
 
-    public Member getMemberDetail(String idx){
-        return memberMapper.getMemberDetail(idx);
+    public Member getMemberDetail(int idx){
+        Member member = memberMapper.getMemberDetail(idx);
+
+        return memberInfo(member);
     }
 
     public Member findIdByInfo(String name, String email){

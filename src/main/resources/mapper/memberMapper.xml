@@ -48,7 +48,7 @@
 
 
     <select id="getMemberDetail" resultType="member">
-        SELECT idx, name, id, password, email, phone FROM `member`
+        SELECT * FROM `member`
         WHERE idx = #{idx}
     </select>
 

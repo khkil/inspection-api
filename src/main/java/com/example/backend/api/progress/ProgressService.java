@@ -13,8 +13,8 @@ public class ProgressService {
     @Autowired
     ProgressMapper progressMapper;
 
-    public List<Progress> getMyProgressList(int memberIdx, Inspection inspection){
-        return progressMapper.getMemberProgressList(memberIdx, inspection);
+    public List<Progress> getMemberProgressList(int memberIdx){
+        return progressMapper.getMemberProgressList(memberIdx);
     }
 
     public Progress getMemberProgressDetail(int memberIdx, int inspectionIdx){
