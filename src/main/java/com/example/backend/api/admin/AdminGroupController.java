@@ -27,8 +27,8 @@ public class AdminGroupController {
 
         PageHelper.startPage(pageUtil.getPageNum(), pageUtil.getPageSize());
         List<Group> groups = groupService.getAdminGroupList();
-        PageInfo<Group> pageInfo = new PageInfo<>(groups);
-        return ResponseEntity.ok(pageInfo);
+        PageInfo<Group> groupsPageInfo = new PageInfo<>(groups);
+        return ResponseEntity.ok(CommonResponse.successResult(groupsPageInfo));
     }
 
     @GetMapping("/{groupIdx}")
