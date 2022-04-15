@@ -34,7 +34,13 @@ public class AdminGroupController {
     @GetMapping("/{groupIdx}")
     public ResponseEntity getAdminGroupDetail(@PathVariable int groupIdx){
         Group group = groupService.getGroupDetail(groupIdx);
-        return ResponseEntity.ok(group);
+        return ResponseEntity.ok(CommonResponse.successResult(group));
+    }
+
+    @PostMapping
+    public ResponseEntity insertGroup(@RequestBody Group group){
+        groupService.insertGroup(group);
+        return ResponseEntity.ok(CommonResponse.successResult(group));
     }
 
     @PutMapping("/{groupIdx}")

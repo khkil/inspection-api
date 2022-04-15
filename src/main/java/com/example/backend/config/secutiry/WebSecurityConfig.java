@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] freeInspectionApiList = new String[]{
+        String[] publicApiList = new String[]{
                 "/api/questions/inspections/**/pages/**"
                 ,"/api/users/inspections/*/counts"
                 ,"/api/users/answers"
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증 이므로 세션 역시 사용x
             .and()
                 .authorizeRequests()
-                .antMatchers(freeInspectionApiList).permitAll()
+                .antMatchers(publicApiList).permitAll()
                 .antMatchers("/apu/auth/**","/api/public/**").permitAll()
                 .antMatchers("/api/members/**"
                         ,"/api/questions/**"

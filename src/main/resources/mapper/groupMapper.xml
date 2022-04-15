@@ -4,13 +4,34 @@
 
 <mapper namespace="com.example.backend.api.group.GroupMapper">
     <insert id="insertGroup" parameterType="group" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO `group`(`name`, `tel`, `address`, `address_sub`, `contact_name`, `contact_email`, `contact_tel`)
-        VALUES  (#{name}, #{tel}, #{address}, #{addressSub}, #{contactName}, #{contactEmail}, #{contactTel} )
+        INSERT INTO `group`(
+        <if test="name != null and name != '' ">
+            `name`,
+        </if>
+             `tel`,
+             `address`,
+             `address_sub`,
+              `contact_name`,
+              `contact_email`,
+              `contact_tel`,
+              `cdate`
+        ) VALUES (
+        <if test="name != null and name != '' ">
+            #{name},
+        </if>
+            #{tel},
+            #{address},
+            #{addressSub},
+            #{contactName},
+            #{contactEmail},
+            #{contactTel},
+            now()
+        )
     </insert>
     <update id="updateGroup">
         UPDATE `group`
         <set>
-            <if test="group.name != null"> name = #{group.name},</if>
+            <if test="group.name != null and group.name != '' "> name = #{group.name},</if>
             <if test="group.tel != null"> tel = #{group.tel},</if>
             <if test="group.address != null"> address = #{group.address},</if>
             <if test="group.addressSub != null"> address_sub = #{group.addressSub},</if>
