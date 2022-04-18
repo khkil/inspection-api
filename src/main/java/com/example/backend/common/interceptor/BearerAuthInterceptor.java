@@ -18,7 +18,6 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws UnauthorizedActionException {
-        System.out.println(">>> interceptor.preHandle 호출");
         String token = jwtTokenProvider.resolveAccessToken(request);
         if (token == null) {
             throw new UserAuthorityException("인증정보가 존재하지 않습니다.");

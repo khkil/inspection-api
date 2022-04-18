@@ -29,6 +29,7 @@
                 COUNT(*) AS total_count
             FROM
                 question
+            WHERE del_yn = 'N'
             GROUP BY inspection_idx) q
         ON i.inspection_idx = q.inspection_idx
         LEFT OUTER JOIN
@@ -58,10 +59,11 @@
             inspection i
         LEFT OUTER JOIN
             (SELECT
-            inspection_idx,
-            COUNT(*) AS total_count
+                inspection_idx,
+                COUNT(*) AS total_count
             FROM
-            question
+                question
+            WHERE del_yn = 'N'
             GROUP BY inspection_idx) q
         ON i.inspection_idx = q.inspection_idx
         LEFT OUTER JOIN

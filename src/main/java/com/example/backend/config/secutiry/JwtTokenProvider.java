@@ -66,8 +66,6 @@ public class JwtTokenProvider {
         String userId = getUserPk(refreshToken);
         Jws<Claims> claims = getClaims(refreshToken);
         String redisRefreshToken = redisService.getValues(userId);
-        System.out.println(redisRefreshToken);
-        System.out.println(refreshToken);
         if(!refreshToken.equals(redisRefreshToken)){
             throw new IllegalArgumentException("Refresh Token 정보가 불일치");
         }

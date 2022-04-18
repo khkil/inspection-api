@@ -119,6 +119,7 @@
                 ON ua.question_idx = q.question_idx
             AND ua.user_idx = #{userIdx}
             WHERE inspection_idx = (SELECT inspection_idx FROM `user` WHERE user_idx = #{userIdx})
+            AND q.del_yn = 'N'
         ORDER BY q.question_idx;
     </select>
     <select id="getUserDetailAnswerList" resultMap="userDetailAnswerMap">

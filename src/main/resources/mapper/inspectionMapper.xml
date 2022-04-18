@@ -17,15 +17,16 @@
     </resultMap>
     <select id="getInspectionDetail" resultMap="inspectionDetailMap">
         SELECT
-          *
+            *
         FROM
-          inspection i
-          LEFT OUTER JOIN
+            inspection i
+        LEFT OUTER JOIN
             (SELECT
-              inspection_idx,
-              MAX(question_page) AS total_page
+                inspection_idx,
+                MAX(question_page) AS total_page
             FROM
-              question
+                question
+            WHERE del_yn = 'N'
             GROUP BY inspection_idx) q
             ON i.inspection_idx = q.inspection_idx
         WHERE i.inspection_idx = #{inspectionIdx}

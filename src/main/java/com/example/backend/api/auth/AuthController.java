@@ -132,7 +132,6 @@ public class AuthController {
     public ResponseEntity signUp(@RequestBody Member member, HttpServletResponse response){
 
         memberService.insertMember(member);
-        System.out.println(member.getIdx());
         authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
@@ -170,7 +169,6 @@ public class AuthController {
         int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000;
         session.setAttribute("authNo", authNo);
         coolSms.setText("[humannx] 인증번호는 " + authNo + " 입니다");
-        System.out.println(session.getAttribute("authNo").toString());
        // coolsmsService.sendSms(coolSms);
         return ResponseEntity.ok(CommonResponse.successResult());
     }

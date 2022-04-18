@@ -41,6 +41,7 @@
     <select id="getQuestions" resultType="question" >
 		SELECT * FROM question
         WHERE inspection_idx = #{inspectionIdx}
+        AND del_yn = 'N'
         AND result_idx = #{resultIdx}
         ORDER BY question_order, question_idx ;
 	</select>

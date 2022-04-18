@@ -9,7 +9,7 @@
 	</select>
 
     <select id="getQuestionListWithAnswer" resultType="question">
-        SELECT question_idx,  question_number, question_text, del_yn FROM question WHERE result_idx = #{resultIdx}
+        SELECT question_idx,  question_number, question_text, del_yn FROM question WHERE result_idx = #{resultIdx}  AND del_yn = 'N'
     </select>
 
     <resultMap type="answer" id="answerMap" autoMapping="true">
