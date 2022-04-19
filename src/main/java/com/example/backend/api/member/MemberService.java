@@ -56,6 +56,7 @@ public class MemberService implements UserDetailsService {
     }
 
     public void updateMember(int idx, Member member){
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberMapper.updateMember(idx, member);
     }
 
