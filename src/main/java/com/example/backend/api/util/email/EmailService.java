@@ -1,11 +1,13 @@
 package com.example.backend.api.util.email;
 
 import com.example.backend.api.auth.redis.RedisService;
+import com.example.backend.common.DefaultCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message.RecipientType;
@@ -24,7 +26,8 @@ public class EmailService {
     private final RedisService redisService;
     private final JavaMailSender javaMailSender;
 
-    public void sendSignUpVerifyEmail(EmailVo emailVo){
+    //@Async
+    public String sendSignUpVerifyEmail(EmailVo emailVo){
 
         String verifyLink = link + "";
         StringBuffer message = new StringBuffer();
@@ -37,9 +40,11 @@ public class EmailService {
         message.append("</div>");
         emailVo.setMessage(message.toString());
         emailVo.setTitle("옥타그노시스 - 회원 가입 인증 메일");
-        String key = UUID.randomUUID().toString();
-        redisService.setValuesExpire(key, emailVo.getTo(), EMAIL_VERIFY_TIME);
+        String uUid = UUID.randomUUID().toString();
+        redisService.setValuesExpire(uUid, DefaultCode.EMAIL_VERIFY_INCOMPLETE, EMAIL_VERIFY_TIME);
         sendMessage(emailVo);
+
+        return uUid;
 
     }
 

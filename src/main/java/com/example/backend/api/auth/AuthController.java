@@ -179,8 +179,10 @@ public class AuthController {
 
     @PostMapping("/send-email")
     public ResponseEntity sendEmail(@RequestBody EmailVo emailVo){
-        emailService.sendSignUpVerifyEmail(emailVo);
-        return ResponseEntity.ok(CommonResponse.successResult());
+        String uUid = emailService.sendSignUpVerifyEmail(emailVo);
+        Map<String, Object> map = new HashMap<>();
+        map.put("uUid", uUid);
+        return ResponseEntity.ok(CommonResponse.successResult(map));
     }
 
     @PostMapping("/verify-email")
