@@ -5,6 +5,8 @@ import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.MemberService;
+import com.example.backend.api.util.email.EmailService;
+import com.example.backend.api.util.email.EmailVo;
 import com.example.backend.common.exception.ApiException;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.enumerator.ResponseCode;
@@ -30,6 +32,8 @@ public class AuthController {
     Oauth2KakaoService oauth2KakaoService;
     @Autowired
     Oauth2NaverService oauth2NaverService;
+    @Autowired
+    EmailService emailService;
     @Autowired
     CoolsmsService coolsmsService;
 
@@ -171,6 +175,17 @@ public class AuthController {
         coolSms.setText("[humannx] 인증번호는 " + authNo + " 입니다");
        // coolsmsService.sendSms(coolSms);
         return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @PostMapping("/send-email")
+    public ResponseEntity sendEmail(@RequestBody EmailVo emailVo){
+        emailService.sendSignUpVerifyEmail(emailVo);
+        return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity verifyEmail(@RequestParam String uUid){
+        return ResponseEntity.ok(uUid);
     }
 
     @PostMapping("/check-sms")

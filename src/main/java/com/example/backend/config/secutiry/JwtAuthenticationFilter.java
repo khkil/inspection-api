@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }catch (ExpiredJwtException e){
             logger.error("토큰 만료");
-            e.printStackTrace();
             if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken)){
                 String userPk = jwtTokenProvider.getUserPk(refreshToken);
                 String redisRefreshToken = redisService.getValues(userPk);
@@ -59,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         filterChain.doFilter(request, response);
     }
