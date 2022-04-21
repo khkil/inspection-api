@@ -186,8 +186,20 @@ public class AuthController {
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity verifyEmail(@RequestParam String uUid){
-        return ResponseEntity.ok(uUid);
+    public ResponseEntity verifyEmail(@RequestBody Map<String, String> param){
+        String uUid = param.get("uUid");
+        emailService.verifyEmail(uUid);
+        return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity checkEmailVerified(@RequestBody Map<String, String> param){
+        String uUid = param.get("uUid");
+        boolean success = emailService.checkEmailVerified(uUid);
+        if(!success){
+            throw new IllegalArgumentException("이메일 인증 실패");
+        }
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("/check-sms")
