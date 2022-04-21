@@ -21,7 +21,7 @@ public class EmailService {
 
     @Value("${env.inspection.link}")
     private String link;
-    private final long EMAIL_VERIFY_TIME = (1000L * 60) * 300; // 3분
+    private final long EMAIL_VERIFY_TIME = (1000L * 60) * 300; // 5분
 
     private final RedisService redisService;
     private final JavaMailSender javaMailSender;
@@ -29,18 +29,39 @@ public class EmailService {
     //@Async
     public String sendSignUpVerifyEmail(EmailVo emailVo){
 
-        String verifyLink = link + "";
+        String uUid = UUID.randomUUID().toString();
+        String verifyLink = link + "/auth/verify-email?uUid=" + uUid;
         StringBuffer message = new StringBuffer();
 
-
+/*
         message.append("<h2 style=\"font-size: 30px; padding-right: 30px; padding-left: 30px;\">이메일 인증</h2>");
         message.append("<p style=\"font-size: 17px; padding-right: 30px; padding-left: 30px;\">아래 인증 링크를 타고 들어가 인증을 완료해주세요.</p>");
         message.append("<div style=\"padding-right: 30px; padding-left: 30px; margin: 32px 0 40px;\">");
         message.append("<a href=\""+verifyLink+"\" style=\"text-decoration: none; color: #0063fc;\" rel=\"noreferrer noopener\" target=\"_blank\">"+verifyLink+"</a>");
+        message.append("</div>");*/
+        message.append("<div style=\"padding: 26px 18px;\">");
+        message.append(" <img src=\"http://www.humannx.com/images/logo-octagnosis.png\" loading=\"lazy\">");
+        message.append("<h1 style=\"margin-top: 23px; margin-bottom: 9px; color: #222222; font-size: 19px; line-height: 25px; letter-spacing: -0.27px;\">길기환님 안녕하세요.</h1>");
+        message.append("<div style=\"margin-top: 7px; margin-bottom: 22px; color: #222222;\">");
+        message.append(" <p style=\"margin-block-start: 0; margin-block-end: 0; margin-inline-start: 0; margin-inline-end: 0; line-height: 1.47; letter-spacing: -0.22px; font-size: 15px; margin: 8px 0 0;\">옥타그노시스 회원가입을 위해 이메일 인증이 필요합니다.</p>");
+        message.append("<p style=\"margin-block-start: 0; margin-block-end: 0; margin-inline-start: 0; margin-inline-end: 0; line-height: 1.47; letter-spacing: -0.22px; font-size: 15px; margin: 8px 0 0;\">이메일 인증 완료를 위해 아래 버튼을 눌러주세요. </p>");
+        message.append("<a href=\"" + verifyLink + "\" style=\"text-decoration: none; color: white; display: inline-block; font-size: 15px; font-weight: 500; font-stretch: normal; font-style: normal; line-: normal; letter-spacing: normal; border-radius: 2px; background-color: #141517; margin: 24px 0 19px; padding: 11px 6px;\" rel=\"noreferrer noopener\" target=\"_blank\">이메일 인증하기</a>");
+        message.append("<p style=\"margin-block-start: 0; margin-block-end: 0; margin-inline-start: 0; margin-inline-end: 0; line-height: 1.47; letter-spacing: -0.22px; font-size: 15px; margin: 20px 0;\">감사합니다.</p>");
+        message.append("<hr style=\"display: block; height: 1px; background-color: #ebebeb; margin: 14px 0; padding: 0; border: 0;\">");
+        message.append("<div>");
+        message.append("<p style=\"margin-block: 0; margin-inline: 0; font-weight: normal; font-size: 13px; font-stretch: normal; font-style: normal; line-height: 1.43; letter-spacing: normal; color: #8a8a8a; margin: 5px 0 0;\">본 메일은 발신 전용입니다.</p>");
+        /*message.append("<p style=\"margin-block: 0; margin-inline: 0; font-weight: normal; font-size: 14px; font-stretch: normal; font-style: normal; line-height: 1.43; letter-spacing: normal; color: #8a8a8a; margin: 5px 0 0;\">© 2021. <a href=\"\" style=\"text-decoration: none; font-weight: 600; color: #8a8a8a;\" rel=\"noreferrer noopener\" target=\"_blank\">Watcha, Inc.</a> All rights reserved.</p>")*/
         message.append("</div>");
+
+
+
+        message.append(" </div>");
+
+
+
         emailVo.setMessage(message.toString());
         emailVo.setTitle("옥타그노시스 - 회원 가입 인증 메일");
-        String uUid = UUID.randomUUID().toString();
+
         redisService.setValuesExpire(uUid, DefaultCode.EMAIL_VERIFY_INCOMPLETE, EMAIL_VERIFY_TIME);
         sendMessage(emailVo);
 
@@ -48,7 +69,19 @@ public class EmailService {
 
     }
 
-    public boolean verifyEmailSuccess(String uUid){
+    public void verifyEmail(String uUid){
+        String value = redisService.getValues(uUid);
+        if(value == null || !value.equals(DefaultCode.EMAIL_VERIFY_INCOMPLETE)){
+            throw new IllegalArgumentException("이메일 인증 실패");
+        }
+        redisService.setValues(uUid, DefaultCode.EMAIL_VERIFY_COMPLETE);
+    }
+
+    public boolean checkEmailVerified(String uUid){
+        String value = redisService.getValues(uUid);
+        if(value != null && value.equals(DefaultCode.EMAIL_VERIFY_COMPLETE)){
+            return true;
+        }
         return false;
     }
 
