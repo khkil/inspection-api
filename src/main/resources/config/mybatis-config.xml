@@ -14,6 +14,7 @@
         <typeAlias alias="answer" type="com.example.backend.api.inspection.question.answer.model.Answer"/>
         <typeAlias alias="member"  type="com.example.backend.api.member.model.Member"/>
         <typeAlias alias="memberAnswer" type="com.example.backend.api.inspection.question.answer.model.MemberAnswer"/>
+        <typeAlias alias="resetPasswordVo" type="com.example.backend.api.auth.model.ResetPasswordVo"/>
         <typeAlias alias="result" type="com.example.backend.api.inspection.result.model.Result"/>
         <typeAlias alias="resultContent" type="com.example.backend.api.inspection.result.model.ResultContent"/>
         <typeAlias alias="user" type="com.example.backend.api.user.User"/>

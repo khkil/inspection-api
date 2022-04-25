@@ -9,10 +9,6 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-    @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

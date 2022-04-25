@@ -8,7 +8,6 @@
         UPDATE `member`
         <set>
             <if test="member.name != null"> name = #{member.name},</if>
-            <if test="member.password != null"> password = #{member.password},</if>
             <if test="member.email != null"> email = #{member.email},</if>
             <if test="member.phone != null"> phone = #{member.phone},</if>
             <if test="member.address != null"> address = #{member.address},</if>
@@ -23,6 +22,10 @@
         u_date = NOW()
         </set>
         WHERE idx = #{idx};
+    </update>
+    <update id="changePassword" >
+
+        UPDATE member SET password = #{password} WHERE idx = #{idx};
     </update>
 
     <select id="loadUserByUserName" parameterType="member" resultType="member">

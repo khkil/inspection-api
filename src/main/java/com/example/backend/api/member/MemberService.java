@@ -1,5 +1,6 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.auth.model.ResetPasswordVo;
 import com.example.backend.api.member.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,8 +57,11 @@ public class MemberService implements UserDetailsService {
     }
 
     public void updateMember(int idx, Member member){
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberMapper.updateMember(idx, member);
+    }
+
+    public void changePassword(int idx, String password){
+        memberMapper.changePassword(idx, password);
     }
 
     public Member duplicateMember(String id){
@@ -73,6 +77,7 @@ public class MemberService implements UserDetailsService {
         Member memberInfo = member.builder()
                 .idx(member.getIdx())
                 .id(member.getId())
+                .password(member.getPassword())
                 .name(member.getName())
                 .email(member.getEmail())
                 .phone(member.getPhone())

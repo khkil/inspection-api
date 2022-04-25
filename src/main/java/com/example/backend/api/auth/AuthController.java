@@ -1,6 +1,7 @@
 package com.example.backend.api.auth;
 
 import com.example.backend.api.auth.model.AuthKakao;
+import com.example.backend.api.auth.model.ResetPasswordVo;
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.model.Member;
@@ -12,6 +13,7 @@ import com.example.backend.common.CommonResponse;
 import com.example.backend.util.enumerator.ResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -199,6 +201,13 @@ public class AuthController {
         if(!success){
             throw new IllegalArgumentException("이메일 인증 실패");
         }
+        return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity resetPassword(@AuthenticationPrincipal Member member, @RequestBody ResetPasswordVo resetPasswordVo){
+        int memberIdx = member.getIdx();
+        authService.ResetPassword(memberIdx, resetPasswordVo);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 

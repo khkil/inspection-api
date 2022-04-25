@@ -1,5 +1,6 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.auth.model.ResetPasswordVo;
 import com.example.backend.api.member.model.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,5 @@ public interface MemberMapper {
     Member findIdByPhone(String phone);
     void insertMember(Member member);
     void updateMember(int idx, Member member);
+    void changePassword(int idx, String password);
 }
