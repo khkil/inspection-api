@@ -2,6 +2,7 @@ package com.example.backend.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class JacksonParsing {
     private static String CHARSET = "utf-8";
 
@@ -19,7 +21,7 @@ public class JacksonParsing {
             ObjectMapper mapper = new ObjectMapper();
             result = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("json string map parsing error");
         }
 
         return result;
@@ -31,7 +33,7 @@ public class JacksonParsing {
             ObjectMapper mapper = new ObjectMapper();
             result = mapper.readValue(json, new TypeReference<List<?>>() {});
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("json string list parsing error");
         }
         return result;
     }

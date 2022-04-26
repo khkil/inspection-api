@@ -94,7 +94,7 @@ public class EmailService {
             mimeMessage.setSubject(email.getTitle());
             mimeMessage.setText(email.getMessage(), "utf-8", "html");
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("메시지 생성 실패", e);
         }
         return mimeMessage;
     }
@@ -104,7 +104,7 @@ public class EmailService {
         try{
             javaMailSender.send(message);
         }catch(MailException e){
-            e.printStackTrace();
+            log.error("메시지 전송 실패", e);
             throw new IllegalArgumentException();
         }
     }

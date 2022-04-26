@@ -2,12 +2,14 @@ package com.example.backend.api.util.coolsms;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+@Slf4j
 @Service
 public class CoolsmsService {
 
@@ -25,7 +27,7 @@ public class CoolsmsService {
         try {
             coolsms.send(params);
         }catch (CoolsmsException e){
-            e.printStackTrace();
+            log.error("Cool sms 메세지 전송 실패", e);
         }
     }
 }
