@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 @Data
 public class EmailVo {
 
-    private String to;
+    private String toEmail;
     private String title;
     private String message;
+    private String authKey;
 
 }

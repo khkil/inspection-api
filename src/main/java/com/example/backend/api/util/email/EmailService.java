@@ -2,6 +2,7 @@ package com.example.backend.api.util.email;
 
 import com.example.backend.api.auth.redis.RedisService;
 import com.example.backend.common.DefaultCode;
+import com.example.backend.util.URLUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -26,11 +29,15 @@ public class EmailService {
     private final RedisService redisService;
     private final JavaMailSender javaMailSender;
 
-    //@Async
-    public String sendSignUpVerifyEmail(EmailVo emailVo){
+    @Async
+    public void sendSignUpVerifyEmail(EmailVo emailVo){
 
-        String uUid = UUID.randomUUID().toString();
-        String verifyLink = link + "/auth/verify-email?uUid=" + uUid;
+        String toEmail = emailVo.getToEmail();
+        String authKey = UUID.randomUUID().toString();
+        Map<String, Object> param = new HashMap<>();
+        param.put("authKey", authKey);
+        param.put("toEmail", toEmail);
+        String verifyLink = link + "/auth/verify-email?" + URLUtil.paramToQueryString(param);
         StringBuffer message = new StringBuffer();
 
 /*
@@ -41,7 +48,7 @@ public class EmailService {
         message.append("</div>");*/
         message.append("<div style=\"padding: 26px 18px;\">");
         message.append(" <img src=\"http://www.humannx.com/images/logo-octagnosis.png\" loading=\"lazy\">");
-        message.append("<h1 style=\"margin-top: 23px; margin-bottom: 9px; color: #222222; font-size: 19px; line-height: 25px; letter-spacing: -0.27px;\">길기환님 안녕하세요.</h1>");
+        message.append("<h1 style=\"margin-top: 23px; margin-bottom: 9px; color: #222222; font-size: 19px; line-height: 25px; letter-spacing: -0.27px;\">안녕하세요.</h1>");
         message.append("<div style=\"margin-top: 7px; margin-bottom: 22px; color: #222222;\">");
         message.append(" <p style=\"margin-block-start: 0; margin-block-end: 0; margin-inline-start: 0; margin-inline-end: 0; line-height: 1.47; letter-spacing: -0.22px; font-size: 15px; margin: 8px 0 0;\">옥타그노시스 회원가입을 위해 이메일 인증이 필요합니다.</p>");
         message.append("<p style=\"margin-block-start: 0; margin-block-end: 0; margin-inline-start: 0; margin-inline-end: 0; line-height: 1.47; letter-spacing: -0.22px; font-size: 15px; margin: 8px 0 0;\">이메일 인증 완료를 위해 아래 버튼을 눌러주세요. </p>");
@@ -52,45 +59,36 @@ public class EmailService {
         message.append("<p style=\"margin-block: 0; margin-inline: 0; font-weight: normal; font-size: 13px; font-stretch: normal; font-style: normal; line-height: 1.43; letter-spacing: normal; color: #8a8a8a; margin: 5px 0 0;\">본 메일은 발신 전용입니다.</p>");
         /*message.append("<p style=\"margin-block: 0; margin-inline: 0; font-weight: normal; font-size: 14px; font-stretch: normal; font-style: normal; line-height: 1.43; letter-spacing: normal; color: #8a8a8a; margin: 5px 0 0;\">© 2021. <a href=\"\" style=\"text-decoration: none; font-weight: 600; color: #8a8a8a;\" rel=\"noreferrer noopener\" target=\"_blank\">Watcha, Inc.</a> All rights reserved.</p>")*/
         message.append("</div>");
-
-
-
         message.append(" </div>");
-
-
 
         emailVo.setMessage(message.toString());
         emailVo.setTitle("옥타그노시스 - 회원 가입 인증 메일");
 
-        redisService.setValuesExpire(uUid, DefaultCode.EMAIL_VERIFY_INCOMPLETE, EMAIL_VERIFY_TIME);
+        redisService.setValuesExpire(toEmail, authKey, EMAIL_VERIFY_TIME);
         sendMessage(emailVo);
-
-        return uUid;
-
     }
 
-    public void verifyEmail(String uUid){
-        String value = redisService.getValues(uUid);
-        if(value == null || !value.equals(DefaultCode.EMAIL_VERIFY_INCOMPLETE)){
+    public void verifyEmail(String toEmail, String authKey){
+        Object value = redisService.getValues(toEmail);
+        if(value == null || !value.equals(authKey)){
             throw new IllegalArgumentException("이메일 인증 실패");
         }
-        redisService.setValues(uUid, DefaultCode.EMAIL_VERIFY_COMPLETE);
+        redisService.setValues(toEmail, DefaultCode.EMAIL_VERIFY_COMPLETE);
     }
 
-    public boolean checkEmailVerified(String uUid){
-        String value = redisService.getValues(uUid);
-        if(value != null && value.equals(DefaultCode.EMAIL_VERIFY_COMPLETE)){
-            return true;
-        }
-        return false;
+    public void checkEmailVerified(String toEmail){
+        Object value = redisService.getValues(toEmail);
+        boolean success = value.equals(DefaultCode.EMAIL_VERIFY_COMPLETE);
+        if(!success) throw new IllegalArgumentException("이메일 인증 실패");
+
     }
 
     private MimeMessage createMessage(EmailVo email) {
-        log.info("보내는 사람 : " + email.getTo());
+        log.info("보내는 사람 : " + email.getToEmail());
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
-            mimeMessage.addRecipients(RecipientType.TO, email.getTo());
+            mimeMessage.addRecipients(RecipientType.TO, email.getToEmail());
             mimeMessage.setSubject(email.getTitle());
             mimeMessage.setText(email.getMessage(), "utf-8", "html");
         }catch (Exception e){

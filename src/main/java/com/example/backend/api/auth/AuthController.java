@@ -181,26 +181,19 @@ public class AuthController {
 
     @PostMapping("/send-email")
     public ResponseEntity sendEmail(@RequestBody EmailVo emailVo){
-        String uUid = emailService.sendSignUpVerifyEmail(emailVo);
-        Map<String, Object> map = new HashMap<>();
-        map.put("uUid", uUid);
-        return ResponseEntity.ok(CommonResponse.successResult(map));
+        emailService.sendSignUpVerifyEmail(emailVo);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity verifyEmail(@RequestBody Map<String, String> param){
-        String uUid = param.get("uUid");
-        emailService.verifyEmail(uUid);
+    public ResponseEntity verifyEmail(@RequestBody EmailVo emailVo){
+        emailService.verifyEmail(emailVo.getToEmail(), emailVo.getAuthKey());
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("/check-email")
-    public ResponseEntity checkEmailVerified(@RequestBody Map<String, String> param){
-        String uUid = param.get("uUid");
-        boolean success = emailService.checkEmailVerified(uUid);
-        if(!success){
-            throw new IllegalArgumentException("이메일 인증 실패");
-        }
+    public ResponseEntity checkEmailVerified(@RequestBody EmailVo emailVo){
+        emailService.checkEmailVerified(emailVo.getToEmail());
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
