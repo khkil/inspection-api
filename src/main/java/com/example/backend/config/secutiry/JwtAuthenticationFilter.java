@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.error("토큰 만료");
             if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken)){
                 String userPk = jwtTokenProvider.getUserPk(refreshToken);
-                String redisRefreshToken = redisService.getValues(userPk);
+                Object redisRefreshToken = redisService.getValues(userPk);
                 if(redisRefreshToken != null && redisRefreshToken.equals(refreshToken)){
                     Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
                     List<String> userRoles = (List<String>) claims.getBody().get("roles");

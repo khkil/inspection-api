@@ -14,18 +14,18 @@ public class RedisService {
     private final RedisTemplate redisTemplate;
 
     public void setValues(String key, String value){
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        ValueOperations<String, Object> values = redisTemplate.opsForValue();
         values.set(key, value);
     }
 
     public void setValuesExpire(String key, String value, long duration){
-        ValueOperations<String,String> valueOperations = redisTemplate.opsForValue();
+        ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
         Duration expireDuration = Duration.ofSeconds(duration);
         valueOperations.set(key, value, expireDuration);
     }
 
-    public String getValues(String key){
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
+    public Object getValues(String key){
+        ValueOperations<String, Object> values = redisTemplate.opsForValue();
         return values.get(key);
     }
 
