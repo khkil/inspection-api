@@ -179,9 +179,15 @@ public class AuthController {
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
-    @PostMapping("/send-email")
-    public ResponseEntity sendEmail(@RequestBody EmailVo emailVo){
+    @PostMapping("/send-sign-up-email")
+    public ResponseEntity sendSignUpVerifyEmail(@RequestBody EmailVo emailVo){
         emailService.sendSignUpVerifyEmail(emailVo);
+        return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @PostMapping("/send-find-id-email")
+    public ResponseEntity sendFindIdEmail(@RequestBody EmailVo emailVo){
+        emailService.sendFindIdEmail(emailVo);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 

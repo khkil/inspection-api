@@ -14,6 +14,7 @@ public interface MemberMapper {
     List<Member> getMemberList(String searchText);
     Member getMemberDetail(int idx);
     Member loadUserByUserName(String id);
+    Member loadUserByUserEmail(String email);
     Member findIdByInfo(String name, String email);
     Member findIdByPhone(String phone);
     void insertMember(Member member);

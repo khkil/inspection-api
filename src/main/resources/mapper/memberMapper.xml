@@ -25,12 +25,17 @@
     </update>
     <update id="changePassword" >
 
-        UPDATE member SET password = #{password} WHERE idx = #{idx};
+        UPDATE `member` SET password = #{password} WHERE idx = #{idx};
     </update>
 
     <select id="loadUserByUserName" parameterType="member" resultType="member">
         SELECT * FROM `member`
         WHERE id = #{id}
+    </select>
+
+    <select id="loadUserByUserEmail" parameterType="string" resultType="member">
+        SELECT * FROM `member`
+        WHERE email = #{email}
     </select>
 
     <select id="findIdByInfo" resultType="member" parameterType="map">
@@ -41,14 +46,12 @@
         SELECT id FROM `member` WHERE id = #{id} AND email = #{email}
     </select>
     <select id="getMemberList" resultType="member" parameterType="string">
-
         SELECT * FROM `member`
         <where>
             AND role = "ROLE_MEMBER"
             <if test="searchText != null">AND (name like CONCAT('%', #{parameter}, '%') )</if>
         </where>
     </select>
-
 
     <select id="getMemberDetail" resultType="member">
         SELECT * FROM `member`

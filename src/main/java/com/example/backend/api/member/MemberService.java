@@ -29,6 +29,20 @@ public class MemberService implements UserDetailsService {
         if(member != null){
             List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority(member.getRole()));
             member.setAuthorities(roles);
+        }else{
+            throw new UsernameNotFoundException("일치하는 아이디를 가진 없습니다.");
+        }
+        return member;
+    }
+
+    public Member loadUserByUserEmail(String email) throws UsernameNotFoundException {
+        Member member = memberMapper.loadUserByUserEmail(email);
+
+        if(member != null){
+            List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority(member.getRole()));
+            member.setAuthorities(roles);
+        }else{
+            throw new UsernameNotFoundException("일치하는 이메일을 가진 회원이 없습니다.");
         }
         return member;
     }

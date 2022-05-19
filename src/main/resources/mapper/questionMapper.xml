@@ -9,7 +9,7 @@
 	</select>
 
     <select id="getQuestionListWithAnswer" resultType="question">
-        SELECT question_idx,  question_number, question_text, del_yn FROM question WHERE result_idx = #{resultIdx}  AND del_yn = 'N'
+        SELECT question_idx,  question_number, question_text, del_yn FROM question WHERE result_idx = #{resultIdx}  AND del_yn = 'N' ORDER BY question_number;
     </select>
 
     <resultMap type="answer" id="answerMap" autoMapping="true">
@@ -54,8 +54,6 @@
             file_path = #{question.filePath, typeHandler=JSONTypeHandler},
             del_yn = IFNULL(#{question.delYn}, del_yn)
         WHERE question_idx = #{questionIdx};
-
-
         <if test="question.answers != null and question.answers.size > 0">
             <foreach collection="question.answers" item="answer" index="index">
                 UPDATE answer SET
