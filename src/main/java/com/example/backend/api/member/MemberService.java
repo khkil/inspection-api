@@ -30,7 +30,7 @@ public class MemberService implements UserDetailsService {
             List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority(member.getRole()));
             member.setAuthorities(roles);
         }else{
-            throw new UsernameNotFoundException("일치하는 아이디를 가진 없습니다.");
+            throw new UsernameNotFoundException("일치하는 아이디를 가진 회원이 없습니다.");
         }
         return member;
     }
