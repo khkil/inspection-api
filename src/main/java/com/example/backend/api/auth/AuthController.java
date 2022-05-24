@@ -143,14 +143,14 @@ public class AuthController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity getUserInfo(HttpServletRequest request, Principal principal){
+    public ResponseEntity getUserInfo(Principal principal){
         return ResponseEntity.ok().body(principal);
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity validateToken(HttpServletRequest request, Principal principal){
+    public ResponseEntity validateToken(@AuthenticationPrincipal Member member){
 
-        Member member = (Member) memberService.loadUserByUsername(principal.getName());
+        if(member == null) throw new ApiException("토큰 검증 실패");
         return ResponseEntity.ok().body(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 

@@ -39,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             refreshToken = jwtTokenProvider.resolveRefreshToken(request);
             if(accessToken != null){
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-                String userPk = jwtTokenProvider.getUserPk(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (ExpiredJwtException e){

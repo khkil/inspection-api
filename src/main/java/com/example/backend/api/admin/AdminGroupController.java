@@ -2,6 +2,8 @@ package com.example.backend.api.admin;
 
 import com.example.backend.api.group.Group;
 import com.example.backend.api.group.GroupService;
+import com.example.backend.api.group.code.GroupCode;
+import com.example.backend.api.group.code.GroupCodeService;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.PageUtil;
 import com.github.pagehelper.PageHelper;
@@ -21,12 +23,14 @@ public class AdminGroupController {
 
     @Autowired
     GroupService groupService;
+    @Autowired
+    GroupCodeService groupCodeService;
 
     @GetMapping
-    public ResponseEntity getAdminGroups(PageUtil pageUtil) {
+    public ResponseEntity getAdminGroups(@RequestParam(required = false) String searchText, PageUtil pageUtil) {
 
         PageHelper.startPage(pageUtil.getPageNum(), pageUtil.getPageSize());
-        List<Group> groups = groupService.getAdminGroupList();
+        List<Group> groups = groupService.getGroupList(searchText);
         PageInfo<Group> groupsPageInfo = new PageInfo<>(groups);
         return ResponseEntity.ok(CommonResponse.successResult(groupsPageInfo));
     }
@@ -53,6 +57,12 @@ public class AdminGroupController {
     public ResponseEntity deleteGroup(@PathVariable int groupIdx){
         groupService.deleteGroup(groupIdx);
         return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @GetMapping("/{groupIdx}/codes")
+    public ResponseEntity getGroupCodeList(@PathVariable int groupIdx){
+        List<GroupCode> groupCodeList = groupCodeService.getGroupCodeList(groupIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(groupCodeList));
     }
 
 }

@@ -13,8 +13,8 @@ public class GroupService {
     @Autowired
     GroupMapper groupMapper;
 
-    public List<Group> getGroupList(){
-        return groupMapper.getGroupList();
+    public List<Group> getGroupList(String searchText){
+        return groupMapper.getGroupList(searchText);
     }
 
     public Group getGroupDetail(int idx){
@@ -34,9 +34,4 @@ public class GroupService {
         groupMapper.deleteGroup(groupIdx);
 
     }
-
-    public List<Group> getAdminGroupList(){
-        return groupMapper.getAdminGroupList();
-    }
-
 }

@@ -8,12 +8,10 @@ import java.util.List;
 @Repository
 public interface GroupMapper {
 
-    List<Group> getGroupList();
+    List<Group> getGroupList(String searchText);
     Group getGroupDetail(int idx);
     void insertGroup(Group group);
     void updateGroup(@Param("groupIdx") int groupIdx, @Param("group") Group group);
     void deleteGroup(int groupIdx);
-
-    List<Group> getAdminGroupList();
 
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.backend.api.group.code.GroupCodeMapper">
+
+
+    <select id="getGroupCodeList" resultType="groupCode" parameterType="int">
+        SELECT * FROM group_code WHERE group_idx = #{groupIdx}
+    </select>
+</mapper>

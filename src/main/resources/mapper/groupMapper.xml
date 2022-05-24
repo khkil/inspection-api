@@ -46,7 +46,10 @@
     </delete>
 
     <select id="getGroupList"  resultMap="groupListMap">
-        SELECT * FROM `group`;
+        SELECT * FROM `group`
+        <where>
+            <if test="searchText != null">AND (name like CONCAT('%', #{searchText}, '%') )</if>
+        </where>
     </select>
 
 

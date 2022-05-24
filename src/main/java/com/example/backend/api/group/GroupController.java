@@ -15,8 +15,8 @@ public class GroupController {
     GroupService groupService;
 
     @GetMapping
-    public ResponseEntity<List> getGroupList() {
-        return new ResponseEntity<>(groupService.getGroupList(), HttpStatus.OK);
+    public ResponseEntity<List> getGroupList(@RequestParam(required = false) String searchText) {
+        return new ResponseEntity<>(groupService.getGroupList(searchText), HttpStatus.OK);
     }
 
     @GetMapping("/{idx}")
