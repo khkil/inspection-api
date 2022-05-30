@@ -2,15 +2,13 @@ package com.example.backend.api.admin;
 
 import com.example.backend.api.group.Group;
 import com.example.backend.api.group.GroupService;
-import com.example.backend.api.group.code.GroupCode;
+import com.example.backend.api.group.code.GroupCodeConfig;
 import com.example.backend.api.group.code.GroupCodeService;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.PageUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +59,7 @@ public class AdminGroupController {
 
     @GetMapping("/{groupIdx}/codes")
     public ResponseEntity getGroupCodeList(@PathVariable int groupIdx){
-        List<GroupCode> groupCodeList = groupCodeService.getGroupCodeList(groupIdx);
+        List<GroupCodeConfig> groupCodeList = groupCodeService.getGroupCodeList(groupIdx);
         return ResponseEntity.ok(CommonResponse.successResult(groupCodeList));
     }
 

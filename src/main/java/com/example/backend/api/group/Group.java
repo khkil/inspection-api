@@ -1,5 +1,6 @@
 package com.example.backend.api.group;
 
+import com.example.backend.api.group.code.GroupCodeConfig;
 import com.example.backend.api.inspection.Inspection;
 import lombok.Data;
 
@@ -16,7 +17,9 @@ public class Group {
     private String contactName;
     private String contactEmail;
     private String contactTel;
+    private String groupCode;
 
+    private GroupCodeConfig groupCodeConfig;
     private List<Integer> grades;
     private List<Inspection> inspections;
 }

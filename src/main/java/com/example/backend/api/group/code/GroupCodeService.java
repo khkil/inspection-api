@@ -11,7 +11,7 @@ public class GroupCodeService {
     @Autowired
     GroupCodeMapper groupCodeMapper;
 
-    public List<GroupCode> getGroupCodeList(int groupIdx){
+    public List<GroupCodeConfig> getGroupCodeList(int groupIdx){
         return groupCodeMapper.getGroupCodeList(groupIdx);
     }
 }

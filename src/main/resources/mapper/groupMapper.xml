@@ -45,7 +45,7 @@
         DELETE FROM `group` WHERE idx = #{groupIdx};
     </delete>
 
-    <select id="getGroupList"  resultMap="groupListMap">
+    <select id="getGroupList"  resultType="group">
         SELECT * FROM `group`
         <where>
             <if test="searchText != null">AND (name like CONCAT('%', #{searchText}, '%') )</if>
@@ -53,14 +53,18 @@
     </select>
 
 
-    <resultMap id="groupListMap" type="group" autoMapping="true">
+    <resultMap id="groupMap" type="group" autoMapping="true">
         <id property="idx" column="idx"></id>
         <collection property="grades" column="idx"  select="getGroupGrades"/>
+        <collection property="groupCode" column="idx"  select="getGroupCodes"/>
     </resultMap>
-    <select id="getGroupDetail" parameterType="int" resultMap="groupListMap">
+    <select id="getGroupDetail" parameterType="int" resultMap="groupMap">
         SELECT * FROM `group` WHERE idx = #{idx}
     </select>
 
+    <select id="getGroupCodes" resultType="groupCode">
+        SELECT code FROM group_code WHERE group_idx = #{idx};
+    </select>
     <select id="getGroupGrades" resultType="int">
         SELECT user_grade FROM `user` WHERE group_idx = #{idx} GROUP BY user_grade;
     </select>
