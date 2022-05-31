@@ -5,7 +5,7 @@
 <mapper namespace="com.example.backend.api.group.code.GroupCodeMapper">
 
 
-    <select id="getGroupCodeList" resultType="groupCode" parameterType="int">
-        SELECT * FROM group_code WHERE group_idx = #{groupIdx}
+    <select id="getGroupCodeConfig" resultType="groupCode" parameterType="int">
+        SELECT * FROM group_code_config WHERE group_idx = #{groupIdx}
     </select>
 </mapper>

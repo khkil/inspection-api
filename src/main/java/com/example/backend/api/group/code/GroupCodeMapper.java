@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 public interface GroupCodeMapper {
 
-    List<GroupCodeConfig> getGroupCodeList(int groupIdx);
+    GroupCodeConfig getGroupCodeConfig(int groupIdx);
 }

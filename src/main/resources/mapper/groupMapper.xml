@@ -38,6 +38,7 @@
             <if test="group.contactName != null"> contact_name = #{group.contactName},</if>
             <if test="group.contactEmail != null"> contact_email = #{group.contactEmail},</if>
             <if test="group.contactTel != null"> contact_tel = #{group.contactTel},</if>
+            <if test="group.groupCode != null"> group_code = #{group.groupCode},</if>
         </set>
         WHERE idx = #{groupIdx};
     </update>
@@ -58,7 +59,7 @@
         <collection property="grades" column="idx"  select="getGroupGrades"/>
         <collection property="groupCode" column="idx"  select="getGroupCodes"/>
     </resultMap>
-    <select id="getGroupDetail" parameterType="int" resultMap="groupMap">
+    <select id="getGroupDetail" parameterType="int" resultType="group">
         SELECT * FROM `group` WHERE idx = #{idx}
     </select>
 

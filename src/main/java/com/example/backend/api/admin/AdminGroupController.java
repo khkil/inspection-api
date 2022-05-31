@@ -57,10 +57,10 @@ public class AdminGroupController {
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
-    @GetMapping("/{groupIdx}/codes")
+    @GetMapping("/{groupIdx}/code-config")
     public ResponseEntity getGroupCodeList(@PathVariable int groupIdx){
-        List<GroupCodeConfig> groupCodeList = groupCodeService.getGroupCodeList(groupIdx);
-        return ResponseEntity.ok(CommonResponse.successResult(groupCodeList));
+        GroupCodeConfig groupCodeConfig = groupCodeService.getGroupCodeConfig(groupIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(groupCodeConfig));
     }
 
 }
