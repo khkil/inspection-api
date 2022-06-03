@@ -10,4 +10,5 @@ import java.util.List;
 public interface GroupCodeMapper {
 
     GroupCodeConfig getGroupCodeConfig(int groupIdx);
+    void updateGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig);
 }

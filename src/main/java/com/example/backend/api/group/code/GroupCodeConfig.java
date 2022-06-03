@@ -8,5 +8,6 @@ public class GroupCodeConfig {
     private int groupIdx;
     private int maxCount;
     private String createdDate;
+    private String expireDate;
 
 }

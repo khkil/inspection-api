@@ -58,9 +58,15 @@ public class AdminGroupController {
     }
 
     @GetMapping("/{groupIdx}/code-config")
-    public ResponseEntity getGroupCodeList(@PathVariable int groupIdx){
+    public ResponseEntity getGroupCodeConfig(@PathVariable int groupIdx){
         GroupCodeConfig groupCodeConfig = groupCodeService.getGroupCodeConfig(groupIdx);
         return ResponseEntity.ok(CommonResponse.successResult(groupCodeConfig));
+    }
+
+    @PutMapping("/{groupIdx}/code-config")
+    public ResponseEntity updateGroupCodeConfig(@PathVariable int groupIdx, @RequestBody GroupCodeConfig groupCodeConfig){
+        groupCodeService.updateGroupCodeConfig(groupIdx, groupCodeConfig);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 
 }

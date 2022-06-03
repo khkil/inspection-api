@@ -14,4 +14,9 @@ public class GroupCodeService {
     public GroupCodeConfig getGroupCodeConfig(int groupIdx){
         return groupCodeMapper.getGroupCodeConfig(groupIdx);
     }
+
+    public void updateGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig){
+        groupCodeMapper.updateGroupCodeConfig(groupIdx, groupCodeConfig);
+    }
+
 }
