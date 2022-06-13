@@ -3,12 +3,11 @@ package com.example.backend.api.group.code;
 import lombok.Data;
 
 @Data
-public class GroupCode {
+public class GroupCodeConfig {
 
-    private int codeIdx;
     private int groupIdx;
-    private String code;
     private int maxCount;
     private String createdDate;
+    private String expireDate;
 
 }

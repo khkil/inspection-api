@@ -2,6 +2,8 @@ package com.example.backend.api.auth;
 
 import com.example.backend.api.auth.model.AuthKakao;
 import com.example.backend.api.auth.model.ResetPasswordVo;
+import com.example.backend.api.group.Group;
+import com.example.backend.api.group.code.GroupCodeService;
 import com.example.backend.api.util.coolsms.Coolsms;
 import com.example.backend.api.util.coolsms.CoolsmsService;
 import com.example.backend.api.member.model.Member;
@@ -38,6 +40,8 @@ public class AuthController {
     EmailService emailService;
     @Autowired
     CoolsmsService coolsmsService;
+    @Autowired
+    GroupCodeService groupCodeService;
 
 
     @PostMapping("/login")
@@ -224,7 +228,14 @@ public class AuthController {
 
         //session.invalidate();
         return ResponseEntity.ok().body(CommonResponse.successResult());
+    }
 
+    @PostMapping("/check-code")
+    public ResponseEntity checkCode(@RequestBody Group group){
+        String groupCode = group.getGroupCode();
+        Group groupFromCode = groupCodeService.getGroupCodeFromCode(groupCode);
+
+        return ResponseEntity.ok(groupFromCode);
     }
 
     @GetMapping("/find-id/{searchType}")

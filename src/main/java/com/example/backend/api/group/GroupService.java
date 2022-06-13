@@ -1,5 +1,6 @@
 package com.example.backend.api.group;
 
+import com.example.backend.common.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +30,8 @@ public class GroupService {
         groupMapper.updateGroup(groupIdx, group);
 
     }
-
     public void deleteGroup(int groupIdx){
         groupMapper.deleteGroup(groupIdx);
-
     }
+
 }
