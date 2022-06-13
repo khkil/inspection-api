@@ -81,5 +81,8 @@
     <select id="getAdminGroupList"  resultType="group">
         SELECT * FROM `group`
     </select>
+    <select id="getGroupDetailFromCode" resultType="group">
+        SELECT * FROM `group` WHERE group_code = #{groupCode};
+    </select>
 
 </mapper>

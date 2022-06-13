@@ -15,4 +15,7 @@
     <select id="getGroupCodeConfig" resultType="groupCode" parameterType="int">
         SELECT * FROM group_code_config WHERE group_idx = #{groupIdx}
     </select>
+    <select id="getGroupDetailFromCode" resultType="group">
+        SELECT * FROM `group` WHERE group_code = #{groupCode};
+    </select>
 </mapper>
