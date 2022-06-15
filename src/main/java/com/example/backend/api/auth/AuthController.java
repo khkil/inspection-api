@@ -162,8 +162,7 @@ public class AuthController {
     public ResponseEntity checkId(@RequestBody Member member){
 
         String memberId = member.getId();
-        Member duplicateMember = memberService.duplicateMember(memberId);
-        if(duplicateMember != null) throw new ApiException("이미 사용중인 아이디 입니다.");
+        memberService.checkDuplicateMember(memberId);
         return ResponseEntity.ok(CommonResponse.successResult());
 
     }

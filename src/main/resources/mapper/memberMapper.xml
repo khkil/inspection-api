@@ -57,10 +57,53 @@
         SELECT * FROM `member`
         WHERE idx = #{idx}
     </select>
+    <select id="getMembersGroup" resultType="group">
+
+        SELECT g.* FROM `group` g
+        LEFT OUTER JOIN `member` m
+            ON g.idx = m.group_idx
+        WHERE
+            m.idx = #{memberIdx};
+    </select>
 
     <insert id="insertMember" parameterType="member" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO `member`(id, group_idx, name, password, role, email, phone, address, address_sub, school, education, grade, major, job, company, job_detail, cdate)
-            VALUES(#{id}, #{groupIdx} ,#{name}, #{password}, #{role}, #{email}, #{phone}, #{address}, #{addressSub}, #{school}, #{education}, #{grade}, #{major}, #{job}, #{company}, #{jobDetail}, now());
+        INSERT INTO `member`(
+            id,
+            <if test="groupIdx != null and groupIdx > 0">group_idx,</if>
+            name,
+            password,
+            role,
+            email,
+            phone,
+            address,
+            address_sub,
+            school,
+            education,
+            grade,
+            major,
+            job,
+            company,
+            job_detail,
+            cdate
+        ) VALUES(
+            #{id},
+            <if test="groupIdx != null and groupIdx > 0">#{groupIdx},</if>
+            #{name},
+            #{password},
+            #{role},
+            #{email},
+            #{phone},
+            #{address},
+            #{addressSub},
+            #{school},
+            #{education},
+            #{grade},
+            #{major},
+            #{job},
+            #{company},
+            #{jobDetail},
+            now()
+        );
     </insert>
 
 </mapper>

@@ -5,6 +5,7 @@ import com.example.backend.api.group.Group;
 import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
+import com.google.protobuf.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -72,7 +73,7 @@ public class MemberService implements UserDetailsService {
 
     public void insertMember(Member member){
         String groupCode = member.getGroupCode();
-        if(groupCode != null){
+        if(groupCode != null && !groupCode.isEmpty()){
             Group group = groupCodeMapper.getGroupDetailFromCode(groupCode);
             if(group == null) throw new ApiException("유효하지 않은 코드입니다");
             member.setGroupIdx(group.getIdx());
@@ -85,13 +86,18 @@ public class MemberService implements UserDetailsService {
         memberMapper.updateMember(idx, member);
     }
 
+    public Group getMembersGroup(int memberIdx){
+        Group group = memberMapper.getMembersGroup(memberIdx);
+        return group;
+    }
+
     public void changePassword(int idx, String password){
         memberMapper.changePassword(idx, password);
     }
 
-    public Member duplicateMember(String id){
-        Member duplicateMember = memberMapper.loadUserByUserName(id);
-        return duplicateMember;
+    public void checkDuplicateMember(String id){
+        Member member = memberMapper.loadUserByUserName(id);
+        if(member != null) throw new ApiException("이미 사용중인 아이디 입니다.");
     }
 
     public boolean checkPassword(Member user, Member member){
@@ -102,6 +108,7 @@ public class MemberService implements UserDetailsService {
         Member memberInfo = member.builder()
                 .idx(member.getIdx())
                 .id(member.getId())
+                .groupIdx(member.getGroupIdx())
                 .password(member.getPassword())
                 .name(member.getName())
                 .email(member.getEmail())
