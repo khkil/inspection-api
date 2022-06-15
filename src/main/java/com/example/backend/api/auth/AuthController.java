@@ -233,9 +233,9 @@ public class AuthController {
     @PostMapping("/check-code")
     public ResponseEntity checkCode(@RequestBody Group group){
         String groupCode = group.getGroupCode();
-        Group groupFromCode = groupCodeService.getGroupCodeFromCode(groupCode);
+        Group groupFromCode = groupCodeService.checkCode(groupCode);
 
-        return ResponseEntity.ok(groupFromCode);
+        return ResponseEntity.ok(CommonResponse.successResult(groupFromCode));
     }
 
     @GetMapping("/find-id/{searchType}")

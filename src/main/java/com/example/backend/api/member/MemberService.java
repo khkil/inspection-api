@@ -1,7 +1,10 @@
 package com.example.backend.api.member;
 
 import com.example.backend.api.auth.model.ResetPasswordVo;
+import com.example.backend.api.group.Group;
+import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
+import com.example.backend.common.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +22,8 @@ public class MemberService implements UserDetailsService {
 
     @Autowired
     MemberMapper memberMapper;
+    @Autowired
+    GroupCodeMapper groupCodeMapper;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -66,6 +71,12 @@ public class MemberService implements UserDetailsService {
     }
 
     public void insertMember(Member member){
+        String groupCode = member.getGroupCode();
+        if(groupCode != null){
+            Group group = groupCodeMapper.getGroupDetailFromCode(groupCode);
+            if(group == null) throw new ApiException("유효하지 않은 코드입니다");
+            member.setGroupIdx(group.getIdx());
+        }
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberMapper.insertMember(member);
     }

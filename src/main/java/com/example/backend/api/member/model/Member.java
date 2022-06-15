@@ -19,6 +19,7 @@ public class Member implements UserDetails{
 
     private List<GrantedAuthority> authorities;
     private int idx;
+    private int groupIdx;
     private String id;
     private String password;
     private String name;
@@ -36,12 +37,15 @@ public class Member implements UserDetails{
     private String jobDetail;
     private String cDate;
     private String uDate;
+    private String delYn;
     private String authKey;
 
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
+
+    private String groupCode;
 
 
     public Member(String id, String name){
