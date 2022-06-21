@@ -63,10 +63,10 @@ public class AdminGroupController {
         return ResponseEntity.ok(CommonResponse.successResult(groupCodeConfig));
     }
 
-    @PutMapping("/{groupIdx}/code-config")
-    public ResponseEntity updateGroupCodeConfig(@PathVariable int groupIdx, @RequestBody GroupCodeConfig groupCodeConfig){
-        groupCodeService.updateGroupCodeConfig(groupIdx, groupCodeConfig);
+
+    @PostMapping("/{groupIdx}/code-config")
+    public ResponseEntity saveGroupCodeConfig(@PathVariable int groupIdx, @RequestBody GroupCodeConfig groupCodeConfig){
+        groupCodeService.saveGroupCodeConfig(groupIdx, groupCodeConfig);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
-
 }

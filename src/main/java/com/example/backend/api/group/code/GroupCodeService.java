@@ -1,14 +1,9 @@
 package com.example.backend.api.group.code;
 
 import com.example.backend.api.group.Group;
-import com.example.backend.api.group.GroupMapper;
-import com.example.backend.api.member.MemberMapper;
-import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class GroupCodeService {
@@ -20,8 +15,8 @@ public class GroupCodeService {
         return groupCodeMapper.getGroupCodeConfig(groupIdx);
     }
 
-    public void updateGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig){
-        groupCodeMapper.updateGroupCodeConfig(groupIdx, groupCodeConfig);
+    public void saveGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig){
+        groupCodeMapper.saveGroupCodeConfig(groupIdx, groupCodeConfig);
     }
 
     public Group checkCode(String groupCode){

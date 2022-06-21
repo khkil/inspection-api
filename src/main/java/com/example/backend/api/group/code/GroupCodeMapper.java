@@ -11,7 +11,7 @@ import java.util.List;
 public interface GroupCodeMapper {
 
     GroupCodeConfig getGroupCodeConfig(int groupIdx);
-    void updateGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig);
+    void saveGroupCodeConfig(int groupIdx, GroupCodeConfig groupCodeConfig);
     Group getGroupDetailFromCode(String groupCode);
     int getMemberCount(int groupIdx);
 }

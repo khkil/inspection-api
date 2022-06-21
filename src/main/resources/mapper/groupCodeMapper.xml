@@ -3,14 +3,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.backend.api.group.code.GroupCodeMapper">
-    <update id="updateGroupCodeConfig">
-        UPDATE group_code_config
-        <set>
-            <if test="groupCodeConfig.maxCount != null "> max_count = #{groupCodeConfig.maxCount},</if>
-            <if test="groupCodeConfig.expireDate != null "> expire_date = #{groupCodeConfig.expireDate},</if>
-        </set>
-    </update>
+    <insert id="saveGroupCodeConfig">
 
+        INSERT INTO group_code_config VALUES (#{groupCodeConfig.groupIdx}, #{groupCodeConfig.maxCount}, NOW(), #{groupCodeConfig.expireDate})
+        ON DUPLICATE KEY UPDATE max_count=#{groupCodeConfig.maxCount}, expire_date=#{groupCodeConfig.expireDate};
+
+    </insert>
 
     <select id="getGroupCodeConfig" resultType="groupCode" parameterType="int">
         SELECT * FROM group_code_config WHERE group_idx = #{groupIdx}
