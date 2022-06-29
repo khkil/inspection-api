@@ -9,7 +9,9 @@ import java.util.Map;
 @Repository
 public interface ResultMapper {
 
+    List<Result> getInspectionResults(int inspectionIdx);
     List<Result> getResults(Map<String, Object> params);
     List<Result> getResultsWithQuestions(Result result);
+
 
 }

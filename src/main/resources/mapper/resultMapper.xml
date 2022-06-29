@@ -48,6 +48,10 @@
     <select id="getResultsWithQuestions" resultMap="resultWithQuestionMap">
         SELECT inspection_idx, result_idx, result_name FROM result WHERE inspection_idx = #{inspectionIdx}
     </select>
+    <select id="getInspectionResults" resultType="result">
+
+        SELECT * FROM result WHERE inspection_idx = #{inspectionIdx}
+    </select>
     <!--  -->
 
 
