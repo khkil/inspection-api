@@ -12,6 +12,8 @@ public interface ResultMapper {
     List<Result> getInspectionResults(int inspectionIdx);
     List<Result> getResults(Map<String, Object> params);
     List<Result> getResultsWithQuestions(Result result);
+    void insertResults(int inspectionIdx, List<Result> resultList);
+    void deleteResult(int inspectionIdx, int resultIdx);
 
 
 }

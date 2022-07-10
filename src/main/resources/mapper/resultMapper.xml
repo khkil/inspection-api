@@ -10,7 +10,18 @@
 
         <collection property="goodResult" column="good_result_idx" ofType="Post" select="getResult"/>
         <collection property="badResult" column="bad_result_idx" ofType="Post" select="getResult"/>
+
     </resultMap>
+    <insert id="insertResults">
+
+        <foreach collection="resultList" item="result" index="key">
+            INSERT INTO result(inspection_idx, result_name) VALUES(#{inspectionIdx}, #{result.resultName});
+        </foreach>
+    </insert>
+    <delete id="deleteResult">
+
+        DELETE FROM result WHERE inspection_idx = #{inspectionIdx} AND result_idx = #{resultIdx};
+    </delete>
     <select id="getResult" resultType="result" >
 		SELECT result_idx, result_name, result_title, main_sentence, sub_sentence, good_result_idx, bad_result_idx, good_keyword, bad_keyword FROM result WHERE result_idx = #{result_idx};
 	</select>

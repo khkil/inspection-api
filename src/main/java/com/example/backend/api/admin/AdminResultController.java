@@ -5,10 +5,7 @@ import com.example.backend.api.inspection.result.ResultServcice;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +20,17 @@ public class AdminResultController {
     public ResponseEntity getResultList(@PathVariable int inspectionIdx){
         List<Result> resultList = resultServcice.getInspectionResults(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(resultList));
+    }
+
+    @PostMapping
+    public ResponseEntity insertResults(@PathVariable int inspectionIdx, @RequestBody List<Result> resultList){
+        resultServcice.insertResults(inspectionIdx, resultList);
+        return ResponseEntity.ok(CommonResponse.successResult());
+    }
+
+    @DeleteMapping("/{resultIdx}")
+    public ResponseEntity deleteResult(@PathVariable int inspectionIdx, @PathVariable int resultIdx){
+        resultServcice.deleteResult(inspectionIdx, resultIdx);
+        return ResponseEntity.ok(CommonResponse.successResult());
     }
 }

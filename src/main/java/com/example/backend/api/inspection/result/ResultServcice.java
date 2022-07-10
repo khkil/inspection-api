@@ -20,11 +20,24 @@ public class ResultServcice {
         List<Result> inspectionResults = resultMapper.getInspectionResults(inspectionIdx);
         return inspectionResults;
     }
+
     public List<Result> getResults(Map<String, Object> params){
         return resultMapper.getResults(params);
     }
+
     public List<Result> getResultsWithQuestions(Result result){
         return resultMapper.getResultsWithQuestions(result);
     }
+
+    public void insertResults(int inspectionIdx, List<Result> resultList) {
+        if(resultList.size() > 0){
+            resultMapper.insertResults(inspectionIdx, resultList);
+        }
+    }
+
+    public void deleteResult(int inspectionIdx, int resultIdx){
+        resultMapper.deleteResult(inspectionIdx, resultIdx);
+    }
+
 
 }
