@@ -18,7 +18,7 @@ public class AdminQuestionController {
     QuestionService questionService;
 
     @GetMapping("/{questionIdx}")
-    public ResponseEntity updateQuestions(@PathVariable int questionIdx){
+    public ResponseEntity insertQuestions(@PathVariable int questionIdx){
         Question question = questionService.getQuestionDetail(questionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(question));
     }
@@ -35,9 +35,9 @@ public class AdminQuestionController {
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
-    @PutMapping("")
-    public ResponseEntity updateQuestions(@RequestBody List<Question> questions){
-        questionService.updateQuestions(questions);
+    @PostMapping("")
+    public ResponseEntity insertQuestions(@RequestBody List<Question> questions){
+        questionService.insertQuestions(questions);
         return ResponseEntity.ok(CommonResponse.successResult());
 
     }

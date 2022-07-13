@@ -40,8 +40,8 @@ public class QuestionService {
         questionMapper.updateQuestion(questionIdx, question);
     }
 
-    public void updateQuestions(List<Question> questions){
-        questionMapper.updateQuestions(questions);
+    public void insertQuestions(List<Question> questions){
+        questionMapper.insertQuestions(questions);
     }
 
 }
