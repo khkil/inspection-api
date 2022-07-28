@@ -22,6 +22,12 @@ public class AdminResultController {
         return ResponseEntity.ok(CommonResponse.successResult(resultList));
     }
 
+    @GetMapping("/{resultIdx}")
+    public ResponseEntity getResultDetail(@PathVariable int inspectionIdx, @PathVariable int resultIdx){
+        Result result = resultServcice.getResultDetail(inspectionIdx, resultIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(result));
+    }
+
     @PostMapping
     public ResponseEntity insertResults(@PathVariable int inspectionIdx, @RequestBody List<Result> resultList){
         resultServcice.insertResults(inspectionIdx, resultList);

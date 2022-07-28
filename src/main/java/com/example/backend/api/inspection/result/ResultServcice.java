@@ -25,8 +25,8 @@ public class ResultServcice {
         return resultMapper.getResults(params);
     }
 
-    public List<Result> getResultsWithQuestions(Result result){
-        return resultMapper.getResultsWithQuestions(result);
+    public Result getResultDetail(int inspectionIdx, int resultIdx){
+        return resultMapper.getResultDetail(inspectionIdx, resultIdx);
     }
 
     public void insertResults(int inspectionIdx, List<Result> resultList) {

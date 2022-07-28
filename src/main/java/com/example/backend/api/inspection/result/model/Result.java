@@ -24,5 +24,5 @@ public class Result {
     private Result badResult;
 
     private List<Question> questionList;
-
+    private List<ResultContent> resultContents;
 }
