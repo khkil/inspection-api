@@ -34,7 +34,7 @@ public class MybatisConfig {
         factoryBean.setConfigLocation(applicationContext.getResource("classpath:config/mybatis-config.xml"));
         factoryBean.setMapperLocations(applicationContext.getResources("classpath*:mapper/*.xml"));
         factoryBean.setTypeHandlers(new TypeHandler[] {
-                new QuestionType.TypeHandler()
+                //new QuestionType.TypeHandler()
         });
 
         return factoryBean;

@@ -1,24 +1,22 @@
 package com.example.backend.util.enumerator;
-
-import com.example.backend.common.handler.QuestionTypeHandler;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.ibatis.type.MappedTypes;
 
 @Getter
+@AllArgsConstructor
 public enum QuestionType {
     TEXT("TEXT"),
     IMAGE("IMAGE");
 
     private String questionType;
 
-    QuestionType(String questionType) {
-        this.questionType = questionType;
+    public static QuestionType getText(String dbData) {
+        for (QuestionType value : QuestionType.values()) {
+            if (value.getQuestionType().equals(dbData)) {
+                return value;
+            }
+        }
+        return null;
     }
 
-    @MappedTypes(QuestionType.class)
-    public static class TypeHandler extends QuestionTypeHandler<QuestionType> {
-        public TypeHandler() {
-            super(QuestionType.class);
-        }
-    }
 }

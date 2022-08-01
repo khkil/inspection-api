@@ -16,8 +16,11 @@ public class ResultServcice {
     @Autowired
     ResultMapper resultMapper;
 
+    @Autowired
+    ResultRepository resultRepository;
+
     public List<Result> getInspectionResults(int inspectionIdx){
-        List<Result> inspectionResults = resultMapper.getInspectionResults(inspectionIdx);
+        List<Result> inspectionResults = resultRepository.findAllByInspectionIdx(inspectionIdx);
         return inspectionResults;
     }
 
