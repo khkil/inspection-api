@@ -10,9 +10,9 @@
 
     <logger name="jdbc" level="OFF"/>
 
-    <logger name="jdbc.sqlonly" level="INFO" additivity="false" >
+<!--    <logger name="jdbc.sqlonly" level="INFO" additivity="false" >
         <appender-ref ref="STDOUT" />
-    </logger>
+    </logger>-->
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

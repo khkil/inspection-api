@@ -51,8 +51,7 @@ public class AuthController {
         Member member = (Member) memberService.loadUserByUsername(userName);
         boolean checkPassword = memberService.checkPassword(user, member);
 
-        List<String> roles = Arrays.asList(member.getRole());
-        if(!checkPassword || !roles.contains(user.getRole())){
+        if(!checkPassword){
             throw new IllegalArgumentException("아이디 혹은 비밀번호가 잘못되었습니다.");
         }
         authService.loginSuccess(member, response);
@@ -75,7 +74,7 @@ public class AuthController {
             member = new Member(userId, username);
             return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }else{
-            authService.loginSuccess(member, response);
+            //authService.loginSuccess(member, response);
         }
         return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
     }
@@ -97,7 +96,7 @@ public class AuthController {
             member = new Member(userId, username);
             return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }else{
-            authService.loginSuccess(member, response);
+            //authService.loginSuccess(member, response);
         }
         return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
 
@@ -141,8 +140,8 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity signUp(@RequestBody Member member, HttpServletResponse response){
 
-        memberService.insertMember(member);
-        authService.loginSuccess(member, response);
+        memberService.signUp(member);
+        //authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 

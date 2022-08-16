@@ -33,4 +33,5 @@ public class MemberController {
         return ResponseEntity.ok(CommonResponse.successResult(group));
     }
 
+
 }

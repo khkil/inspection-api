@@ -19,7 +19,6 @@ public interface MemberMapper {
     Member findIdByInfo(String name, String email);
     Member findIdByPhone(String phone);
     Group getMembersGroup(int memberIdx);
-    void insertMember(Member member);
     void updateMember(int idx, Member member);
     void changePassword(int idx, String password);
 }

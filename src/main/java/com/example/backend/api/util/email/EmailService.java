@@ -6,7 +6,6 @@ import com.example.backend.api.member.model.Member;
 import com.example.backend.common.DefaultCode;
 import com.example.backend.config.secutiry.JwtTokenProvider;
 import com.example.backend.util.URLUtil;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,7 @@ public class EmailService {
         String toEmail = emailVo.getToEmail();
         Map<String, Object> param = new HashMap<>();
         Member member = memberService.loadUserByUserEmail(toEmail);
-        String authKey = jwtTokenProvider.createToken(toEmail, Arrays.asList(new String[]{ member.getRole() }), 5);
+        String authKey = jwtTokenProvider.createToken(toEmail, member.getRoles(), 5);
         emailVo.setAuthKey(authKey);
         param.put("authKey", authKey);
         param.put("toEmail", toEmail);

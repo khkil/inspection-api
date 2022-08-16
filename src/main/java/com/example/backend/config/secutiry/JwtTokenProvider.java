@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -74,12 +75,15 @@ public class JwtTokenProvider {
     }
 
     public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody().getSubject();
+        String userPk = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody().getSubject();
+        return userPk;
     }
 
     public Authentication getAuthentication(String token){
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) userDetails.getAuthorities();
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
     public String resolveAccessToken(HttpServletRequest request) {
 

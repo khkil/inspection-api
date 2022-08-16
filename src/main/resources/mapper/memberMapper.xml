@@ -66,44 +66,6 @@
             m.idx = #{memberIdx};
     </select>
 
-    <insert id="insertMember" parameterType="member" useGeneratedKeys="true" keyProperty="idx">
-        INSERT INTO `member`(
-            id,
-            <if test="groupIdx != null and groupIdx > 0">group_idx,</if>
-            name,
-            password,
-            role,
-            email,
-            phone,
-            address,
-            address_sub,
-            school,
-            education,
-            grade,
-            major,
-            job,
-            company,
-            job_detail,
-            cdate
-        ) VALUES(
-            #{id},
-            <if test="groupIdx != null and groupIdx > 0">#{groupIdx},</if>
-            #{name},
-            #{password},
-            #{role},
-            #{email},
-            #{phone},
-            #{address},
-            #{addressSub},
-            #{school},
-            #{education},
-            #{grade},
-            #{major},
-            #{job},
-            #{company},
-            #{jobDetail},
-            now()
-        );
-    </insert>
+
 
 </mapper>

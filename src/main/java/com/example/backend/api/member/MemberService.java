@@ -1,22 +1,18 @@
 package com.example.backend.api.member;
 
-import com.example.backend.api.auth.model.ResetPasswordVo;
 import com.example.backend.api.group.Group;
 import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
-import com.google.protobuf.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService implements UserDetailsService {
@@ -28,29 +24,17 @@ public class MemberService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        Member member = memberMapper.loadUserByUserName(id);
-
-        if(member != null){
-            List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority(member.getRole()));
-            member.setAuthorities(roles);
-        }else{
-            throw new UsernameNotFoundException("일치하는 아이디를 가진 회원이 없습니다.");
-        }
-        return member;
+        return memberRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("일치하는 정보 가진 회원이 없습니다."));
     }
 
     public Member loadUserByUserEmail(String email) throws UsernameNotFoundException {
-        Member member = memberMapper.loadUserByUserEmail(email);
+        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("일치하는 이메일을 가진 회원이 없습니다."));
 
-        if(member != null){
-            List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority(member.getRole()));
-            member.setAuthorities(roles);
-        }else{
-            throw new UsernameNotFoundException("일치하는 이메일을 가진 회원이 없습니다.");
-        }
-        return member;
     }
 
     public List<Member> getMemberList(String searchText){
@@ -71,19 +55,35 @@ public class MemberService implements UserDetailsService {
         return memberMapper.findIdByPhone(phone);
     }
 
-    public void insertMember(Member member){
-        String groupCode = member.getGroupCode();
+    public void signUp(Member member){
+        /*String groupCode = member.getGroupCode();
         if(groupCode != null && !groupCode.isEmpty()){
             Group group = groupCodeMapper.getGroupDetailFromCode(groupCode);
             if(group == null) throw new ApiException("유효하지 않은 코드입니다");
             member.setGroupIdx(group.getIdx());
-        }
+        }*/
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberMapper.insertMember(member);
+        memberRepository.save(member);
     }
 
-    public void updateMember(int idx, Member member){
-        memberMapper.updateMember(idx, member);
+    public void updateMember(int idx, Member params){
+        Optional<Member> member = memberRepository.findByIdx(idx);
+        member.ifPresent(updatedMember -> {
+            updatedMember.setName(params.getName());
+            updatedMember.setEmail(params.getEmail());
+            updatedMember.setPhone(params.getPhone());
+            updatedMember.setAddress(params.getAddress());
+            updatedMember.setAddressSub(params.getAddressSub());
+            updatedMember.setSchool(params.getSchool());
+            updatedMember.setEducation(params.getEducation());
+            updatedMember.setGrade(params.getGrade());
+            updatedMember.setMajor(params.getMajor());
+            updatedMember.setJob(params.getJob());
+            updatedMember.setCompany(params.getCompany());
+            updatedMember.setJobDetail(params.getJobDetail());
+            memberRepository.save(updatedMember);
+        });
+
     }
 
     public Group getMembersGroup(int memberIdx){
@@ -101,6 +101,7 @@ public class MemberService implements UserDetailsService {
     }
 
     public boolean checkPassword(Member user, Member member){
+
         return passwordEncoder.matches(user.getPassword(), member.getPassword());
     }
 
@@ -124,7 +125,6 @@ public class MemberService implements UserDetailsService {
                 .jobDetail(member.getJobDetail())
                 .cDate(member.getCDate())
                 .build();
-
         return memberInfo;
     }
 }
