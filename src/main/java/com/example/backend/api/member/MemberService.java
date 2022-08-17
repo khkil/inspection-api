@@ -5,6 +5,8 @@ import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +19,6 @@ import java.util.Optional;
 @Service
 public class MemberService implements UserDetailsService {
 
-    @Autowired
-    MemberMapper memberMapper;
     @Autowired
     GroupCodeMapper groupCodeMapper;
     @Autowired
@@ -37,23 +37,24 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public List<Member> getMemberList(String searchText){
-        return memberMapper.getMemberList(searchText);
+    public Page<Member> getMemberList(String searchText, Pageable pageable){
+        if(searchText == null) return memberRepository.findAll(pageable);
+        return memberRepository.findByNameContaining(searchText, pageable);
     }
 
     public Member getMemberDetail(int idx){
-        Member member = memberMapper.getMemberDetail(idx);
+        Member member = memberRepository.findByIdx(idx).orElseThrow(() -> new IllegalArgumentException("일치하는 회원이 없습니다."));
 
         return memberInfo(member);
     }
 
-    public Member findIdByInfo(String name, String email){
+   /* public Member findIdByInfo(String name, String email){
         return memberMapper.findIdByInfo(name, email);
     }
 
     public Member findIdByPhone(String phone){
         return memberMapper.findIdByPhone(phone);
-    }
+    }*/
 
     public void signUp(Member member){
         /*String groupCode = member.getGroupCode();
@@ -86,18 +87,22 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    public Group getMembersGroup(int memberIdx){
+   /* public Group getMembersGroup(int memberIdx){
         Group group = memberMapper.getMembersGroup(memberIdx);
         return group;
-    }
+    }*/
 
     public void changePassword(int idx, String password){
-        memberMapper.changePassword(idx, password);
+        Optional<Member> member = memberRepository.findByIdx(idx);
+        member.ifPresent(updatedMember -> {
+            updatedMember.setPassword(passwordEncoder.encode(password));
+            memberRepository.save(updatedMember);
+        });
     }
 
     public void checkDuplicateMember(String id){
-        Member member = memberMapper.loadUserByUserName(id);
-        if(member != null) throw new ApiException("이미 사용중인 아이디 입니다.");
+        boolean existsMemberById = memberRepository.existsMemberById(id);
+        if(existsMemberById) throw new ApiException("이미 사용중인 아이디 입니다.");
     }
 
     public boolean checkPassword(Member user, Member member){

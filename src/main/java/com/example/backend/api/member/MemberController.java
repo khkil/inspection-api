@@ -29,8 +29,9 @@ public class MemberController {
 
     @GetMapping("/{memberIdx}/group-info")
     public ResponseEntity getMembersGroup(@PathVariable int memberIdx){
-        Group group = memberService.getMembersGroup(memberIdx);
-        return ResponseEntity.ok(CommonResponse.successResult(group));
+        /*Group group = memberService.getMembersGroup(memberIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(group));*/
+        return null;
     }
 
 
