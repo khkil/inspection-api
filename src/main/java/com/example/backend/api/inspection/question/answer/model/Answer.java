@@ -2,13 +2,14 @@ package com.example.backend.api.inspection.question.answer.model;
 
 import com.example.backend.api.util.gcs.model.File;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
 
-@Data
+@Getter
 @Entity
 public class Answer {
     @Id

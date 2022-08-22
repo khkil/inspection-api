@@ -43,7 +43,10 @@ public class AdminQuestionController {
     }
     @GetMapping("/inspections/{inspectionIdx}")
     public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx){
-        List<Result> questionsOfInspection = questionService.getQuestionsOfInspection(inspectionIdx);
-        return ResponseEntity.ok(CommonResponse.successResult(questionsOfInspection));
+        /*List<Result> questionsOfInspection = questionService.getQuestionsOfInspection(inspectionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(questionsOfInspection));*/
+        List<Question> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(questionsByInspectionIdx));
+
     }
 }

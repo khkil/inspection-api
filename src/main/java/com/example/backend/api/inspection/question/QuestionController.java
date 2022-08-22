@@ -18,8 +18,8 @@ public class QuestionController {
     QuestionService questionServcice;
 
     @GetMapping
-    public ResponseEntity<List> getAllQuestionList (@PathVariable int idx){
-        return new ResponseEntity<>(questionServcice.getQuestionList(idx), HttpStatus.OK);
+    public ResponseEntity<List> getAllQuestionList (@PathVariable int inspectionIdx){
+        return new ResponseEntity<>(questionServcice.getQuestionsByInspectionIdx(inspectionIdx), HttpStatus.OK);
     }
 
     @GetMapping("/inspections/{inspectionIdx}")

@@ -15,8 +15,11 @@ public class QuestionService {
     @Autowired
     QuestionMapper questionMapper;
 
-    public List<Question> getQuestionList(int idx){
-        return questionMapper.getQuestionList(idx);
+    @Autowired
+    QuestionRepositorySupport questionRepositorySupport;
+
+    public List<Question> getQuestionsByInspectionIdx(int inspectionIdx){
+        return questionRepositorySupport.findByInspectionIdx(inspectionIdx);
     }
     public List<?> getQuestionInfo(int inspectionIdx){
         return questionMapper.getQuestionList(inspectionIdx);

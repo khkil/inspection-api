@@ -14,25 +14,25 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_idx", nullable = false)
-    private int questionIdx;
+    private Integer questionIdx;
 
     @Column(name = "inspection_idx")
-    private int inspectionIdx;
+    private Integer inspectionIdx;
 
     @Column(name = "result_idx")
-    private int resultIdx;
+    private Integer resultIdx;
 
     @Column(name = "question_page")
-    private int questionPage;
+    private Integer questionPage;
 
     @Column(name = "question_number")
-    private int questionNumber;
+    private Integer questionNumber;
 
     @Column(name = "question_text")
     private String questionText;
 
     @Column(name = "question_order")
-    private int questionOrder;
+    private Integer questionOrder;
 
     @Column(name = "del_yn")
     private String delYn;
