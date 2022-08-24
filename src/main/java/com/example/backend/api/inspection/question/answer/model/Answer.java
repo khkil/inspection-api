@@ -18,9 +18,15 @@ public class Answer {
 
     @Column(name = "question_idx")
     private int questionIdx;
+
+    @Column(name = "answer_text")
     private String answerText;
+
+    @Column(name = "answer_score")
     private int answerScore;
     //private List<Object> filePath;
+
+    @Column(name = "del_yn")
     private String delYn;
 
 

@@ -25,12 +25,12 @@ public class QuestionController {
     @GetMapping("/inspections/{inspectionIdx}")
     public ResponseEntity<?> getQuestionInfo(@PathVariable int inspectionIdx){
 
-        return new ResponseEntity<>(questionServcice.getQuestionInfo(inspectionIdx), HttpStatus.OK);
+        return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx), HttpStatus.OK);
     }
 
     @GetMapping("/inspections/{inspection_idx}/pages/{page}")
     public ResponseEntity<List> getPageInfo(@PathVariable int inspection_idx, @PathVariable int page){
 
-        return ResponseEntity.ok(questionServcice.getPageInfo(inspection_idx, page));
+        return ResponseEntity.ok(questionServcice.getQuestionsByInspectionIdxAndQuestionPage(inspection_idx, page));
     }
 }

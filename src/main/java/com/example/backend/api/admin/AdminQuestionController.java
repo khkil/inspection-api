@@ -2,6 +2,7 @@ package com.example.backend.api.admin;
 
 import com.example.backend.api.inspection.question.model.Question;
 import com.example.backend.api.inspection.question.QuestionService;
+import com.example.backend.api.inspection.question.model.QuestionDto;
 import com.example.backend.api.inspection.result.model.Result;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class AdminQuestionController {
     public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx){
         /*List<Result> questionsOfInspection = questionService.getQuestionsOfInspection(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(questionsOfInspection));*/
-        List<Question> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx);
+        List<QuestionDto.Summary> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(questionsByInspectionIdx));
 
     }

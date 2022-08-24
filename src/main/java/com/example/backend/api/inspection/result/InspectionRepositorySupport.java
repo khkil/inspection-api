@@ -33,8 +33,7 @@ public class InspectionRepositorySupport extends QuerydslRepositorySupport {
 
     public Inspection findByInspectionIdx(int inspectionIdx){
         Inspection inspectionDetail = jpaQueryFactory
-                .select(inspection)
-                .from(inspection)
+                .selectFrom(inspection)
                 .where(inspection.inspectionIdx.eq(inspectionIdx))
                 .fetchOne();
 

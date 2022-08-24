@@ -21,21 +21,22 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
     }
 
     QQuestion question = QQuestion.question;
-    QAnswer answer = QAnswer.answer;
 
     public List<Question> findByInspectionIdx(int inspectionIdx){
-        List<Question> results = new ArrayList<>();
         List<Question> questionList = jpaQueryFactory
                 .selectFrom(question)
-                //.leftJoin(question.answers, answer)
                 .where(question.inspectionIdx.eq(inspectionIdx))
                 .fetch();
-        for(Question question : questionList){
-            Question q = new Question();
-            q.setInspectionIdx(question.getInspectionIdx());
-            results.add(q);
-        }
+        return questionList;
+    }
 
-        return results;
+    public List<Question> findByInspectionIdxAndQuestionPage(int inspectionIdx, int questionPage){
+        List<Question> questionList = jpaQueryFactory
+                .selectFrom(question)
+                .where(question.inspectionIdx.eq(inspectionIdx)
+                .and(question.questionPage.eq(questionPage)))
+                .fetch();
+
+        return questionList;
     }
 }
