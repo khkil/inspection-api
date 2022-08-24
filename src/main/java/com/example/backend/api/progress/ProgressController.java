@@ -1,6 +1,5 @@
 package com.example.backend.api.progress;
 
-import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.api.progress.model.Progress;
 import com.example.backend.common.CommonResponse;

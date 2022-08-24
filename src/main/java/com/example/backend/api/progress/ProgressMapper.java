@@ -1,6 +1,5 @@
 package com.example.backend.api.progress;
 
-import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.progress.model.Progress;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

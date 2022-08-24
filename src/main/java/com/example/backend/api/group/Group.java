@@ -1,7 +1,7 @@
 package com.example.backend.api.group;
 
 import com.example.backend.api.group.code.GroupCodeConfig;
-import com.example.backend.api.inspection.Inspection;
+import com.example.backend.api.inspection.model.Inspection;
 import lombok.Data;
 
 import java.util.List;

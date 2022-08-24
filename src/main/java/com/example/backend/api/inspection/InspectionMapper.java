@@ -1,5 +1,6 @@
 package com.example.backend.api.inspection;
 
+import com.example.backend.api.inspection.model.Inspection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.example.backend.api.inspection;
 
+import com.example.backend.api.inspection.model.Inspection;
+import com.example.backend.api.inspection.model.InspectionDto;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ public class InspectionController {
     @GetMapping("")
     public ResponseEntity getInspectionList(Inspection inspection) {
 
-        List<Inspection> inspectionList = inspectionService.getInspectionList(inspection);
+        List<InspectionDto.Response> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
@@ -25,7 +27,7 @@ public class InspectionController {
     @GetMapping("/{inspectionIdx}")
     public ResponseEntity getInspectionDetail(@PathVariable int inspectionIdx) {
 
-        Inspection inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
+        InspectionDto.Response inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
     }
 

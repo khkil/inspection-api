@@ -1,10 +1,10 @@
 package com.example.backend.api.admin;
 
-import com.example.backend.api.inspection.Inspection;
 import com.example.backend.api.inspection.InspectionService;
+import com.example.backend.api.inspection.model.Inspection;
+import com.example.backend.api.inspection.model.InspectionDto;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class AdminInspectionController {
     @GetMapping
     public ResponseEntity getInspectionList(Inspection inspection) throws  Exception{
 
-        List<Inspection> inspectionList = inspectionService.getInspectionList(inspection);
+        List<InspectionDto.Response> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
@@ -28,7 +28,7 @@ public class AdminInspectionController {
     @GetMapping("/{idx}")
     public ResponseEntity getInspectionDetail(@PathVariable int idx){
 
-        Inspection inspectionDetail = inspectionService.getInspectionDetail(idx);
+        InspectionDto.Response inspectionDetail = inspectionService.getInspectionDetail(idx);
         if(inspectionDetail == null){
             //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
