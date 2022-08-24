@@ -20,7 +20,7 @@ public class AdminInspectionController {
     @GetMapping
     public ResponseEntity getInspectionList(Inspection inspection) throws  Exception{
 
-        List<InspectionDto.Response> inspectionList = inspectionService.getInspectionList(inspection);
+        List<InspectionDto.Summary> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
@@ -28,7 +28,7 @@ public class AdminInspectionController {
     @GetMapping("/{idx}")
     public ResponseEntity getInspectionDetail(@PathVariable int idx){
 
-        InspectionDto.Response inspectionDetail = inspectionService.getInspectionDetail(idx);
+        InspectionDto.Summary inspectionDetail = inspectionService.getInspectionDetail(idx);
         if(inspectionDetail == null){
             //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

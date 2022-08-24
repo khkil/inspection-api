@@ -19,7 +19,7 @@ public class InspectionController {
     @GetMapping("")
     public ResponseEntity getInspectionList(Inspection inspection) {
 
-        List<InspectionDto.Response> inspectionList = inspectionService.getInspectionList(inspection);
+        List<InspectionDto.Summary> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));
     }
 
@@ -27,7 +27,7 @@ public class InspectionController {
     @GetMapping("/{inspectionIdx}")
     public ResponseEntity getInspectionDetail(@PathVariable int inspectionIdx) {
 
-        InspectionDto.Response inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
+        InspectionDto.Summary inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
     }
 

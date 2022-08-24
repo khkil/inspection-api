@@ -17,15 +17,15 @@ public class InspectionService {
     @Autowired
     InspectionRepositorySupport inspectionRepositorySupport;
 
-    public List<InspectionDto.Response> getInspectionList(Inspection inspection){
+    public List<InspectionDto.Summary> getInspectionList(Inspection inspection){
         List<Inspection> inspectionList = inspectionRepositorySupport.findAll();
-        return inspectionList.stream().map(v -> new InspectionDto.Response(v)).collect(Collectors.toList());
+        return inspectionList.stream().map(v -> new InspectionDto.Summary(v)).collect(Collectors.toList());
         //return inspectionMapper.getInspectionList(inspection);
     }
 
-    public InspectionDto.Response getInspectionDetail(int inspectionIdx){
+    public InspectionDto.Summary getInspectionDetail(int inspectionIdx){
         Inspection inspectionDetail = inspectionRepositorySupport.findByInspectionIdx(inspectionIdx);
-        return new InspectionDto.Response(inspectionDetail);
+        return new InspectionDto.Summary(inspectionDetail);
     }
 
 }

@@ -1,15 +1,8 @@
 package com.example.backend.api.inspection.model;
 
-import com.example.backend.api.inspection.question.model.Question;
-import com.example.backend.api.inspection.question.model.QuestionDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Data
@@ -17,6 +10,7 @@ import java.util.stream.Collectors;
 public class InspectionDto {
 
     @Data
+    @AllArgsConstructor
     public static class Request {
         private String inspectionName;
         private String payYn;
@@ -36,7 +30,8 @@ public class InspectionDto {
     }
 
     @Data
-    public static class Response {
+    @AllArgsConstructor
+    public static class Summary {
 
         private Integer inspectionIdx;
         private String inspectionName;
@@ -45,7 +40,7 @@ public class InspectionDto {
         private String showYn;
         private Integer rankCount;
 
-        public Response(Inspection inspection){
+        public Summary(Inspection inspection){
             this.inspectionIdx = inspection.getInspectionIdx();
             this.inspectionName = inspection.getInspectionName();
             this.payYn = inspection.getPayYn();
