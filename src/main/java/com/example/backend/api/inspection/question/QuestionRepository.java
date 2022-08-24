@@ -1,21 +1,19 @@
 package com.example.backend.api.inspection.question;
 
-import com.example.backend.api.inspection.question.answer.model.QAnswer;
 import com.example.backend.api.inspection.question.model.QQuestion;
 import com.example.backend.api.inspection.question.model.Question;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class QuestionRepositorySupport extends QuerydslRepositorySupport {
+public class QuestionRepository extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public QuestionRepositorySupport(JPAQueryFactory jpaQueryFactory) {
+    public QuestionRepository(JPAQueryFactory jpaQueryFactory) {
         super(Question.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
@@ -36,7 +34,26 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
                 .where(question.inspectionIdx.eq(inspectionIdx)
                 .and(question.questionPage.eq(questionPage)))
                 .fetch();
-
         return questionList;
+    }
+
+    public Question findByQuestionIdx(int questionIdx){
+        Question questionDetail = jpaQueryFactory
+                .selectFrom(question)
+                .where(question.questionIdx.eq(questionIdx))
+                .fetchOne();
+        return questionDetail;
+    }
+
+    public void updateQuestion(int questionIdx, Question params){
+        jpaQueryFactory
+                .update(question)
+                .set(question.questionText, params.getQuestionText())
+                .set(question.questionType, params.getQuestionType())
+                .set(question.answerType, params.getAnswerType())
+                //.set(question.f, params.getQuestionText())
+                .set(question.delYn, params.getDelYn())
+                .where(question.questionIdx.eq(questionIdx))
+                .execute();
     }
 }

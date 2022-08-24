@@ -20,8 +20,8 @@ public class AdminQuestionController {
 
     @GetMapping("/{questionIdx}")
     public ResponseEntity insertQuestions(@PathVariable int questionIdx){
-        Question question = questionService.getQuestionDetail(questionIdx);
-        return ResponseEntity.ok(CommonResponse.successResult(question));
+        QuestionDto.Detail questionDetail = questionService.getQuestionDetail(questionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(questionDetail));
     }
 
     @DeleteMapping("/{questionIdx}")

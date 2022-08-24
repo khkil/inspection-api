@@ -28,9 +28,9 @@ public class QuestionController {
         return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx), HttpStatus.OK);
     }
 
-    @GetMapping("/inspections/{inspection_idx}/pages/{page}")
-    public ResponseEntity<List> getPageInfo(@PathVariable int inspection_idx, @PathVariable int page){
+    @GetMapping("/inspections/{inspectionIdx}/pages/{page}")
+    public ResponseEntity<List> getPageInfo(@PathVariable int inspectionIdx, @PathVariable int page){
 
-        return ResponseEntity.ok(questionServcice.getQuestionsByInspectionIdxAndQuestionPage(inspection_idx, page));
+        return ResponseEntity.ok(questionServcice.getQuestionsByInspectionIdxAndQuestionPage(inspectionIdx, page));
     }
 }

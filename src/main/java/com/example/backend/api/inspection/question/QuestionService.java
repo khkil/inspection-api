@@ -17,21 +17,22 @@ public class QuestionService {
     QuestionMapper questionMapper;
 
     @Autowired
-    QuestionRepositorySupport questionRepositorySupport;
+    QuestionRepository questionRepository;
 
     public List<QuestionDto.Summary> getQuestionsByInspectionIdx(int inspectionIdx){
-        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx);
+        List<Question> questionList = questionRepository.findByInspectionIdx(inspectionIdx);
         return questionList.stream().map(v -> new QuestionDto.Summary(v)).collect(Collectors.toList());
     }
     public List<QuestionDto.Detail> getQuestionListWithAnswers(int inspectionIdx){
-        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx);
+        List<Question> questionList = questionRepository.findByInspectionIdx(inspectionIdx);
         return questionList.stream().map(v -> new QuestionDto.Detail(v)).collect(Collectors.toList());
     }
-    public  Question getQuestionDetail(int questionIdx){
-        return questionMapper.getQuestionDetail(questionIdx);
+    public QuestionDto.Detail getQuestionDetail(int questionIdx){
+        Question questionDetail = questionRepository.findByQuestionIdx(questionIdx);
+        return new QuestionDto.Detail(questionDetail);
     }
     public List<QuestionDto.Detail> getQuestionsByInspectionIdxAndQuestionPage(int inspectionIdx, int questionPage){
-        List<Question> questionList = questionRepositorySupport.findByInspectionIdxAndQuestionPage(inspectionIdx, questionPage);
+        List<Question> questionList = questionRepository.findByInspectionIdxAndQuestionPage(inspectionIdx, questionPage);
         return questionList.stream().map(v -> new QuestionDto.Detail(v)).collect(Collectors.toList());
     }
 
@@ -40,7 +41,7 @@ public class QuestionService {
     }
 
     public void updateQuestion(int questionIdx, Question question){
-        questionMapper.updateQuestion(questionIdx, question);
+        questionRepository.updateQuestion(questionIdx, question);
     }
 
     public void insertQuestions(List<Question> questions){
