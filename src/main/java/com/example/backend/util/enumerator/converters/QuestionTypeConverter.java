@@ -12,6 +12,7 @@ public class QuestionTypeConverter implements AttributeConverter<QuestionType, S
 
     @Override
     public String convertToDatabaseColumn(QuestionType attribute) {
+        if(attribute == null) return null;
         return attribute.getQuestionType();
     }
 

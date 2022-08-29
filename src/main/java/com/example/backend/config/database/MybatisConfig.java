@@ -1,4 +1,4 @@
-package com.example.backend.config;
+package com.example.backend.config.database;
 
 import com.example.backend.common.beans.RefreshableSqlSessionFactoryBean;
 import com.example.backend.util.enumerator.QuestionType;

@@ -12,12 +12,6 @@ import java.util.List;
 @Transactional
 public interface QuestionMapper {
 
-    List<Question> getQuestionList(int idx);
-    List<String> getPageInfo(@Param("inspection_idx") int inspection_idx, @Param("page") int page);
-    List<Result> getQuestionsOfInspection(int inspectionIdx);
-    Question getQuestionDetail(int questionIdx);
-    void deleteQuestion(int questionIdx);
-    void updateQuestion(@Param("questionIdx") int questionIdx, @Param("question") Question question);
     void insertQuestions(List<Question> questions);
 
 }

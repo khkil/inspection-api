@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "question", schema = "humanx_local")
 public class Question {
 
     @Id

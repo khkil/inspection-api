@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class QuestionDto {
 
     @Data
+    @AllArgsConstructor
     public static class Request {
         private String inspectionName;
         private String payYn;
