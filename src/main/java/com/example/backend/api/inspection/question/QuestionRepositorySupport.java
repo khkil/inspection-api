@@ -56,9 +56,9 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
         jpaQueryFactory
                 .update(question)
                 .set(question.questionText, params.getQuestionText())
-                //.set(question.questionType, params.getQuestionType())
-                //.set(question.answerType, params.getAnswerType())
-                //.set(question.f, params.getQuestionText())
+                .set(question.questionType, params.getQuestionType())
+                .set(question.answerType, params.getAnswerType())
+                .set(question.questionText, params.getQuestionText())
                 .set(question.delYn, params.getDelYn())
                 .where(question.questionIdx.eq(questionIdx))
                 .execute();

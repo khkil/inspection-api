@@ -5,11 +5,12 @@ import com.example.backend.util.enumerator.QuestionType;
 import com.example.backend.util.enumerator.converters.QuestionTypeConverter;
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 @Data
-@Table(name = "question", schema = "humanx_local")
+@Table(name = "question")
 public class Question {
 
     @Id
@@ -26,9 +27,11 @@ public class Question {
     @Column(name = "question_page")
     private Integer questionPage;
 
+    @NotNull
     @Column(name = "question_number")
     private Integer questionNumber;
 
+    @NotNull
     @Column(name = "question_text")
     private String questionText;
 

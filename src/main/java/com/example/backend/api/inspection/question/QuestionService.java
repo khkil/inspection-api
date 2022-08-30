@@ -2,13 +2,10 @@ package com.example.backend.api.inspection.question;
 
 import com.example.backend.api.inspection.question.model.Question;
 import com.example.backend.api.inspection.question.model.QuestionDto;
-import com.example.backend.api.inspection.question.model.QuestionRepository;
-import com.fasterxml.jackson.databind.util.ArrayIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
