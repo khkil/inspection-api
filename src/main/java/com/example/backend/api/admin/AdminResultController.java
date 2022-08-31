@@ -2,6 +2,7 @@ package com.example.backend.api.admin;
 
 import com.example.backend.api.inspection.result.model.Result;
 import com.example.backend.api.inspection.result.ResultServcice;
+import com.example.backend.api.inspection.result.model.ResultDto;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class AdminResultController {
 
     @GetMapping
     public ResponseEntity getResultList(@PathVariable int inspectionIdx){
-        List<Result> resultList = resultServcice.getInspectionResults(inspectionIdx);
+        List<ResultDto.Summary> resultList = resultServcice.getInspectionResults(inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(resultList));
     }
 

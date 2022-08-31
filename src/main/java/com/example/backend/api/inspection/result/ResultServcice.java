@@ -1,6 +1,7 @@
 package com.example.backend.api.inspection.result;
 
 import com.example.backend.api.inspection.result.model.Result;
+import com.example.backend.api.inspection.result.model.ResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,8 @@ public class ResultServcice {
     @Autowired
     ResultRepository resultRepository;
 
-    public List<Result> getInspectionResults(int inspectionIdx){
-        List<Result> inspectionResults = resultRepository.findAllByInspectionIdx(inspectionIdx);
+    public List<ResultDto.Summary>  getInspectionResults(int inspectionIdx){
+        List<ResultDto.Summary> inspectionResults = resultRepository.findAllByInspectionIdx(inspectionIdx);
         return inspectionResults;
     }
 

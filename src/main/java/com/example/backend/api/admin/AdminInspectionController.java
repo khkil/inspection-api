@@ -18,7 +18,7 @@ public class AdminInspectionController {
     InspectionService inspectionService;
 
     @GetMapping
-    public ResponseEntity getInspectionList(Inspection inspection) throws  Exception{
+    public ResponseEntity getInspectionList(InspectionDto.Request inspection) throws  Exception{
 
         List<InspectionDto.Summary> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));

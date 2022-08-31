@@ -12,7 +12,7 @@ import java.util.List;
 public class Result {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long resultIdx;
+    private Integer resultIdx;
     @NotNull
     private String resultName;
     @NotNull

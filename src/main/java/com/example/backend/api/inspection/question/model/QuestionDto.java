@@ -39,6 +39,7 @@ public class QuestionDto {
     public static class Summary {
 
         private Integer questionIdx;
+        private Integer resultIdx;
         private Integer questionNumber;
         private String questionText;
         private String delYn;
@@ -47,6 +48,7 @@ public class QuestionDto {
             this.questionIdx = question.getQuestionIdx();
             this.questionNumber = question.getQuestionNumber();
             this.questionText = question.getQuestionText();
+            this.resultIdx = question.getResultIdx();
             this.delYn = question.getDelYn();
         }
     }

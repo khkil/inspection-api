@@ -17,7 +17,7 @@ public class InspectionController {
     InspectionService inspectionService;
 
     @GetMapping("")
-    public ResponseEntity getInspectionList(Inspection inspection) {
+    public ResponseEntity getInspectionList(InspectionDto.Request inspection) {
 
         List<InspectionDto.Summary> inspectionList = inspectionService.getInspectionList(inspection);
         return ResponseEntity.ok(CommonResponse.successResult(inspectionList));

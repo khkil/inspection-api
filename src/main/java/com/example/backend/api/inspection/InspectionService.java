@@ -2,7 +2,6 @@ package com.example.backend.api.inspection;
 
 import com.example.backend.api.inspection.model.Inspection;
 import com.example.backend.api.inspection.model.InspectionDto;
-import com.example.backend.api.inspection.result.InspectionRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +16,9 @@ public class InspectionService {
     @Autowired
     InspectionRepositorySupport inspectionRepositorySupport;
 
-    public List<InspectionDto.Summary> getInspectionList(Inspection inspection){
-        List<Inspection> inspectionList = inspectionRepositorySupport.findAll();
+    public List<InspectionDto.Summary> getInspectionList(InspectionDto.Request inspection){
+        List<Inspection> inspectionList = inspectionRepositorySupport.findAll(inspection);
         return inspectionList.stream().map(v -> new InspectionDto.Summary(v)).collect(Collectors.toList());
-        //return inspectionMapper.getInspectionList(inspection);
     }
 
     public InspectionDto.Summary getInspectionDetail(int inspectionIdx){

@@ -11,6 +11,7 @@ public class InspectionDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Request {
         private String inspectionName;
         private String payYn;
