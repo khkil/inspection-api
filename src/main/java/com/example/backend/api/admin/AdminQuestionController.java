@@ -5,7 +5,10 @@ import com.example.backend.api.inspection.question.QuestionService;
 import com.example.backend.api.inspection.question.model.QuestionDto;
 import com.example.backend.api.inspection.result.model.Result;
 import com.example.backend.common.CommonResponse;
+import com.example.backend.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,10 +46,11 @@ public class AdminQuestionController {
 
     }
     @GetMapping("/inspections/{inspectionIdx}")
-    public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx){
-        /*List<Result> questionsOfInspection = questionService.getQuestionsOfInspection(inspectionIdx);
-        return ResponseEntity.ok(CommonResponse.successResult(questionsOfInspection));*/
-        List<QuestionDto.Summary> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx);
+    public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx, PageUtil pageUtil){
+        pageUtil.setSortColumn("questionNumber");
+        pageUtil.setDirection(Sort.Direction.ASC);
+        PageRequest pageRequest = pageUtil.of(pageUtil);
+        List<QuestionDto.Summary> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx, pageRequest);
         return ResponseEntity.ok(CommonResponse.successResult(questionsByInspectionIdx));
 
     }

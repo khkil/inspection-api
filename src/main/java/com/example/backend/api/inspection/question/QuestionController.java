@@ -1,6 +1,7 @@
 package com.example.backend.api.inspection.question;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +19,14 @@ public class QuestionController {
     QuestionService questionServcice;
 
     @GetMapping
-    public ResponseEntity<List> getAllQuestionList (@PathVariable int inspectionIdx){
-        return new ResponseEntity<>(questionServcice.getQuestionsByInspectionIdx(inspectionIdx), HttpStatus.OK);
+    public ResponseEntity<List> getAllQuestionList (@PathVariable int inspectionIdx, Pageable pageable){
+        return new ResponseEntity<>(questionServcice.getQuestionsByInspectionIdx(inspectionIdx, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/inspections/{inspectionIdx}")
-    public ResponseEntity<?> getQuestionInfo(@PathVariable int inspectionIdx){
+    public ResponseEntity<?> getQuestionInfo(@PathVariable int inspectionIdx, Pageable pageable){
 
-        return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx), HttpStatus.OK);
+        return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/inspections/{inspectionIdx}/pages/{page}")

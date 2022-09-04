@@ -4,8 +4,6 @@ import com.example.backend.api.member.model.Member;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.common.CommonResponse;
 import com.example.backend.util.PageUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +19,7 @@ public class AdminMemberController {
 
     @GetMapping
     public ResponseEntity getMemberList(@RequestParam(required = false) String searchText, PageUtil pageUtil){
-        PageRequest pageRequest = PageRequest.of(pageUtil.getPageNum(), pageUtil.getPageSize());
+        PageRequest pageRequest = PageRequest.of(pageUtil.getOffset(), pageUtil.getLimit());
         Page<Member> memberList = memberService.getMemberList(searchText, pageRequest);
         return ResponseEntity.ok(CommonResponse.successResult(memberList));
     }

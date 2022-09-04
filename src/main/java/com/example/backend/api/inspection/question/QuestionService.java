@@ -3,6 +3,8 @@ package com.example.backend.api.inspection.question;
 import com.example.backend.api.inspection.question.model.Question;
 import com.example.backend.api.inspection.question.model.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,12 @@ public class QuestionService {
     @Autowired
     QuestionRepositorySupport questionRepositorySupport;
 
-    public List<QuestionDto.Summary> getQuestionsByInspectionIdx(int inspectionIdx){
-        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx);
+    public List<QuestionDto.Summary> getQuestionsByInspectionIdx(int inspectionIdx, Pageable pageable){
+        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx, pageable);
         return questionList.stream().map(v -> new QuestionDto.Summary(v)).collect(Collectors.toList());
     }
-    public List<QuestionDto.Detail> getQuestionListWithAnswers(int inspectionIdx){
-        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx);
+    public List<QuestionDto.Detail> getQuestionListWithAnswers(int inspectionIdx, Pageable pageable){
+        List<Question> questionList = questionRepositorySupport.findByInspectionIdx(inspectionIdx, pageable);
         return questionList.stream().map(v -> new QuestionDto.Detail(v)).collect(Collectors.toList());
     }
     public QuestionDto.Detail getQuestionDetail(int questionIdx){

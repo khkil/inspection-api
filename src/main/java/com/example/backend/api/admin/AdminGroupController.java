@@ -27,7 +27,7 @@ public class AdminGroupController {
     @GetMapping
     public ResponseEntity getAdminGroups(@RequestParam(required = false) String searchText, PageUtil pageUtil) {
 
-        PageHelper.startPage(pageUtil.getPageNum(), pageUtil.getPageSize());
+        PageHelper.startPage(pageUtil.getOffset(), pageUtil.getLimit());
         List<Group> groups = groupService.getGroupList(searchText);
         PageInfo<Group> groupsPageInfo = new PageInfo<>(groups);
         return ResponseEntity.ok(CommonResponse.successResult(groupsPageInfo));

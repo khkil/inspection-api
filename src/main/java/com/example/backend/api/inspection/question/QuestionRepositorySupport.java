@@ -4,9 +4,13 @@ import com.example.backend.api.inspection.question.model.QQuestion;
 import com.example.backend.api.inspection.question.model.Question;
 import com.example.backend.config.database.EntityMapper;
 import com.example.backend.util.QueryDslUtil;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.dml.SQLInsertClause;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +31,13 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
 
     QQuestion question = QQuestion.question;
 
-    public List<Question> findByInspectionIdx(int inspectionIdx){
+    public List<Question> findByInspectionIdx(int inspectionIdx, Pageable pageable){
         List<Question> questionList = jpaQueryFactory
                 .selectFrom(question)
                 .where(question.inspectionIdx.eq(inspectionIdx))
+                //.offset(pageable.getOffset())
+                //.limit(pageable.getPageSize())
+                .orderBy(orderBy(pageable))
                 .fetch();
         return questionList;
     }
@@ -70,5 +77,20 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
                 .set(question.delYn, "Y")
                 .where(question.questionIdx.eq(questionIdx))
                 .execute();
+    }
+
+    private OrderSpecifier<?> orderBy(Pageable pageable){
+
+        if(!pageable.getSort().isEmpty()){
+            for(Sort.Order order : pageable.getSort()){
+                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+
+                switch (order.getProperty()){
+                    case "questionNumber": return new OrderSpecifier(direction, question.questionNumber);
+                    case "questionText": return new OrderSpecifier(direction, question.questionText);
+                }
+            }
+        }
+        return new OrderSpecifier(Order.DESC, question.questionIdx);
     }
 }
