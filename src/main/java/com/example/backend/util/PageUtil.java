@@ -15,7 +15,7 @@ public class PageUtil {
     private int offset = 1;
     private int limit = 10;
     private String sortColumn;
-    private Direction direction = Direction.DESC;
+    private String direction = "desc";
 
     private final static String FORWARD_ORDER = " asc";
     private final static String REVERSE_ORDER = " desc";
@@ -23,7 +23,7 @@ public class PageUtil {
 
     public PageRequest of(PageUtil pageUtil){
         if(pageUtil.getSortColumn() == null || pageUtil.getSortColumn().isEmpty()) return PageRequest.of(pageUtil.getOffset(), pageUtil.limit);
-        return PageRequest.of(pageUtil.getOffset(), pageUtil.limit, direction, sortColumn);
+        return PageRequest.of(pageUtil.getOffset(), pageUtil.limit, direction.equals("asc") ? Direction.ASC : Direction.DESC, sortColumn);
     }
 
     public static String orderBy(String standard, String order){

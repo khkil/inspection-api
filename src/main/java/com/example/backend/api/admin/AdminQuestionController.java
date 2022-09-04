@@ -47,8 +47,6 @@ public class AdminQuestionController {
     }
     @GetMapping("/inspections/{inspectionIdx}")
     public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx, PageUtil pageUtil){
-        pageUtil.setSortColumn("questionNumber");
-        pageUtil.setDirection(Sort.Direction.ASC);
         PageRequest pageRequest = pageUtil.of(pageUtil);
         List<QuestionDto.Summary> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx, pageRequest);
         return ResponseEntity.ok(CommonResponse.successResult(questionsByInspectionIdx));
