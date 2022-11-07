@@ -27,6 +27,9 @@ public class MemberService implements UserDetailsService {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    MemberRepositorySupport memberRepositorySupport;
+
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         return memberRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("일치하는 정보 가진 회원이 없습니다."));
@@ -38,8 +41,9 @@ public class MemberService implements UserDetailsService {
     }
 
     public Page<Member> getMemberList(String searchText, Pageable pageable){
-        if(searchText == null) return memberRepository.findAll(pageable);
-        return memberRepository.findByNameContaining(searchText, pageable);
+        return memberRepositorySupport.getMemberList(searchText, pageable);
+        /*if(searchText == null) return memberRepository.findAll(pageable);
+        return memberRepository.findByNameContaining(searchText, pageable);*/
     }
 
     public Member getMemberDetail(int idx){

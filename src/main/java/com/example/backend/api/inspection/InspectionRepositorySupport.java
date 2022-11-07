@@ -26,7 +26,10 @@ public class InspectionRepositorySupport extends QuerydslRepositorySupport{
     public List<Inspection> findAll(InspectionDto.Request params){
         List<Inspection> inspectionList = jpaQueryFactory
                 .selectFrom(inspection)
-                .where(octagnosisYnEq(params.getOctagnosisYn()))
+                .where(
+                        octagnosisYnEq(params.getOctagnosisYn()),
+                        payYnEq(params.getPayYn())
+                )
                 .fetch();
 
         return inspectionList;
@@ -54,5 +57,9 @@ public class InspectionRepositorySupport extends QuerydslRepositorySupport{
 
     private BooleanExpression octagnosisYnEq(String octagnosisYn){
         return octagnosisYn != null ? inspection.octagnosisYn.eq(octagnosisYn) : null;
+    }
+
+    private BooleanExpression payYnEq(String payYn){
+        return payYn != null ? inspection.payYn.eq(payYn) : null;
     }
 }
