@@ -61,6 +61,7 @@ public class QuestionDto {
         private Integer questionNumber;
         private String questionText;
         private Integer questionOrder;
+        private Integer resultIdx;
         private String delYn;
         private QuestionType questionType;
         private QuestionType answerType;
@@ -71,7 +72,10 @@ public class QuestionDto {
             this.questionNumber = question.getQuestionNumber();
             this.questionText = question.getQuestionText();
             this.questionOrder = question.getQuestionOrder();
+            this.resultIdx = question.getResultIdx();
             this.delYn = question.getDelYn();
+            this.questionType = question.getQuestionType();
+            this.answerType = question.getAnswerType();
             this.answers = question.getAnswers().stream().map(v -> new AnswerDto.Summary(v)).collect(Collectors.toList());
         }
     }

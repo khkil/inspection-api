@@ -36,12 +36,14 @@ public class AnswerDto {
     public static class Summary {
 
         private int answerIdx;
+        private int questionIdx;
         private String answerText;
         private int answerScore;
         private String delYn;
 
         public Summary(Answer answer) {
             this.answerIdx = answer.getAnswerIdx();
+            this.questionIdx = answer.getQuestionIdx();
             this.answerText = answer.getAnswerText();
             this.answerScore = answer.getAnswerScore();
             this.delYn = answer.getDelYn();

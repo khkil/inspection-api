@@ -6,6 +6,7 @@ import com.example.backend.config.database.EntityMapper;
 import com.example.backend.util.QueryDslUtil;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.dml.SQLInsertClause;
@@ -45,8 +46,11 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
     public List<Question> findByInspectionIdxAndQuestionPage(int inspectionIdx, int questionPage){
         List<Question> questionList = jpaQueryFactory
                 .selectFrom(question)
-                .where(question.inspectionIdx.eq(inspectionIdx)
-                .and(question.questionPage.eq(questionPage)))
+                .where(
+                        inspectionIdxEq(inspectionIdx),
+                        questionPageEq(questionPage),
+                        delYnEq("N")
+                )
                 .fetch();
         return questionList;
     }
@@ -77,6 +81,19 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
                 .set(question.delYn, "Y")
                 .where(question.questionIdx.eq(questionIdx))
                 .execute();
+    }
+
+    private BooleanExpression inspectionIdxEq(int inspectionIdx){
+        return inspectionIdx > 0 ? question.inspectionIdx.eq(inspectionIdx) : null;
+    }
+
+
+    private BooleanExpression questionPageEq(int questionPage){
+        return questionPage > 0 ? question.questionPage.eq(questionPage) : null;
+    }
+
+    private BooleanExpression delYnEq(String delYn){
+        return delYn != null ? question.delYn.eq(delYn) : null;
     }
 
     private OrderSpecifier<?> orderBy(Pageable pageable){
