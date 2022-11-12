@@ -1,15 +1,22 @@
 package com.example.backend.api.inspection.question.answer.model;
 
-import lombok.Data;
+import lombok.*;
 
-import java.util.Map;
+import javax.persistence.*;
 
-@Data
+@Getter
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "member_answer")
 public class MemberAnswer {
 
-    private int memberIdx;
-    private int questionIdx;
+    @EmbeddedId
+    private MemberAnswerID memberAnswerID;
+
+    @Column(name = "answer_idx")
     private int answerIdx;
 
-    private Map<String, Integer> answerMap;
+
 }

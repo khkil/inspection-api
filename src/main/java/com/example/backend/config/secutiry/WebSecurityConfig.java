@@ -50,7 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/members/**"
                         ,"/api/questions/**"
                         ,"/api/inspections/**"
-                        ,"/api/answers/**"
                         ,"/api/ranks/**"
                 ).hasAnyRole("MEMBER", "ADMIN")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
