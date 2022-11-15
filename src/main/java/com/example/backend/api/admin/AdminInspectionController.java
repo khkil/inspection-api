@@ -28,7 +28,7 @@ public class AdminInspectionController {
     @GetMapping("/{idx}")
     public ResponseEntity getInspectionDetail(@PathVariable int idx){
 
-        InspectionDto.Summary inspectionDetail = inspectionService.getInspectionDetail(idx);
+        InspectionDto.Detail inspectionDetail = inspectionService.getInspectionDetail(idx);
         if(inspectionDetail == null){
             //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -2,9 +2,7 @@ package com.example.backend.api.inspection.model;
 
 import com.example.backend.api.inspection.question.model.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Inspection {
     @Id
     @Column(name = "inspection_idx", nullable = false)
@@ -40,6 +39,13 @@ public class Inspection {
     @JoinColumn(name = "inspection_idx")
     private List<Question> questions = new ArrayList<>();
 
-
+    @Builder
+    public Inspection(int inspectionIdx, String inspectionName, String payYn, String octagnosisYn, int rankCount){
+        this.inspectionIdx = inspectionIdx;
+        this.inspectionName = inspectionName;
+        this.payYn = payYn;
+        this.octagnosisYn = octagnosisYn;
+        this.rankCount = rankCount;
+    }
 
 }

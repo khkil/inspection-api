@@ -18,7 +18,7 @@ public class RankService {
     @Autowired
     InspectionService inspectionService;
     public List<Rank> getMemberInspectionRank(int memberIdx, int inspectionIdx){
-        InspectionDto.Summary inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
+        InspectionDto.Detail inspectionDetail = inspectionService.getInspectionDetail(inspectionIdx);
         int rankCount = inspectionDetail.getRankCount();
         return rankMapper.getMemberInspectionRank(memberIdx, inspectionIdx, rankCount);
     }

@@ -21,7 +21,6 @@
         <typeAlias alias="userAnswer" type="com.example.backend.api.user.UserAnswer"/>
         <typeAlias alias="group" type="com.example.backend.api.group.Group"/>
         <typeAlias alias="groupCode" type="com.example.backend.api.group.code.GroupCodeConfig"/>
-        <typeAlias alias="progress" type="com.example.backend.api.progress.model.Progress"/>
         <typeAlias alias="rank" type="com.example.backend.api.inspection.rank.Rank"/>
         <typeAlias alias="statistics" type="com.example.backend.api.inspection.result.statistics.Statistics"/>
 
