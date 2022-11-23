@@ -20,8 +20,14 @@ public class ProgressService {
 
     public ProgressDto getMemberProgressDetail(int memberIdx, int inspectionIdx){
         InspectionDto.Detail inspectionDetail = modelMapper.map(inspectionRepositorySupport.findByInspectionIdx(inspectionIdx), InspectionDto.Detail.class);
-        Long memberProgress = memberRepository.memberProgress(memberIdx, inspectionIdx);
-        return new ProgressDto(inspectionDetail.getInspectionName(), memberProgress);
+        Long memberProgress = memberRepository.getMemberProgress(memberIdx, inspectionIdx);
+        ProgressDto progressDto = new ProgressDto(inspectionDetail.getInspectionName(), memberProgress);;
+        return progressDto;
+    }
+
+    public ProgressDto.History getMemberProgressHistory(int memberIdx, int inspectionIdx){
+
+        return memberRepository.getMemberProgressHistory(memberIdx, inspectionIdx);
 
     }
 }

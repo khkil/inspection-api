@@ -1,14 +1,12 @@
 package com.example.backend.api.member;
 
+import com.example.backend.api.inspection.progress.ProgressDto;
 import com.example.backend.api.member.model.Member;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
@@ -32,7 +30,20 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
             "    WHERE inspection_idx = ?2\n" +
             "    AND member_idx = ?1) / (SELECT count(*) FROM question WHERE inspection_idx = ?2)\n" +
             ") * 100 AS progress")
-    long memberProgress(int memberIdx, int inspectionIdx);
+    long getMemberProgress(int memberIdx, int inspectionIdx);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM (" +
+            "SELECT IFNULL(MAX(q.question_page), 0) AS currentPage,\n" +
+            "       (SELECT MAX(question_page) FROM question WHERE del_yn = 'N' AND inspection_idx = ?2) AS totalPage\n" +
+            "FROM question q\n" +
+            "LEFT OUTER JOIN  member_answer ma\n" +
+            "    ON q.question_idx = ma.question_idx\n" +
+            "WHERE q.inspection_idx = ?2\n" +
+            "AND ma.member_idx = ?1" +
+            ") a")
+    ProgressDto.History getMemberProgressHistory(int memberIdx, int inspectionIdx);
+
+
 
 
 }

@@ -11,4 +11,11 @@ public class ProgressDto {
 
     private String inspectionName;
     private Long progress;
+
+    public interface History{
+
+        Long getCurrentPage();
+        Long getTotalPage();
+    }
+
 }

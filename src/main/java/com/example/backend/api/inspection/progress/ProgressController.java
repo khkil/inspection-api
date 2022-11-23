@@ -5,10 +5,7 @@ import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/progress")
@@ -22,4 +19,12 @@ public class ProgressController {
         ProgressDto memberProgress = progressService.getMemberProgressDetail(member.getIdx(), inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(memberProgress));
     }
+
+    @PostMapping("/inspections/{inspectionIdx}/check-history")
+    public ResponseEntity checkProgressHistory(@AuthenticationPrincipal Member member, @PathVariable int inspectionIdx){
+
+        ProgressDto.History memberProgressHistory = progressService.getMemberProgressHistory(member.getIdx(), inspectionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(memberProgressHistory));
+    }
+
 }
