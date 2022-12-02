@@ -90,14 +90,13 @@ public class AuthController {
         LinkedHashMap<String, String> userDetail = (LinkedHashMap<String, String>) userInfo.get("properties");
         String username = userDetail.get("nickname");
 
-        Member member = (Member)memberService.loadUserByUsername(userId);
+        Member member;
 
-        if(member == null){
+        if(!memberService.existsMemberById(userId)){
             member = new Member(userId, username);
             return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
-        }else{
-            //authService.loginSuccess(member, response);
         }
+        member = (Member)memberService.loadUserByUsername(userId);
         return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
 
     }

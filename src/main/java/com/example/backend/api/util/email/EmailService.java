@@ -74,7 +74,7 @@ public class EmailService {
         String toEmail = emailVo.getToEmail();
         Map<String, Object> param = new HashMap<>();
         Member member = memberService.loadUserByUserEmail(toEmail);
-        String authKey = jwtTokenProvider.createToken(toEmail, member.getRoles(), 5);
+        String authKey = jwtTokenProvider.createToken(toEmail, member.getRole(), 5);
         emailVo.setAuthKey(authKey);
         param.put("authKey", authKey);
         param.put("toEmail", toEmail);

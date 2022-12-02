@@ -1,5 +1,6 @@
 package com.example.backend.config.secutiry;
 
+import com.example.backend.api.auth.model.Role;
 import com.example.backend.api.auth.redis.RedisService;
 import com.example.backend.common.exception.UserAuthorityException;
 import io.jsonwebtoken.Claims;
@@ -48,8 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Object redisRefreshToken = redisService.getValues(userPk);
                 if(redisRefreshToken != null && redisRefreshToken.equals(refreshToken)){
                     Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
-                    List<String> userRoles = (List<String>) claims.getBody().get("roles");
-                    String newAccessToken = jwtTokenProvider.generateAccessToken(userPk, userRoles);
+                    Role role = (Role) claims.getBody().get("role");
+                    String newAccessToken = jwtTokenProvider.generateAccessToken(userPk, role);
                     Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
                     jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
                     SecurityContextHolder.getContext().setAuthentication(authentication);

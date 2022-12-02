@@ -1,6 +1,7 @@
 package com.example.backend.config.secutiry;
 
 
+import com.example.backend.api.auth.model.Role;
 import com.example.backend.api.auth.redis.RedisService;
 
 import com.example.backend.util.CookieUtil;
@@ -40,19 +41,19 @@ public class JwtTokenProvider {
     @Autowired
     RedisService redisService;
 
-    public String generateAccessToken(String userPk, List<String> roles) {
-        return createToken(userPk, roles, accessTokenValidMilliseconds);
+    public String generateAccessToken(String userPk, Role role) {
+        return createToken(userPk, role, accessTokenValidMilliseconds);
     };
 
-    public String generateRefreshToken(String userPk, List<String> roles) {
-        return createToken(userPk, roles, refreshTokenValidMilliseconds);
+    public String generateRefreshToken(String userPk, Role role) {
+        return createToken(userPk, role, refreshTokenValidMilliseconds);
     };
 
-    public String createToken(String userPk, List<String> roles, long expiredTime) {
+    public String createToken(String userPk, Role role, long expiredTime) {
         Claims claims = Jwts.claims().setSubject(userPk);
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + expiredTime);
-        claims.put("roles", roles);
+        claims.put("role", role);
         claims.put("expire_date", expireDate);
         return Jwts.builder()
                 .setClaims(claims) // 데이터
@@ -70,8 +71,8 @@ public class JwtTokenProvider {
         if(!refreshToken.equals(redisRefreshToken)){
             throw new IllegalArgumentException("Refresh Token 정보가 불일치");
         }
-        List<String> roles = (List)claims.getBody().get("roles");
-        return generateAccessToken(userId, roles);
+        Role role = (Role) claims.getBody().get("role");
+        return generateAccessToken(userId, role);
     }
 
     public String getUserPk(String token) {

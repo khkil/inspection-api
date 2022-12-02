@@ -1,9 +1,10 @@
 package com.example.backend.api.member;
 
-import com.example.backend.api.group.Group;
+import com.example.backend.api.auth.model.Role;
 import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -60,6 +61,7 @@ public class MemberService implements UserDetailsService {
         return memberMapper.findIdByPhone(phone);
     }*/
 
+    @Transactional
     public void signUp(Member member){
         /*String groupCode = member.getGroupCode();
         if(groupCode != null && !groupCode.isEmpty()){
@@ -67,6 +69,7 @@ public class MemberService implements UserDetailsService {
             if(group == null) throw new ApiException("유효하지 않은 코드입니다");
             member.setGroupIdx(group.getIdx());
         }*/
+        member.setRole(Role.ROLE_MEMBER);
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.save(member);
     }
@@ -109,6 +112,11 @@ public class MemberService implements UserDetailsService {
         if(existsMemberById) throw new ApiException("이미 사용중인 아이디 입니다.");
     }
 
+    public boolean existsMemberById(String id){
+        boolean existsMemberById = memberRepository.existsMemberById(id);
+        return existsMemberById;
+    }
+
     public boolean checkPassword(Member user, Member member){
 
         return passwordEncoder.matches(user.getPassword(), member.getPassword());
@@ -119,7 +127,6 @@ public class MemberService implements UserDetailsService {
                 .idx(member.getIdx())
                 .id(member.getId())
                 .groupIdx(member.getGroupIdx())
-                .password(member.getPassword())
                 .name(member.getName())
                 .email(member.getEmail())
                 .phone(member.getPhone())

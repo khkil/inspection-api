@@ -1,5 +1,6 @@
 package com.example.backend.api.member.model;
 
+import com.example.backend.api.auth.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,9 +28,9 @@ public class Member implements UserDetails{
     @Column(name = "idx", nullable = false)
     private int idx;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private Integer groupIdx;
 
@@ -67,11 +68,11 @@ public class Member implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        List<GrantedAuthority> roles = this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        return roles;
+        Collection<GrantedAuthority> collect = new ArrayList<>();
+        if(role != null){
+            collect.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+        return collect;
     }
 
     @Override

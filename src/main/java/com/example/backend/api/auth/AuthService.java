@@ -1,6 +1,7 @@
 package com.example.backend.api.auth;
 
 import com.example.backend.api.auth.model.ResetPasswordVo;
+import com.example.backend.api.auth.model.Role;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
@@ -39,9 +40,9 @@ public class AuthService {
 
     public void loginSuccess(Member member, HttpServletResponse response){
 
-        List<String> memberRoles = member.getRoles();
-        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), memberRoles);
-        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), memberRoles);
+        Role role = member.getRole();
+        String accessToken =  jwtTokenProvider.generateAccessToken(member.getId(), role);
+        String refreshToken =  jwtTokenProvider.generateRefreshToken(member.getId(), role);
 
         jwtTokenProvider.setCookieAccessToken(accessToken, response);
         jwtTokenProvider.setCookieRefreshToken(refreshToken, response);

@@ -2,6 +2,8 @@ package com.example.backend.api.inspection;
 
 import com.example.backend.api.inspection.model.Inspection;
 import com.example.backend.api.inspection.model.InspectionDto;
+import com.example.backend.api.inspection.progress.ProgressDto;
+import com.example.backend.api.inspection.progress.ProgressService;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class InspectionController {
 
     @Autowired
     InspectionService inspectionService;
+    @Autowired
+    ProgressService progressService;
 
     @GetMapping("")
     public ResponseEntity getInspectionList(InspectionDto.Request inspection) {
@@ -33,10 +37,17 @@ public class InspectionController {
         return ResponseEntity.ok(CommonResponse.successResult(inspectionDetail));
     }
 
+    @GetMapping("/progress")
+    public ResponseEntity getMemberProgressList(@AuthenticationPrincipal Member member, @PathVariable int inspectionIdx) {
+
+        ProgressDto memberProgressDetail = progressService.getMemberProgressDetail(member.getIdx(), inspectionIdx);
+        return ResponseEntity.ok(CommonResponse.successResult(memberProgressDetail));
+    }
+
     @GetMapping("/{inspectionIdx}/progress")
     public ResponseEntity getMemberProgressDetail(@AuthenticationPrincipal Member member, @PathVariable int inspectionIdx) {
 
-        InspectionDto.Progress memberProgressDetail = inspectionService.getMemberProgressDetail(member.getIdx(), inspectionIdx);
+        ProgressDto memberProgressDetail = progressService.getMemberProgressDetail(member.getIdx(), inspectionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(memberProgressDetail));
     }
 

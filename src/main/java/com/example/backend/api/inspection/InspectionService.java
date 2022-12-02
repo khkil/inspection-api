@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,13 +29,6 @@ public class InspectionService {
     public InspectionDto.Detail getInspectionDetail(int inspectionIdx){
         InspectionDto.Detail inspectionDetail = modelMapper.map(inspectionRepositorySupport.findByInspectionIdx(inspectionIdx), InspectionDto.Detail.class);
         return inspectionDetail;
-    }
-
-    public InspectionDto.Progress getMemberProgressDetail(int memberIdx, int inspectionIdx){
-        InspectionDto.Detail inspectionDetail = getInspectionDetail(inspectionIdx);
-        InspectionDto.Progress memberProgressDetail = new InspectionDto.Progress(inspectionDetail.getInspectionIdx(), inspectionDetail.getInspectionName(), memberIdx, 100);
-
-        return memberProgressDetail;
     }
 
 }
