@@ -1,10 +1,11 @@
 package com.example.backend.api.member.model;
 
-import com.example.backend.api.auth.model.Role;
+import com.example.backend.util.enumerator.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -44,17 +44,31 @@ public class Member implements UserDetails{
     private String email;
 
     private String phone;
+
     private String address;
+
     private String addressSub;
+
     private String school;
+
     private String education;
+
     private Integer grade;
+
     private String major;
+
     private String job;
+
     private String company;
+
     private String jobDetail;
-    private String cDate;
+
+    @Column(name = "c_date", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Date cDate;
+
     private String uDate;
+
     private String delYn;
 
     //private String groupCode;

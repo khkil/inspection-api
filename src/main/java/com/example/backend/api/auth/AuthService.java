@@ -1,7 +1,7 @@
 package com.example.backend.api.auth;
 
 import com.example.backend.api.auth.model.ResetPasswordVo;
-import com.example.backend.api.auth.model.Role;
+import com.example.backend.util.enumerator.Role;
 import com.example.backend.api.member.MemberService;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Service
 public class AuthService {

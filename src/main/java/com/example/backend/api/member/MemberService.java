@@ -1,10 +1,9 @@
 package com.example.backend.api.member;
 
-import com.example.backend.api.auth.model.Role;
+import com.example.backend.util.enumerator.Role;
 import com.example.backend.api.group.code.GroupCodeMapper;
 import com.example.backend.api.member.model.Member;
 import com.example.backend.common.exception.ApiException;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

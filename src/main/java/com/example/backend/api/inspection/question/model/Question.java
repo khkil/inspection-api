@@ -2,7 +2,6 @@ package com.example.backend.api.inspection.question.model;
 
 import com.example.backend.api.inspection.question.answer.model.Answer;
 import com.example.backend.util.enumerator.QuestionType;
-import com.example.backend.util.enumerator.converters.QuestionTypeConverter;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,18 +41,16 @@ public class Question {
     private String delYn;
 
     @Column(name = "question_type")
-    @Convert(converter = QuestionTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
     @Column(name = "answer_type")
-    @Convert(converter = QuestionTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     private QuestionType answerType;
 
     //private List<Object> filePath;
     @OneToMany
     @JoinColumn(name = "question_idx")
     private List<Answer> answers;
-
-
 
 }

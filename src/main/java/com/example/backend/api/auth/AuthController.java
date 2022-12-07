@@ -140,7 +140,7 @@ public class AuthController {
     public ResponseEntity signUp(@RequestBody Member member, HttpServletResponse response){
 
         memberService.signUp(member);
-        //authService.loginSuccess(member, response);
+        authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(member));
     }
 

@@ -40,15 +40,15 @@ public class EmailConfig {
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
     }
-    private Properties getMailProperties()
-    {
+    private Properties getMailProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.socketFactory.port", socketPort);
         properties.put("mail.smtp.auth", auth);
         properties.put("mail.smtp.starttls.enable", starttls);
         properties.put("mail.smtp.starttls.required", startlls_required);
-        properties.put("mail.smtp.socketFactory.fallback",fallback);
+        properties.put("mail.smtp.socketFactory.fallback", fallback);
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         return properties;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.backend.config.secutiry;
 
 
-import com.example.backend.api.auth.model.Role;
+import com.example.backend.util.enumerator.Role;
 import com.example.backend.api.auth.redis.RedisService;
 
 import com.example.backend.util.CookieUtil;
