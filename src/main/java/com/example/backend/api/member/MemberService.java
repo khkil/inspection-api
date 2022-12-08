@@ -125,6 +125,7 @@ public class MemberService implements UserDetailsService {
         Member memberInfo = member.builder()
                 .idx(member.getIdx())
                 .id(member.getId())
+                .password(member.getPassword())
                 .groupIdx(member.getGroupIdx())
                 .name(member.getName())
                 .email(member.getEmail())

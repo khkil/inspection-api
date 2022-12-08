@@ -55,15 +55,15 @@ public class AuthService {
     }
 
     public void ResetPassword(int idx, ResetPasswordVo resetPasswordVo){
-        //Member member = memberService.getMemberDetail(idx);
-        Member member = new Member();
+        Member member = memberService.getMemberDetail(idx);
+//        Member member = new Member();
         String memberPassword = member.getPassword();
         String inputPassword  = resetPasswordVo.getPassword();
 
         if(!passwordEncoder.matches(inputPassword, memberPassword)){
             throw new ApiException("현재 비밀번호가 일치하지 않습니다.");
         }
-        //memberService.changePassword(idx, passwordEncoder.encode(resetPasswordVo.getNewPassword()));
+        memberService.changePassword(idx, resetPasswordVo.getNewPassword());
 
     }
 }
