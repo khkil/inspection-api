@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProgressService {
 
@@ -17,6 +19,11 @@ public class ProgressService {
     MemberRepository memberRepository;
     @Autowired
     ModelMapper modelMapper;
+
+    public List<ProgressDto.Summary> getMemberProgressList(int memberIdx){
+        return memberRepository.getMemberProgressList(memberIdx);
+
+    }
 
     public ProgressDto getMemberProgressDetail(int memberIdx, int inspectionIdx){
         InspectionDto.Detail inspectionDetail = modelMapper.map(inspectionRepositorySupport.findByInspectionIdx(inspectionIdx), InspectionDto.Detail.class);

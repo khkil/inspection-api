@@ -7,12 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/progress")
 public class ProgressController {
 
     @Autowired
     ProgressService progressService;
+
+    @GetMapping("")
+    public ResponseEntity getMemberProgressList(@AuthenticationPrincipal Member member){
+        List<ProgressDto.Summary> memberProgressList = progressService.getMemberProgressList(member.getIdx());
+        return ResponseEntity.ok(CommonResponse.successResult(memberProgressList));
+    }
 
     @GetMapping("/inspections/{inspectionIdx}")
     public ResponseEntity getMemberProgressDetail(@AuthenticationPrincipal Member member, @PathVariable int inspectionIdx){
