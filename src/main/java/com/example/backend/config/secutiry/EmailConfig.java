@@ -9,10 +9,28 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-/*@Configuration*/
+@Configuration
 public class EmailConfig {
 
-    @Value("${mail.smtp.port}")
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("01020318057aa@gmail.com");
+        mailSender.setPassword("bsxbrbsixskkzlco");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        return mailSender;
+    }
+    /*@Value("${mail.smtp.port}")
     private int port;
     @Value("${mail.smtp.socketFactory.port}")
     private int socketPort;
@@ -50,5 +68,5 @@ public class EmailConfig {
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         return properties;
-    }
+    }*/
 }

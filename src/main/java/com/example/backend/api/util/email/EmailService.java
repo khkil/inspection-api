@@ -38,7 +38,9 @@ public class EmailService {
     private final String HEADER_LOGO_IMAGE_URL = "https://storage.googleapis.com/careercompany/성향검사/문항/logo-octagnosis.png";
 
     private final RedisService redisService;
-    private final JavaMailSender javaMailSender;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
     @Async
     public void sendSignUpVerifyEmail(EmailVo emailVo){
