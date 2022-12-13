@@ -31,29 +31,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String accessToken = null;
         String refreshToken = null;
-        try{
+        try {
             accessToken = jwtTokenProvider.resolveAccessToken(request);
             refreshToken = jwtTokenProvider.resolveRefreshToken(request);
-            if(accessToken != null){
+            if (accessToken != null) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             logger.error("토큰 만료");
-            if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken)){
+            if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
                 String userPk = jwtTokenProvider.getUserPk(refreshToken);
                 Object redisRefreshToken = redisService.getValues(userPk);
-                if(redisRefreshToken != null && redisRefreshToken.equals(refreshToken)){
+                if (redisRefreshToken != null && redisRefreshToken.equals(refreshToken)) {
                     Jws<Claims> claims = jwtTokenProvider.getClaims(refreshToken);
-                    Role role = (Role) claims.getBody().get("role");
-                    String newAccessToken = jwtTokenProvider.generateAccessToken(userPk, role);
+                    String role = (String) claims.getBody().get("role");
+                    String newAccessToken = jwtTokenProvider.generateAccessToken(userPk, Role.valueOf(role));
                     Authentication authentication = jwtTokenProvider.getAuthentication(newAccessToken);
                     jwtTokenProvider.setCookieAccessToken(newAccessToken, response);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         filterChain.doFilter(request, response);

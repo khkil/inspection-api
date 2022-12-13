@@ -7,6 +7,7 @@ import com.example.backend.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,8 @@ public class AdminMemberController {
     MemberService memberService;
 
     @GetMapping
-    public ResponseEntity getMemberList(@RequestParam(required = false) String searchText, PageUtil pageUtil){
-        PageRequest pageRequest = PageRequest.of(pageUtil.getOffset(), pageUtil.getLimit());
-        Page<Member> memberList = memberService.getMemberList(searchText, pageRequest);
+    public ResponseEntity getMemberList(@RequestParam(required = false) String searchText, Pageable pageable){
+        Page<Member> memberList = memberService.getMemberList(searchText, pageable);
         return ResponseEntity.ok(CommonResponse.successResult(memberList));
     }
 

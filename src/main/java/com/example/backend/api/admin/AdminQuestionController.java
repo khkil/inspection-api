@@ -22,31 +22,32 @@ public class AdminQuestionController {
     QuestionService questionService;
 
     @GetMapping("/{questionIdx}")
-    public ResponseEntity insertQuestions(@PathVariable int questionIdx){
+    public ResponseEntity insertQuestions(@PathVariable int questionIdx) {
         QuestionDto.Detail questionDetail = questionService.getQuestionDetail(questionIdx);
         return ResponseEntity.ok(CommonResponse.successResult(questionDetail));
     }
 
     @DeleteMapping("/{questionIdx}")
-    public ResponseEntity deleteQuestion(@PathVariable int questionIdx){
+    public ResponseEntity deleteQuestion(@PathVariable int questionIdx) {
         questionService.deleteQuestion(questionIdx);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PutMapping("/{questionIdx}")
-    public ResponseEntity updateQuestion(@PathVariable int questionIdx, @RequestBody Question question){
+    public ResponseEntity updateQuestion(@PathVariable int questionIdx, @RequestBody Question question) {
         questionService.updateQuestion(questionIdx, question);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
 
     @PostMapping("")
-    public ResponseEntity insertQuestions(@RequestBody List<Question> questions){
+    public ResponseEntity insertQuestions(@RequestBody List<Question> questions) {
         questionService.insertQuestions(questions);
         return ResponseEntity.ok(CommonResponse.successResult());
 
     }
+
     @GetMapping("/inspections/{inspectionIdx}")
-    public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx, PageUtil pageUtil){
+    public ResponseEntity getQuestionsOfInspection(@PathVariable int inspectionIdx, PageUtil pageUtil) {
         PageRequest pageRequest = pageUtil.of(pageUtil);
         List<QuestionDto.Summary> questionsByInspectionIdx = questionService.getQuestionsByInspectionIdx(inspectionIdx, pageRequest);
         return ResponseEntity.ok(CommonResponse.successResult(questionsByInspectionIdx));
