@@ -50,7 +50,14 @@ public class UserController {
         User user = userServcice.getUserDetail(userIdx);
         return ResponseEntity.ok(user);
     }
-
+    @GetMapping("/inspections/{inspection_idx}/pages/{page}")
+    public ResponseEntity getUsersToPages(@PathVariable int inspection_idx, @PathVariable int page, @RequestParam Map<String,Object> param){
+        int perPage = 10;
+        PageHelper.startPage(page, perPage, "user_idx " + (param.containsKey("order") ? String.valueOf(param.get("order")) : " desc"));
+        List<User> users = userServcice.getUsers(inspection_idx, param);
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        return ResponseEntity.ok(pageInfo);
+    }
     @GetMapping("/{userIdx}/answers")
     public ResponseEntity getUserAnswers(@PathVariable int userIdx){
 
