@@ -9,17 +9,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final BearerAuthInterceptor bearerAuthInterceptor;
-
-    public WebConfig(BearerAuthInterceptor bearerAuthInterceptor) {
-        this.bearerAuthInterceptor = bearerAuthInterceptor;
-    }
-
-    public void addInterceptors(InterceptorRegistry registry){
-        /*registry.addInterceptor(bearerAuthInterceptor)
-                .addPathPatterns("/api/auth/info")
-                .addPathPatterns("/api/auth/validate-token");*/
-    }
+//    private final BearerAuthInterceptor bearerAuthInterceptor;
+//
+//    public WebConfig(BearerAuthInterceptor bearerAuthInterceptor) {
+//        this.bearerAuthInterceptor = bearerAuthInterceptor;
+//    }
+//
+//    public void addInterceptors(InterceptorRegistry registry){
+//        /*registry.addInterceptor(bearerAuthInterceptor)
+//                .addPathPatterns("/api/auth/info")
+//                .addPathPatterns("/api/auth/validate-token");*/
+//    }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

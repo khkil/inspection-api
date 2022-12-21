@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "member")
+@Table(name = "ogs_member")
 @DynamicUpdate
 public class Member implements UserDetails{
     @Id

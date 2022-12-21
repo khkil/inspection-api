@@ -27,7 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
             "    i.inspection_idx AS inspectionIdx,\n" +
             "    i.inspection_name AS inspectionName,\n" +
             "    ifnull(a.answer_count, 0) / question_count * 100 AS progress," +
-            "    a.current_page AS currentPage\n" +
+            "    ifnull(a.current_page, 0)  AS currentPage\n" +
             "FROM inspection i\n" +
             "LEFT OUTER JOIN (SELECT inspection_idx, count(*)  AS question_count FROM question WHERE del_yn = 'N' GROUP BY inspection_idx) q\n" +
             "    ON i.inspection_idx = q.inspection_idx\n" +
