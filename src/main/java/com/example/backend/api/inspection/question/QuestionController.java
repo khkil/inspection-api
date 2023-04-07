@@ -1,6 +1,8 @@
 package com.example.backend.api.inspection.question;
 
+import com.example.backend.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,9 @@ public class QuestionController {
     }
 
     @GetMapping("/inspections/{inspectionIdx}")
-    public ResponseEntity<?> getQuestionInfo(@PathVariable int inspectionIdx, Pageable pageable){
-
-        return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx, pageable), HttpStatus.OK);
+    public ResponseEntity<?> getQuestionInfo(@PathVariable int inspectionIdx, PageUtil pageUtil){
+        PageRequest pageRequest = pageUtil.of(pageUtil);
+        return new ResponseEntity<>(questionServcice.getQuestionListWithAnswers(inspectionIdx, pageRequest), HttpStatus.OK);
     }
 
     @GetMapping("/inspections/{inspectionIdx}/pages/{page}")

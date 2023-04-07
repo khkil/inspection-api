@@ -18,7 +18,9 @@ public class PageUtil {
     private String direction = "desc";
 
     public PageRequest of(PageUtil pageUtil){
-        if(pageUtil.getSortColumn() == null || pageUtil.getSortColumn().isEmpty()) return PageRequest.of(pageUtil.getOffset() - 1, pageUtil.limit);
+        if(pageUtil.getSortColumn() == null || pageUtil.getSortColumn().isEmpty()){
+            return PageRequest.of(pageUtil.getOffset() - 1, pageUtil.limit);
+        }
         return PageRequest.of(pageUtil.getOffset() - 1, pageUtil.limit, direction.equals("asc") ? Direction.ASC : Direction.DESC, sortColumn);
     }
 

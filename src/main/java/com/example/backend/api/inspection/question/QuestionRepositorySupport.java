@@ -103,6 +103,7 @@ public class QuestionRepositorySupport extends QuerydslRepositorySupport {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
 
                 switch (order.getProperty()){
+                    case "questionIdx": return new OrderSpecifier(direction, question.questionIdx);
                     case "questionNumber": return new OrderSpecifier(direction, question.questionNumber);
                     case "questionText": return new OrderSpecifier(direction, question.questionText);
                 }
