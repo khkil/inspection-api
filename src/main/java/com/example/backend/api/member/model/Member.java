@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
@@ -69,6 +70,7 @@ public class Member implements UserDetails{
 
     private String uDate;
 
+    @ColumnDefault("N")
     private String delYn;
 
     //private String groupCode;
@@ -79,6 +81,11 @@ public class Member implements UserDetails{
         this.name = name;
     }
 
+    public Member(String id, String name, String email){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

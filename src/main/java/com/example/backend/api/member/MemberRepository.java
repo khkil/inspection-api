@@ -40,7 +40,9 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
             "    GROUP BY i.inspection_idx\n" +
             ") a\n" +
             "    ON q.inspection_idx = a.inspection_idx " +
-            "WHERE i.octagnosis_yn = 'Y'")
+            "WHERE i.octagnosis_yn = 'Y'" +
+            "AND i.show_yn = 'Y'" +
+            "")
     List<ProgressDto.Summary> getMemberProgressList(int memberIdx);
 
     @Query(nativeQuery = true, value = "SELECT (\n" +

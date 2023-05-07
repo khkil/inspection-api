@@ -65,17 +65,17 @@ public class AuthController {
         String naverAccessToken = (String) tokenInfo.get("access_token");
         Map<String, Object> userInfo = oauth2NaverService.callUserByAccessToken(naverAccessToken);
         Map<String, String> userDetail = (Map<String, String>) userInfo.get("response");
+
         String userId = "naver_" + userDetail.get("id");
         String username = userDetail.get("name");
+        String userEmail = userDetail.get("email");
 
-        Member member = (Member)memberService.loadUserByUsername(userId);
-
-        if(member == null){
-            member = new Member(userId, username);
-            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
-        }else{
-            //authService.loginSuccess(member, response);
+        if(!memberService.existsMemberById(userId)){
+            Member member = new Member(userId, username, userEmail);
+            return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.NAVER_USER_NOT_SIGNED.getCode(), ResponseCode.NAVER_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }
+        Member member = (Member)memberService.loadUserByUsername(userId);
+        authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
     }
 
@@ -88,15 +88,15 @@ public class AuthController {
         Map<String, Object> userInfo = oauth2KakaoService.callUserByAccessToken(kakaoAccessToken);
         String userId = "kakao_" + userInfo.get("id");
         LinkedHashMap<String, String> userDetail = (LinkedHashMap<String, String>) userInfo.get("properties");
+
         String username = userDetail.get("nickname");
 
-        Member member;
-
         if(!memberService.existsMemberById(userId)){
-            member = new Member(userId, username);
+            Member member = new Member(userId, username);
             return ResponseEntity.ok(CommonResponse.failResult(ResponseCode.KAKAO_USER_NOT_SIGNED.getCode(), ResponseCode.KAKAO_USER_NOT_SIGNED.getMsg(), memberService.memberInfo(member)));
         }
-        member = (Member)memberService.loadUserByUsername(userId);
+        Member member = (Member)memberService.loadUserByUsername(userId);
+        authService.loginSuccess(member, response);
         return ResponseEntity.ok(CommonResponse.successResult(memberService.memberInfo(member)));
 
     }
