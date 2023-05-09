@@ -51,6 +51,7 @@ public class Question {
     //private List<Object> filePath;
     @OneToMany
     @JoinColumn(name = "question_idx")
+    @OrderBy("answerIdx desc")
     private List<Answer> answers;
 
 }
