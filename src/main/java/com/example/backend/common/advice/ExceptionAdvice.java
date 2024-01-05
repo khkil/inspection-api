@@ -6,6 +6,7 @@ import com.example.backend.common.exception.UserAuthorityException;
 import com.example.backend.util.enumerator.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class ExceptionAdvice {
 
-    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResponse badRequestException(HttpServletRequest request, Exception e) {
         log.error(HttpStatus.BAD_REQUEST.value() + " error", e);
@@ -43,7 +43,6 @@ public class ExceptionAdvice {
         log.error(HttpStatus.UNAUTHORIZED.value() + " error", e);
         return CommonResponse.failResult(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
-
     @ExceptionHandler(value = UserAuthorityException.class)
     protected ResponseEntity userAuthorityException(UserAuthorityException e){
         log.error("USER_UNAUTHORIZED  error", e);

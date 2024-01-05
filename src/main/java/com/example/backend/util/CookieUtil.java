@@ -1,6 +1,5 @@
 package com.example.backend.util;
 
-import com.example.backend.config.secutiry.JwtTokenProvider;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
@@ -26,5 +25,4 @@ public class CookieUtil {
         }
         return null;
     }
-
 }

@@ -37,18 +37,18 @@ public class MemberService implements UserDetailsService {
 
     public Member loadUserByUserEmail(String email) throws UsernameNotFoundException {
         return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("일치하는 이메일을 가진 회원이 없습니다."));
+    }
 
+    public boolean checkEmail(String email) {
+        return memberRepository.findByEmail(email).isPresent();
     }
 
     public Page<Member> getMemberList(String searchText, Pageable pageable){
         return memberRepositorySupport.getMemberList(searchText, pageable);
-        /*if(searchText == null) return memberRepository.findAll(pageable);
-        return memberRepository.findByNameContaining(searchText, pageable);*/
     }
 
     public Member getMemberDetail(int idx){
         Member member = memberRepository.findByIdx(idx).orElseThrow(() -> new IllegalArgumentException("일치하는 회원이 없습니다."));
-
         return memberInfo(member);
     }
 

@@ -28,9 +28,9 @@ import java.util.List;
 @Slf4j
 public class JwtTokenProvider {
 
-    private long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
+    private Long accessTokenValidMilliseconds = (1000L * 60) * 30; // 30분
     //private long accessTokenValidMilliseconds = (1000L) * 3; // 5초
-    private long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24; // 24시간
+    private Long refreshTokenValidMilliseconds = (1000L * 60) * 60 * 24; // 24시간
     private static final String SECRET_KEY = "humanx_sercret_key";
     private static final String REFRESH_TOKEN = "RefreshToken";
 
@@ -128,12 +128,12 @@ public class JwtTokenProvider {
     }
 
     public void setCookieAccessToken(String accessToken, HttpServletResponse response) {
-        Cookie cookie = cookieUtil.createCookie(HttpHeaders.AUTHORIZATION, accessToken, (int)accessTokenValidMilliseconds);
+        Cookie cookie = cookieUtil.createCookie(HttpHeaders.AUTHORIZATION, accessToken, accessTokenValidMilliseconds.intValue());
         response.addCookie(cookie);
     }
 
     public void setCookieRefreshToken(String refreshToken, HttpServletResponse response) {
-        Cookie cookie = cookieUtil.createCookie(REFRESH_TOKEN, refreshToken, (int)refreshTokenValidMilliseconds);
+        Cookie cookie = cookieUtil.createCookie(REFRESH_TOKEN, refreshToken, refreshTokenValidMilliseconds.intValue());
         response.addCookie(cookie);
     }
 

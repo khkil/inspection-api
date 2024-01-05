@@ -182,6 +182,10 @@ public class AuthController {
 
     @PostMapping("/send-sign-up-email")
     public ResponseEntity sendSignUpVerifyEmail(@RequestBody EmailVo emailVo){
+        Member member = memberService.loadUserByUserEmail(emailVo.getToEmail());
+        if(member != null) {
+            throw new ApiException("이미 가입된 이메일 입니다.");
+        }
         emailService.sendSignUpVerifyEmail(emailVo);
         return ResponseEntity.ok(CommonResponse.successResult());
     }
